@@ -1,7 +1,39 @@
-if (!LeoniAuth.requireAuth()) {
-  // redirecting
-} else {
+(async () => {
+  if (!(await LeoniAuth.ensureAccess())) return;
+  await LeoniAuth.refreshSession();
+
+  const loggedUser = LeoniAuth.getUser();
+
   const content = `
+    <!-- FILTERS FOR EXPORT -->
+    <section class="panel mb-3">
+      <div class="panel-header">
+        <h2>Export Filters</h2>
+      </div>
+      <div class="panel-body">
+        <div class="filter-bar d-flex align-items-end gap-3 flex-wrap">
+          <div>
+            <label for="exportMonth" class="form-label">Month</label>
+            <input type="month" class="form-control" id="exportMonth" style="min-width: 180px;" />
+          </div>
+          <div>
+            <label for="exportGroup" class="form-label">Group</label>
+            <select class="form-select" id="exportGroup" style="min-width: 160px;">
+              <option value="">All groups</option>
+              <option value="1">Group A</option>
+              <option value="2">Group B</option>
+            </select>
+          </div>
+          <div>
+            <label for="exportUser" class="form-label">Employee</label>
+            <select class="form-select" id="exportUser" style="min-width: 200px;">
+              <option value="">All employees</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="panel">
       <div class="panel-body export-hero">
         <div class="export-hero-icon">
@@ -9,14 +41,21 @@ if (!LeoniAuth.requireAuth()) {
         </div>
         <h2 class="h4 mb-2">Export planning data</h2>
         <p class="text-muted mb-4 mx-auto" style="max-width: 520px;">
-          Download the complete planning schedule as an Excel-compatible CSV file.
-          The export includes employee details, group assignment, office days, and status.
+          Download the planning schedule as CSV or Excel (XLSX).
+          Applies the filters selected above (all records exported by default).
         </p>
-        <button type="button" class="btn btn-lg btn-leoni-primary px-4" id="exportBtn">
-          <i class="fa-solid fa-file-export me-2"></i>
-          <span id="exportBtnLabel">Export Planning</span>
-          <span id="exportBtnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
-        </button>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          <button type="button" class="btn btn-lg btn-leoni-primary px-4" id="exportCsvBtn">
+            <i class="fa-solid fa-file-csv me-2"></i>
+            <span id="exportCsvLabel">Export CSV</span>
+            <span id="exportCsvSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
+          </button>
+          <button type="button" class="btn btn-lg btn-leoni-outline px-4" id="exportXlsxBtn">
+            <i class="fa-solid fa-file-excel me-2"></i>
+            <span id="exportXlsxLabel">Export XLSX</span>
+            <span id="exportXlsxSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
+          </button>
+        </div>
         <p class="small text-muted mt-3 mb-0" id="exportStatus"></p>
       </div>
     </section>
@@ -27,9 +66,8 @@ if (!LeoniAuth.requireAuth()) {
       </div>
       <div class="panel-body">
         <ul class="mb-0">
-          <li class="mb-2">Format: CSV (opens directly in Microsoft Excel)</li>
-          <li class="mb-2">Endpoint: <code>GET /export-planning</code></li>
-          <li class="mb-0">Encoding: UTF-8 with BOM for special characters</li>
+          <li class="mb-2">CSV: <code>GET /export-planning</code> (UTF-8 with BOM)</li>
+          <li class="mb-0">Excel: <code>GET /export-xlsx</code></li>
         </ul>
       </div>
     </section>`;
@@ -41,38 +79,100 @@ if (!LeoniAuth.requireAuth()) {
     contentHtml: content,
   });
 
-  const exportBtn = document.getElementById("exportBtn");
-  const exportBtnLabel = document.getElementById("exportBtnLabel");
-  const exportBtnSpinner = document.getElementById("exportBtnSpinner");
   const exportStatus = document.getElementById("exportStatus");
 
-  exportBtn.addEventListener("click", async () => {
-    exportBtn.disabled = true;
-    exportBtnLabel.textContent = "Preparing export…";
-    exportBtnSpinner.classList.remove("d-none");
-    exportStatus.textContent = "";
+  // Populate users select dropdown
+  try {
+    const users = await LeoniAPI.getUsers();
+    const select = document.getElementById("exportUser");
+    users
+      .filter((u) => u.role === "Data Cleansing")
+      .forEach((u) => {
+        const opt = document.createElement("option");
+        opt.value = u.id;
+        opt.textContent = `${u.name} (${u.matricule})`;
+        select.appendChild(opt);
+      });
+  } catch (err) {
+    console.error("Failed to populate users dropdown for export page", err);
+  }
 
-    try {
-      const response = await LeoniAPI.exportPlanning();
-      if (!response.ok) throw new Error("Export failed");
+  function getExportParams() {
+    const month = document.getElementById("exportMonth").value;
+    const group_id = document.getElementById("exportGroup").value;
+    const user_id = document.getElementById("exportUser").value;
+    
+    const params = {};
+    if (month) params.month = month;
+    if (group_id) params.group_id = group_id;
+    if (user_id) params.user_id = user_id;
+    return params;
+  }
 
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "leoni-planning-export.csv";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-      exportStatus.textContent = "Export completed successfully.";
-    } catch (err) {
-      exportStatus.textContent = err.message || "Unable to export planning data.";
-      exportStatus.style.color = "var(--leoni-rouge)";
-    } finally {
-      exportBtn.disabled = false;
-      exportBtnLabel.textContent = "Export Planning";
-      exportBtnSpinner.classList.add("d-none");
+  async function downloadExport(fetchFn, filename) {
+    const response = await fetchFn(getExportParams());
+    if (!response.ok) {
+      let message = "Export failed";
+      try {
+        const data = await response.json();
+        message = data.message || message;
+      } catch {
+        // fallback
+      }
+      throw new Error(message);
     }
-  });
-}
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  async function bindExport(btnId, labelId, spinnerId, fetchFn, filename, labelText) {
+    const btn = document.getElementById(btnId);
+    const label = document.getElementById(labelId);
+    const spinner = document.getElementById(spinnerId);
+
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      label.textContent = "Preparing…";
+      spinner.classList.remove("d-none");
+      exportStatus.textContent = "";
+
+      try {
+        await downloadExport(fetchFn, filename);
+        exportStatus.textContent = "Export completed successfully.";
+        exportStatus.style.color = "";
+      } catch (err) {
+        exportStatus.textContent = err.message || "Unable to export planning data.";
+        exportStatus.style.color = "var(--leoni-rouge)";
+      } finally {
+        btn.disabled = false;
+        label.textContent = labelText;
+        spinner.classList.add("d-none");
+      }
+    });
+  }
+
+  bindExport(
+    "exportCsvBtn",
+    "exportCsvLabel",
+    "exportCsvSpinner",
+    (filters) => LeoniAPI.exportPlanning(filters),
+    "leoni-planning-export.csv",
+    "Export CSV"
+  );
+
+  bindExport(
+    "exportXlsxBtn",
+    "exportXlsxLabel",
+    "exportXlsxSpinner",
+    (filters) => LeoniAPI.exportPlanningXlsx(filters),
+    "leoni-planning-export.xlsx",
+    "Export XLSX"
+  );
+})();

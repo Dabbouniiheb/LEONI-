@@ -4,6 +4,9 @@ const LeoniLayout = (() => {
     { id: "users", href: "/users-page", icon: "fa-users", label: "Users" },
     { id: "planning", href: "/planning-page", icon: "fa-calendar-days", label: "Planning" },
     { id: "export", href: "/export-page", icon: "fa-file-export", label: "Export" },
+    { id: "logs", href: "/logs-page", icon: "fa-clipboard-list", label: "Audit Logs" },
+    { id: "change-password", href: "/change-password", icon: "fa-key", label: "Change Password" },
+    { id: "select-group", href: "/select-group", icon: "fa-layer-group", label: "Group Selection" },
   ];
 
   function renderShell({ pageId, title, subtitle }) {

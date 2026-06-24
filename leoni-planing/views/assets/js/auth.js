@@ -1,44 +1,78 @@
 const LeoniAuth = (() => {
-  const STORAGE_KEY = "leoni_user";
+  let cachedUser = null;
 
-  function getUser() {
+  async function refreshSession() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
+      const data = await LeoniAPI.getSession();
+      cachedUser = data.user || null;
+      return cachedUser;
     } catch {
+      cachedUser = null;
       return null;
     }
   }
 
-  function setUser(user) {
-    if (!user) {
-      localStorage.removeItem(STORAGE_KEY);
-      return;
-    }
-    const safe = { ...user };
-    delete safe.password;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(safe));
+  function getUser() {
+    return cachedUser;
   }
 
-  function logout() {
-    localStorage.removeItem(STORAGE_KEY);
+  function setUser(user) {
+    cachedUser = user || null;
+  }
+
+  async function logout() {
+    try {
+      await LeoniAPI.logout();
+    } catch {
+      // still redirect
+    }
+    cachedUser = null;
     window.location.href = "/login";
   }
 
-  function requireAuth() {
-    if (!getUser()) {
+  async function ensureAccess(options = {}) {
+    const {
+      allowPasswordChange = false,
+      allowSelectGroup = false,
+    } = options;
+
+    const user = await refreshSession();
+    if (!user) {
       window.location.href = "/login";
       return false;
     }
+
+    if (user.must_change_password && !allowPasswordChange) {
+      window.location.href = "/change-password";
+      return false;
+    }
+
+    if (
+      (user.group_id == null || user.group_id === "") &&
+      !allowSelectGroup &&
+      !user.must_change_password
+    ) {
+      window.location.href = "/select-group";
+      return false;
+    }
+
     return true;
   }
 
-  function redirectIfAuthenticated() {
-    if (getUser()) {
-      window.location.href = "/dashboard";
+  async function redirectIfAuthenticated() {
+    const user = await refreshSession();
+    if (!user) return false;
+
+    if (user.must_change_password) {
+      window.location.href = "/change-password";
       return true;
     }
-    return false;
+    if (user.group_id == null || user.group_id === "") {
+      window.location.href = "/select-group";
+      return true;
+    }
+    window.location.href = "/dashboard";
+    return true;
   }
 
   function initials(name) {
@@ -53,8 +87,9 @@ const LeoniAuth = (() => {
   return {
     getUser,
     setUser,
+    refreshSession,
     logout,
-    requireAuth,
+    ensureAccess,
     redirectIfAuthenticated,
     initials,
   };

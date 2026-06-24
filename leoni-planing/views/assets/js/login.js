@@ -1,6 +1,8 @@
-if (LeoniAuth.redirectIfAuthenticated()) {
-  // redirected
-} else {
+(async () => {
+  if (await LeoniAuth.redirectIfAuthenticated()) {
+    return;
+  }
+
   const form = document.getElementById("loginForm");
   const alertEl = document.getElementById("loginAlert");
   const loginBtn = document.getElementById("loginBtn");
@@ -27,7 +29,7 @@ if (LeoniAuth.redirectIfAuthenticated()) {
     try {
       const data = await LeoniAPI.login(email, password);
       LeoniAuth.setUser(data.user);
-      window.location.href = "/dashboard";
+      window.location.href = data.redirect || "/dashboard";
     } catch (err) {
       alertEl.textContent = err.message || "Login failed. Please try again.";
       alertEl.classList.remove("d-none");
@@ -37,4 +39,4 @@ if (LeoniAuth.redirectIfAuthenticated()) {
       loginBtnSpinner.classList.add("d-none");
     }
   });
-}
+})();

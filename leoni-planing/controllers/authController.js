@@ -2,10 +2,11 @@ const bcrypt = require("bcrypt");
 const db = require("../config/db");
 const { logAction } = require("../utils/logger");
 
+
 function sessionUserPayload(userRow) {
   return {
     id: userRow.id,
-    name: `${userRow.first_name} ${userRow.last_name}`,
+    name: userRow.name,
     role: userRow.role,
     group_id: userRow.group_id,
     must_change_password: !!userRow.must_change_password,
@@ -38,9 +39,10 @@ exports.login = async (req, res) => {
 
   try {
     // Check by email OR username
+    
     const [rows] = await db.query(
-      "SELECT * FROM users WHERE email = ? OR username = ?",
-      [email.trim(), email.trim()]
+      "SELECT * FROM users WHERE email = ?",
+      [email.trim()]
     );
 
     if (rows.length === 0) {
@@ -71,7 +73,8 @@ exports.login = async (req, res) => {
     const { password: _pwd, ...safeUser } = user;
     safeUser.must_change_password = !!user.must_change_password;
     safeUser.first_login = !!user.first_login;
-    safeUser.name = `${user.first_name} ${user.last_name}`;
+    safeUser.name = user.name;
+
 
     res.json({
       message: "Login success",
@@ -123,7 +126,9 @@ exports.changePassword = async (req, res) => {
     const hashed = bcrypt.hashSync(newPassword, 10);
 
     await db.query(
-      `UPDATE users SET password = ?, must_change_password = 0, first_login = 0 WHERE id = ?`,
+      `UPDATE users SET password = ?,
+       must_change_password = 0, 
+       first_login = 0 WHERE id = ?`,
       [hashed, userId]
     );
 
@@ -170,5 +175,27 @@ exports.selectGroup = async (req, res) => {
   } catch (err) {
     console.error("Select group error:", err);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.register = async (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "Missing fields" });
+  }
+
+  try {
+    const hashed = bcrypt.hashSync(password, 10);
+
+    await db.query(
+      "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'user')",
+      [name, email.trim(), hashed]
+    );
+
+    res.json({ message: "User registered successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 };

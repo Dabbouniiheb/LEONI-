@@ -39,7 +39,10 @@ CREATE TABLE planning (
     work_hour INT NOT NULL DEFAULT 8,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
+    -- Foreign Key: If a user is deleted, their planning is automatically deleted
     CONSTRAINT fk_planning_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    
+    -- Constraint: A user can only have one planning entry per specific date
     UNIQUE KEY uq_user_date (user_id, date),
     INDEX idx_planning_month (month_key)
 ) ENGINE=InnoDB;
@@ -52,6 +55,8 @@ CREATE TABLE audit_logs (
     details VARCHAR(500) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
+    -- Foreign Key: If a user is deleted, keep the log but set user_id to NULL
     CONSTRAINT fk_audit_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    
     INDEX idx_audit_created (created_at)
 ) ENGINE=InnoDB;

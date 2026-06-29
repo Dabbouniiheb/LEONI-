@@ -1,12 +1,21 @@
+/**
+ * Authentication Routes
+ *
+ * Mounted at: /api/auth
+ * Paths are relative to the mount point.
+ */
+
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 const { auth } = require("../middlewares/auth");
+const validate = require("../middlewares/validate");
+const { loginValidation, changePasswordValidation, selectGroupValidation } = require("../validations/authValidation");
 
-router.get("/api/session", authController.getSession);
-router.post("/login", authController.login);
+router.get("/session", authController.getSession);
+router.post("/login", loginValidation, validate, authController.login);
 router.post("/logout", authController.logout);
-router.post("/change-password", auth, authController.changePassword);
-router.post("/select-group", auth, authController.selectGroup);
+router.post("/change-password", auth, changePasswordValidation, validate, authController.changePassword);
+router.post("/select-group", auth, selectGroupValidation, validate, authController.selectGroup);
 
 module.exports = router;

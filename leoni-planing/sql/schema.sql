@@ -1,17 +1,18 @@
--- 1. Create the database and use it
+-- ============================================================
+-- LEONI Planning System — Database Schema
+-- ============================================================
+-- Uses CREATE TABLE IF NOT EXISTS to be safe for production.
+-- Never drops tables. Existing data is preserved.
+-- ============================================================
+
 CREATE DATABASE IF NOT EXISTS leoni_planning
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
 USE leoni_planning;
 
--- 2. Drop existing tables if they exist (to ensure a clean slate)
-DROP TABLE IF EXISTS audit_logs;
-DROP TABLE IF EXISTS planning;
-DROP TABLE IF EXISTS users;
-
--- 3. Create Users Table
-CREATE TABLE users (
+-- 1. Users Table
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -24,13 +25,18 @@ CREATE TABLE users (
     group_id TINYINT NULL COMMENT '1 = Group A, 2 = Group B',
     must_change_password TINYINT(1) NOT NULL DEFAULT 1,
     first_login TINYINT(1) NOT NULL DEFAULT 1,
+    is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Soft delete flag',
+    deleted_at TIMESTAMP NULL DEFAULT NULL COMMENT 'Soft delete timestamp',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_user_group (group_id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    INDEX idx_user_group (group_id),
+    INDEX idx_user_role (role),
+    INDEX idx_user_deleted (is_deleted)
 ) ENGINE=InnoDB;
 
--- 4. Create Planning Table
-CREATE TABLE planning (
+-- 2. Planning Table
+CREATE TABLE IF NOT EXISTS planning (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     date DATE NOT NULL,
@@ -38,25 +44,23 @@ CREATE TABLE planning (
     month_key VARCHAR(7) NOT NULL COMMENT 'Format: YYYY-MM',
     work_hour INT NOT NULL DEFAULT 8,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    -- Foreign Key: If a user is deleted, their planning is automatically deleted
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
     CONSTRAINT fk_planning_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    
-    -- Constraint: A user can only have one planning entry per specific date
     UNIQUE KEY uq_user_date (user_id, date),
     INDEX idx_planning_month (month_key)
 ) ENGINE=InnoDB;
 
--- 5. Create Audit Logs Table
-CREATE TABLE audit_logs (
+-- 3. Audit Logs Table
+CREATE TABLE IF NOT EXISTS audit_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
     action VARCHAR(50) NOT NULL,
-    details VARCHAR(500) NULL,
+    details TEXT NULL COMMENT 'Extended to TEXT for detailed log entries',
+    ip_address VARCHAR(45) NULL COMMENT 'Client IP for security tracking',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    -- Foreign Key: If a user is deleted, keep the log but set user_id to NULL
+
     CONSTRAINT fk_audit_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
-    
-    INDEX idx_audit_created (created_at)
+    INDEX idx_audit_created (created_at),
+    INDEX idx_audit_action (action)
 ) ENGINE=InnoDB;

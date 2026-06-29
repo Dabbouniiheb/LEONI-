@@ -1,10 +1,22 @@
+/**
+ * Export Controller
+ *
+ * Changes from original:
+ * - Filters soft-deleted users
+ * - Uses structured logger and constants
+ * - Uses asyncHandler
+ */
+
 const ExcelJS = require("exceljs");
 const db = require("../config/db");
+const { AUDIT_ACTIONS } = require("../config/constants");
 const { logAction } = require("../utils/logger");
+const logger = require("../utils/appLogger");
+const asyncHandler = require("../utils/asyncHandler");
 
 async function fetchExportRows(filters) {
   const { group_id, user_id, month } = filters;
-  const conditions = [];
+  const conditions = ["u.is_deleted = 0"];
   const params = [];
 
   if (group_id) {
@@ -23,12 +35,12 @@ async function fetchExportRows(filters) {
   const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
 
   const [rows] = await db.query(
-    `SELECT 
-       p.id, 
-       u.username, 
-       u.matricule, 
-       CONCAT(u.first_name, ' ', u.last_name) AS name, 
-       DATE_FORMAT(p.date, '%Y-%m-%d') AS date_remote, 
+    `SELECT
+       p.id,
+       u.username,
+       u.matricule,
+       CONCAT(u.first_name, ' ', u.last_name) AS name,
+       DATE_FORMAT(p.date, '%Y-%m-%d') AS date_remote,
        p.work_hour
      FROM planning p
      JOIN users u ON u.id = p.user_id
@@ -39,78 +51,55 @@ async function fetchExportRows(filters) {
   return rows;
 }
 
-exports.exportCsv = async (req, res) => {
-  try {
-    const rows = await fetchExportRows(req.query);
-    const header = ["ID", "User", "Matricule", "Name", "DateRemote", "WorkHour"];
-    const escapeCsv = (value) => {
-      const str = value == null ? "" : String(value);
-      if (/[",\n]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
-      return str;
-    };
+exports.exportCsv = asyncHandler(async (req, res) => {
+  const rows = await fetchExportRows(req.query);
+  const header = ["ID", "User", "Matricule", "Name", "DateRemote", "WorkHour"];
+  const escapeCsv = (value) => {
+    const str = value == null ? "" : String(value);
+    if (/[",\n]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
+    return str;
+  };
 
-    const lines = [header.join(",")];
-    rows.forEach((row) => {
-      lines.push(
-        [
-          row.id,
-          row.username,
-          row.matricule,
-          row.name,
-          row.date_remote,
-          row.work_hour,
-        ]
-          .map(escapeCsv)
-          .join(",")
-      );
-    });
-
-    const csv = `\uFEFF${lines.join("\n")}`;
-    res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="leoni-planning-export.csv"'
+  const lines = [header.join(",")];
+  rows.forEach((row) => {
+    lines.push(
+      [row.id, row.username, row.matricule, row.name, row.date_remote, row.work_hour]
+        .map(escapeCsv)
+        .join(",")
     );
-    await logAction(req.session.user.id, "EXPORT_CSV", `Exported ${rows.length} rows`);
-    res.send(csv);
-  } catch (err) {
-    console.error("CSV Export error:", err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
+  });
 
-exports.exportXlsx = async (req, res) => {
-  try {
-    const rows = await fetchExportRows(req.query);
+  const csv = `\uFEFF${lines.join("\n")}`;
+  res.setHeader("Content-Type", "text/csv; charset=utf-8");
+  res.setHeader("Content-Disposition", 'attachment; filename="leoni-planning-export.csv"');
+  await logAction(req.session.user.id, AUDIT_ACTIONS.EXPORT_CSV, `Exported ${rows.length} rows`, req.ip);
+  res.send(csv);
+});
 
-    const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet("Planning");
-    sheet.columns = [
-      { header: "ID", key: "id", width: 8 },
-      { header: "User", key: "username", width: 16 },
-      { header: "Matricule", key: "matricule", width: 14 },
-      { header: "Name", key: "name", width: 24 },
-      { header: "DateRemote", key: "date_remote", width: 16 },
-      { header: "WorkHour", key: "work_hour", width: 12 },
-    ];
+exports.exportXlsx = asyncHandler(async (req, res) => {
+  const rows = await fetchExportRows(req.query);
 
-    rows.forEach((row) => sheet.addRow(row));
-    sheet.getRow(1).font = { bold: true };
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet("Planning");
+  sheet.columns = [
+    { header: "ID", key: "id", width: 8 },
+    { header: "User", key: "username", width: 16 },
+    { header: "Matricule", key: "matricule", width: 14 },
+    { header: "Name", key: "name", width: 24 },
+    { header: "DateRemote", key: "date_remote", width: 16 },
+    { header: "WorkHour", key: "work_hour", width: 12 },
+  ];
 
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="leoni-planning-export.xlsx"'
-    );
+  rows.forEach((row) => sheet.addRow(row));
+  sheet.getRow(1).font = { bold: true };
 
-    await logAction(req.session.user.id, "EXPORT_XLSX", `Exported ${rows.length} rows`);
-    await workbook.xlsx.write(res);
-    res.end();
-  } catch (err) {
-    console.error("XLSX Export error:", err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader("Content-Disposition", 'attachment; filename="leoni-planning-export.xlsx"');
+
+  await logAction(req.session.user.id, AUDIT_ACTIONS.EXPORT_XLSX, `Exported ${rows.length} rows`, req.ip);
+  await workbook.xlsx.write(res);
+  res.end();
+});

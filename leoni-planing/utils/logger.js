@@ -1,13 +1,31 @@
-const db = require("../config/db");
+/**
+ * Audit Logger — User action tracking.
+ *
+ * Records business-level events (login, user CRUD, planning, exports)
+ * into the audit_logs table. Now includes IP address tracking.
+ *
+ * This is separate from the application logger (appLogger.js)
+ * which handles system/debug logging.
+ */
 
-async function logAction(userId, action, details = null) {
+const db = require("../config/db");
+const logger = require("./appLogger");
+
+/**
+ * Log a user action to the audit_logs table.
+ * @param {number|null} userId
+ * @param {string} action   — Use constants from AUDIT_ACTIONS
+ * @param {string|null} details
+ * @param {string|null} ipAddress — Client IP
+ */
+async function logAction(userId, action, details = null, ipAddress = null) {
   try {
     await db.query(
-      "INSERT INTO audit_logs (user_id, action, details) VALUES (?, ?, ?)",
-      [userId || null, action, details]
+      "INSERT INTO audit_logs (user_id, action, details, ip_address) VALUES (?, ?, ?, ?)",
+      [userId || null, action, details, ipAddress]
     );
   } catch (err) {
-    console.error("❌ Audit log insertion failed:", err.message);
+    logger.error("Audit log insertion failed", { error: err, action, userId });
   }
 }
 

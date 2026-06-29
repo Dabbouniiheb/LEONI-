@@ -1,3 +1,10 @@
+/**
+ * LEONI Frontend Authentication Module
+ *
+ * Manages session state, access control, and permissions on the client side.
+ * Bug fix: Team Leaders no longer get redirected to group selection
+ * (they don't need a group — only Data Cleansing users do).
+ */
 const LeoniAuth = (() => {
   let cachedUser = null;
 
@@ -30,6 +37,15 @@ const LeoniAuth = (() => {
     window.location.href = "/login";
   }
 
+  /**
+   * Check if the current user has a specific permission.
+   * Permissions are sent from the backend via the session endpoint.
+   */
+  function hasPermission(permission) {
+    if (!cachedUser || !cachedUser.permissions) return false;
+    return cachedUser.permissions.includes(permission);
+  }
+
   async function ensureAccess(options = {}) {
     const {
       allowPasswordChange = false,
@@ -47,7 +63,10 @@ const LeoniAuth = (() => {
       return false;
     }
 
+    // BUG FIX: Only Data Cleansing users need group selection.
+    // Team Leaders should never be redirected to group selection.
     if (
+      user.role === "Data Cleansing" &&
       (user.group_id == null || user.group_id === "") &&
       !allowSelectGroup &&
       !user.must_change_password
@@ -67,7 +86,11 @@ const LeoniAuth = (() => {
       window.location.href = "/change-password";
       return true;
     }
-    if (user.group_id == null || user.group_id === "") {
+    // Only Data Cleansing users need group selection
+    if (
+      user.role === "Data Cleansing" &&
+      (user.group_id == null || user.group_id === "")
+    ) {
       window.location.href = "/select-group";
       return true;
     }
@@ -89,6 +112,7 @@ const LeoniAuth = (() => {
     setUser,
     refreshSession,
     logout,
+    hasPermission,
     ensureAccess,
     redirectIfAuthenticated,
     initials,

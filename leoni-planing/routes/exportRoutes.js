@@ -1,21 +1,28 @@
+/**
+ * Export Routes
+ *
+ * Mounted at: /api/export
+ */
+
 const express = require("express");
 const router = express.Router();
 const exportController = require("../controllers/exportController");
-const { auth, requireRole, requireGroup } = require("../middlewares/auth");
+const { auth, requireGroup, requirePermission } = require("../middlewares/auth");
+const { PERMISSIONS } = require("../config/permissions");
 
 router.get(
-  "/export-planning",
+  "/csv",
   auth,
   requireGroup,
-  requireRole(["Team Leader"]),
+  requirePermission(PERMISSIONS.EXPORT_CSV),
   exportController.exportCsv
 );
 
 router.get(
-  "/export-xlsx",
+  "/xlsx",
   auth,
   requireGroup,
-  requireRole(["Team Leader"]),
+  requirePermission(PERMISSIONS.EXPORT_XLSX),
   exportController.exportXlsx
 );
 

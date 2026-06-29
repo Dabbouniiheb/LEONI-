@@ -547,3 +547,213 @@ a:hover {
     display: inline-flex;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   SIDEBAR USER INFO
+   ═══════════════════════════════════════════════════════════ */
+
+.sidebar-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0;
+}
+
+.sidebar-avatar {
+  width: 34px;
+  height: 34px;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.sidebar-user-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sidebar-user-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-role {
+  font-size: 0.7rem;
+  opacity: 0.65;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST NOTIFICATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.leoni-toast {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: var(--leoni-blanc);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+  border-left: 4px solid var(--leoni-bleu);
+  min-width: 300px;
+  max-width: 440px;
+  pointer-events: all;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.35s ease;
+}
+
+.leoni-toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.leoni-toast.toast-success { border-left-color: #198754; }
+.leoni-toast.toast-error   { border-left-color: var(--leoni-rouge); }
+.leoni-toast.toast-warning { border-left-color: #ffc107; }
+.leoni-toast.toast-info    { border-left-color: var(--leoni-bleu); }
+
+.toast-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.toast-success .toast-icon { color: #198754; }
+.toast-error   .toast-icon { color: var(--leoni-rouge); }
+.toast-warning .toast-icon { color: #ffc107; }
+.toast-info    .toast-icon { color: var(--leoni-bleu); }
+
+.toast-message {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: var(--leoni-gris-fonce);
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 0.85rem;
+  transition: opacity 0.2s;
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONFIRMATION MODAL
+   ═══════════════════════════════════════════════════════════ */
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3100;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.confirm-overlay.show {
+  opacity: 1;
+}
+
+.confirm-dialog {
+  background: var(--leoni-blanc);
+  border-radius: 12px;
+  padding: 1.75rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.confirm-overlay.show .confirm-dialog {
+  transform: scale(1);
+}
+
+.confirm-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.confirm-message {
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+  color: rgba(51, 51, 51, 0.75);
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DANGER BUTTON
+   ═══════════════════════════════════════════════════════════ */
+
+.btn-leoni-danger {
+  background: var(--leoni-rouge);
+  border: 1px solid var(--leoni-rouge);
+  color: var(--leoni-blanc);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-leoni-danger:hover,
+.btn-leoni-danger:focus {
+  background: #b8000c;
+  border-color: #b8000c;
+  color: var(--leoni-blanc);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE CONTENT ANIMATION
+   ═══════════════════════════════════════════════════════════ */
+
+.app-content {
+  padding: 1.5rem;
+  animation: fadeInUp 0.35s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

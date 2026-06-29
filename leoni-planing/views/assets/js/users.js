@@ -180,19 +180,20 @@
     }
 
     empty.classList.add("d-none");
+    const esc = LeoniLayout.escapeHtml;
     tbody.innerHTML = users
       .map((user) => {
         const group = LeoniLayout.formatGroup(user.group_id);
         const badgeClass = LeoniLayout.groupBadgeClass(user.group_id);
         return `
           <tr>
-            <td class="fw-semibold">${escapeHtml(user.name)}</td>
-            <td>${escapeHtml(user.username)}</td>
-            <td><code>${escapeHtml(user.matricule)}</code></td>
-            <td>${escapeHtml(user.email)}</td>
-            <td><span class="badge-role">${escapeHtml(user.role)}</span></td>
+            <td class="fw-semibold">${esc(user.name)}</td>
+            <td>${esc(user.username)}</td>
+            <td><code>${esc(user.matricule)}</code></td>
+            <td>${esc(user.email)}</td>
+            <td><span class="badge-role">${esc(user.role)}</span></td>
             <td><span class="badge-group ${badgeClass}">Group ${group}</span></td>
-            <td>${escapeHtml(user.department || "—")}</td>
+            <td>${esc(user.department || "—")}</td>
             <td class="text-end">
               <button type="button" class="btn btn-sm btn-leoni-outline me-1" data-action="edit" data-id="${user.id}">
                 <i class="fa-solid fa-pen"></i>
@@ -204,14 +205,6 @@
           </tr>`;
       })
       .join("");
-  }
-
-  function escapeHtml(str) {
-    return String(str ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
   }
 
   // Open User Creation Modal
@@ -263,9 +256,9 @@
         role,
       });
       createModal.hide();
-      // Reload users list
       usersCache = await LeoniAPI.getUsers();
       renderUsers(usersCache);
+      LeoniLayout.toast({ type: "success", message: "User created successfully" });
     } catch (err) {
       alertEl.textContent = err.message || "Failed to create user.";
       alertEl.classList.remove("d-none");
@@ -295,15 +288,21 @@
     }
 
     if (btn.dataset.action === "delete") {
-      const confirmed = window.confirm(`Delete user "${user.name}"? This action cannot be undone.`);
+      const confirmed = await LeoniLayout.confirm({
+        title: "Delete User",
+        message: `Are you sure you want to delete "${user.name}"? This action will deactivate the account.`,
+        confirmText: "Delete",
+        danger: true,
+      });
       if (!confirmed) return;
       LeoniLayout.showLoading(true);
       try {
         await LeoniAPI.deleteUser(user.id);
         usersCache = usersCache.filter((u) => String(u.id) !== String(id));
         renderUsers(usersCache);
+        LeoniLayout.toast({ type: "success", message: "User deleted successfully" });
       } catch (err) {
-        alert(err.message || "Failed to delete user.");
+        LeoniLayout.toast({ type: "error", message: err.message || "Failed to delete user." });
       } finally {
         LeoniLayout.showLoading(false);
       }
@@ -340,9 +339,9 @@
         group_id,
       });
       editModal.hide();
-      // Reload users list
       usersCache = await LeoniAPI.getUsers();
       renderUsers(usersCache);
+      LeoniLayout.toast({ type: "success", message: "User updated successfully" });
     } catch (err) {
       alertEl.textContent = err.message || "Failed to update user.";
       alertEl.classList.remove("d-none");

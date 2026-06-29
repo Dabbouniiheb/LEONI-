@@ -1,13 +1,47 @@
+/**
+ * LEONI API Client
+ *
+ * Centralized API communication layer.
+ * All endpoints updated to use /api/ prefix.
+ */
 const LeoniAPI = (() => {
   const base = "";
+  let csrfToken = null;
+
+  async function fetchCsrfToken() {
+    if (!csrfToken) {
+      try {
+        const res = await fetch(`${base}/api/auth/csrf-token`);
+        if (res.ok) {
+          const data = await res.json();
+          csrfToken = data.csrfToken;
+        }
+      } catch (err) {
+        console.error("Failed to fetch CSRF token");
+      }
+    }
+    return csrfToken;
+  }
 
   async function request(path, options = {}) {
+    const method = (options.method || "GET").toUpperCase();
+    const isStateChanging = ["POST", "PUT", "DELETE"].includes(method);
+    
+    const headers = {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    };
+
+    if (isStateChanging) {
+      const token = await fetchCsrfToken();
+      if (token) {
+        headers["CSRF-Token"] = token;
+      }
+    }
+
     const config = {
       credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-      },
+      headers,
       ...options,
     };
 
@@ -15,6 +49,11 @@ const LeoniAPI = (() => {
     const contentType = response.headers.get("content-type") || "";
 
     if (!response.ok) {
+      // If forbidden due to CSRF (403), force a refresh of the token on next request
+      if (response.status === 403) {
+        csrfToken = null;
+      }
+
       let message = `Request failed (${response.status})`;
       let redirect = null;
       if (contentType.includes("application/json")) {
@@ -47,43 +86,60 @@ const LeoniAPI = (() => {
   }
 
   return {
-    getSession: () => request("/api/session"),
-    logout: () => request("/logout", { method: "POST" }),
-    getStats: (filters = {}) => request(`/stats${buildQuery(filters)}`),
-    getUsers: () => request("/users"),
-    createUser: (body) =>
-      request("/register", { method: "POST", body: JSON.stringify(body) }),
-    updateUser: (id, body) =>
-      request(`/users/${id}`, { method: "PUT", body: JSON.stringify(body) }),
-    deleteUser: (id) => request(`/users/${id}`, { method: "DELETE" }),
-    getAllPlanning: () => request("/all-planning"),
-    getPlanning: (filters = {}) =>
-      request(`/planning${buildQuery(filters)}`),
-    getPlanningByUser: (userId) => request(`/planning/${userId}`),
-    generatePlanning: (user_id, month) =>
-      request("/generate-planning", {
-        method: "POST",
-        body: JSON.stringify({ user_id, month }),
-      }),
-    getLogs: () => request("/logs"),
+    // Auth
+    getSession: () => request("/api/auth/session"),
     login: (email, password) =>
-      request("/login", {
+      request("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       }),
+    logout: () => request("/api/auth/logout", { method: "POST" }),
     changePassword: (body) =>
-      request("/change-password", {
+      request("/api/auth/change-password", {
         method: "POST",
         body: JSON.stringify(body),
       }),
     selectGroup: (group_id) =>
-      request("/select-group", {
+      request("/api/auth/select-group", {
         method: "POST",
         body: JSON.stringify({ group_id }),
       }),
+
+    // Dashboard
+    getStats: (filters = {}) =>
+      request(`/api/dashboard/stats${buildQuery(filters)}`),
+
+    // Users
+    getUsers: () => request("/api/users"),
+    createUser: (body) =>
+      request("/api/users", { method: "POST", body: JSON.stringify(body) }),
+    updateUser: (id, body) =>
+      request(`/api/users/${id}`, { method: "PUT", body: JSON.stringify(body) }),
+    deleteUser: (id) =>
+      request(`/api/users/${id}`, { method: "DELETE" }),
+
+    // Planning
+    getAllPlanning: () => request("/api/planning/all"),
+    getPlanning: (filters = {}) =>
+      request(`/api/planning${buildQuery(filters)}`),
+    getPlanningByUser: (userId) => request(`/api/planning/${userId}`),
+    generatePlanning: (user_id, month) =>
+      request("/api/planning/generate", {
+        method: "POST",
+        body: JSON.stringify({ user_id, month }),
+      }),
+
+    // Export (returns raw response for blob download)
     exportPlanning: (filters = {}) =>
-      fetch(`/export-planning${buildQuery(filters)}`, { credentials: "same-origin" }),
+      fetch(`/api/export/csv${buildQuery(filters)}`, {
+        credentials: "same-origin",
+      }),
     exportPlanningXlsx: (filters = {}) =>
-      fetch(`/export-xlsx${buildQuery(filters)}`, { credentials: "same-origin" }),
+      fetch(`/api/export/xlsx${buildQuery(filters)}`, {
+        credentials: "same-origin",
+      }),
+
+    // Audit Logs
+    getLogs: () => request("/api/logs"),
   };
 })();

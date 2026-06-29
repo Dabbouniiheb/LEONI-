@@ -1,135 +1,137 @@
+/**
+ * User Management Controller
+ *
+ * Changes from original:
+ * - Soft delete (is_deleted flag) instead of permanent DELETE
+ * - Async bcrypt.hash instead of bcrypt.hashSync
+ * - Uses constants instead of magic strings
+ * - Filters out soft-deleted users in all queries
+ * - Uses structured logger
+ * - Uses asyncHandler and express-validator
+ */
+
 const bcrypt = require("bcrypt");
 const db = require("../config/db");
+const { AUDIT_ACTIONS, VALIDATION_RULES } = require("../config/constants");
 const { logAction } = require("../utils/logger");
+const logger = require("../utils/appLogger");
+const asyncHandler = require("../utils/asyncHandler");
 
-exports.getUsers = async (req, res) => {
-  try {
-    const [results] = await db.query(
-      `SELECT id, first_name, last_name, CONCAT(first_name, ' ', last_name) AS name,
-              username, email, role, group_id, matricule, department
-       FROM users`
-    );
-    res.json(results);
-  } catch (err) {
-    console.error("Get users error:", err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
+exports.getUsers = asyncHandler(async (req, res) => {
+  const [results] = await db.query(
+    `SELECT id, first_name, last_name, CONCAT(first_name, ' ', last_name) AS name,
+            username, email, role, group_id, matricule, department
+     FROM users
+     WHERE is_deleted = 0`
+  );
+  res.json(results);
+});
 
-exports.createUser = async (req, res) => {
+exports.createUser = asyncHandler(async (req, res) => {
   const { first_name, last_name, username, email, password, role, matricule, department } = req.body;
 
-  if (!first_name || !last_name || !username || !email || !password || !matricule || !department) {
-    return res.status(400).json({ message: "Missing required fields" });
+  // Check if user already exists (including soft-deleted — prevent matricule reuse)
+  const [existing] = await db.query(
+    "SELECT id, is_deleted FROM users WHERE (email = ? OR username = ? OR matricule = ?)",
+    [email, username, matricule]
+  );
+  if (existing.length > 0) {
+    return res.status(409).json({ success: false, message: "Email, Username, or Matricule already exists" });
   }
 
-  try {
-    // Check if user already exists
-    const [existing] = await db.query(
-      "SELECT id FROM users WHERE email = ? OR username = ? OR matricule = ?",
-      [email.trim(), username.trim(), matricule.trim()]
-    );
-    if (existing.length > 0) {
-      return res.status(409).json({ message: "Email, Username, or Matricule already exists" });
-    }
+  const hashedPassword = await bcrypt.hash(password, VALIDATION_RULES.BCRYPT_SALT_ROUNDS);
+  const userRole = role || "Data Cleansing";
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    const userRole = role || "Data Cleansing";
+  const [result] = await db.query(
+    `INSERT INTO users (first_name, last_name, username, email, password, role, matricule, department, must_change_password, first_login)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 1)`,
+    [
+      first_name,
+      last_name,
+      username,
+      email,
+      hashedPassword,
+      userRole,
+      matricule,
+      department,
+    ]
+  );
 
-    const [result] = await db.query(
-      `INSERT INTO users (first_name, last_name, username, email, password, role, matricule, department, must_change_password, first_login)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 1)`,
-      [
-        first_name.trim(),
-        last_name.trim(),
-        username.trim(),
-        email.trim(),
-        hashedPassword,
-        userRole,
-        matricule.trim(),
-        department.trim(),
-      ]
-    );
+  const newUserId = result.insertId;
+  await logAction(
+    req.session.user.id,
+    AUDIT_ACTIONS.CREATE_USER,
+    `Created user ${username} (${email}) with role ${userRole}`,
+    req.ip
+  );
 
-    const newUserId = result.insertId;
-    await logAction(
-      req.session.user.id,
-      "CREATE_USER",
-      `Created user ${username} (${email}) with role ${userRole}`
-    );
+  res.status(201).json({ success: true, message: "User created successfully", userId: newUserId });
+});
 
-    res.status(201).json({ message: "User created successfully", userId: newUserId });
-  } catch (err) {
-    console.error("Create user error:", err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-exports.updateUser = async (req, res) => {
+exports.updateUser = asyncHandler(async (req, res) => {
   const { first_name, last_name, role, matricule, department, group_id } = req.body;
   const targetId = req.params.id;
 
-  if (!first_name || !last_name || !role || !matricule || !department) {
-    return res.status(400).json({ message: "Missing fields to update" });
+  const [existing] = await db.query("SELECT id FROM users WHERE id = ? AND is_deleted = 0", [targetId]);
+  if (existing.length === 0) {
+    return res.status(404).json({ success: false, message: "User not found" });
   }
 
-  try {
-    // Check if target exists
-    const [existing] = await db.query("SELECT id FROM users WHERE id = ?", [targetId]);
-    if (existing.length === 0) {
-      return res.status(404).json({ message: "User not found" });
-    }
+  const normalizedGroupId = group_id === "" || group_id == null ? null : parseInt(group_id, 10);
 
-    const normalizedGroupId = group_id === "" || group_id == null ? null : parseInt(group_id, 10);
+  await db.query(
+    `UPDATE users
+     SET first_name = ?, last_name = ?, role = ?, matricule = ?, department = ?, group_id = ?
+     WHERE id = ?`,
+    [
+      first_name,
+      last_name,
+      role,
+      matricule,
+      department,
+      normalizedGroupId,
+      targetId,
+    ]
+  );
 
-    await db.query(
-      `UPDATE users
-       SET first_name = ?, last_name = ?, role = ?, matricule = ?, department = ?, group_id = ?
-       WHERE id = ?`,
-      [
-        first_name.trim(),
-        last_name.trim(),
-        role,
-        matricule.trim(),
-        department.trim(),
-        normalizedGroupId,
-        targetId,
-      ]
-    );
+  await logAction(
+    req.session.user.id,
+    AUDIT_ACTIONS.UPDATE_USER,
+    `Updated user ID ${targetId} details`,
+    req.ip
+  );
 
-    await logAction(
-      req.session.user.id,
-      "UPDATE_USER",
-      `Updated user ID ${targetId} details`
-    );
+  res.json({ success: true, message: "User updated successfully" });
+});
 
-    res.json({ message: "User updated successfully" });
-  } catch (err) {
-    console.error("Update user error:", err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-exports.deleteUser = async (req, res) => {
+/**
+ * Soft Delete — sets is_deleted = 1, deleted_at = NOW()
+ * User data is preserved for audit trail and historical reporting.
+ * The user's planning records are kept (FK constraint still enforced).
+ */
+exports.deleteUser = asyncHandler(async (req, res) => {
   const targetId = req.params.id;
 
-  try {
-    const [existing] = await db.query("SELECT id, username FROM users WHERE id = ?", [targetId]);
-    if (existing.length === 0) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    await db.query("DELETE FROM users WHERE id = ?", [targetId]);
-
-    await logAction(
-      req.session.user.id,
-      "DELETE_USER",
-      `Deleted user ID ${targetId} (${existing[0].username})`
-    );
-
-    res.json({ message: "User deleted successfully" });
-  } catch (err) {
-    console.error("Delete user error:", err);
-    res.status(500).json({ message: "Internal server error" });
+  const [existing] = await db.query(
+    "SELECT id, username FROM users WHERE id = ? AND is_deleted = 0",
+    [targetId]
+  );
+  if (existing.length === 0) {
+    return res.status(404).json({ success: false, message: "User not found" });
   }
-};
+
+  // Soft delete instead of permanent deletion
+  await db.query(
+    "UPDATE users SET is_deleted = 1, deleted_at = NOW() WHERE id = ?",
+    [targetId]
+  );
+
+  await logAction(
+    req.session.user.id,
+    AUDIT_ACTIONS.DELETE_USER,
+    `Soft-deleted user ID ${targetId} (${existing[0].username})`,
+    req.ip
+  );
+
+  res.json({ success: true, message: "User deleted successfully" });
+});

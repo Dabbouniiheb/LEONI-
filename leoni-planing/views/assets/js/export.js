@@ -149,7 +149,7 @@
         exportStatus.style.color = "";
       } catch (err) {
         exportStatus.textContent = err.message || "Unable to export planning data.";
-        exportStatus.style.color = "var(--leoni-rouge)";
+        exportStatus.style.color = "var(--leoni-orange)";
       } finally {
         btn.disabled = false;
         label.textContent = labelText;

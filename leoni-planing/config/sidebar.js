@@ -31,6 +31,20 @@ const SIDEBAR_ITEMS = [
     permission: PERMISSIONS.PLANNING_READ_OWN,
   },
   {
+    id: "calendar",
+    href: "/calendar-page",
+    icon: "fa-calendar-week",
+    label: "Calendar",
+    permission: PERMISSIONS.PLANNING_READ_OWN,
+  },
+  {
+    id: "leave-requests",
+    href: "/leave-requests-page",
+    icon: "fa-calendar-plus",
+    label: "Demande de congé",
+    permission: PERMISSIONS.LEAVE_REQUESTS_READ_OWN,
+  },
+  {
     id: "export",
     href: "/export-page",
     icon: "fa-file-export",

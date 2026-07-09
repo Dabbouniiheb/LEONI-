@@ -88,3 +88,8 @@ exports.getAllPlanning = asyncHandler(async (req, res) => {
   res.json(results);
 });
 
+exports.getPlanningCalendars = asyncHandler(async (req, res) => {
+  const loggedUser = req.session.user;
+  const results = await PlanningService.getPlanningCalendars(loggedUser, ROLES);
+  res.json(results);
+});

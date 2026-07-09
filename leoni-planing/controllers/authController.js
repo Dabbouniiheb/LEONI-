@@ -36,6 +36,7 @@ exports.getSession = (req, res) => {
   if (!req.session.user) {
     return res.json({ user: null });
   }
+  req.session.user.permissions = getPermissionsForRole(req.session.user.role);
   res.json({ user: req.session.user });
 };
 
@@ -63,7 +64,7 @@ exports.login = asyncHandler(async (req, res) => {
   await logAction(user.id, AUDIT_ACTIONS.LOGIN, null, req.ip);
 
   let redirect = "/dashboard";
-  if (req.session.user.must_change_password) {
+  if (req.session.user.first_login || req.session.user.must_change_password) {
     redirect = "/change-password";
   } else if (
     req.session.user.role === ROLES.DATA_CLEANSING &&
@@ -136,7 +137,7 @@ exports.changePassword = asyncHandler(async (req, res) => {
 });
 
 exports.selectGroup = asyncHandler(async (req, res) => {
-  if (req.session.user.must_change_password) {
+  if (req.session.user.first_login || req.session.user.must_change_password) {
     return res.status(403).json({ success: false, message: "Change your password first" });
   }
 

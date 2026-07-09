@@ -26,10 +26,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const logger = require("./utils/appLogger");
-const { PERMISSIONS } = require("./config/permissions");
-const { ROLES, VALIDATION_RULES, HTTP_STATUS } = require("./config/constants");
+const { VALIDATION_RULES, HTTP_STATUS } = require("./config/constants");
 
 const app = express();
+app.set("trust proxy", 1);
 const viewsPath = path.join(__dirname, "views");
 
 // ═══════════════════════════════════════════════════════════
@@ -39,7 +39,16 @@ const viewsPath = path.join(__dirname, "views");
 // Helmet: sets secure HTTP headers (XSS, clickjacking, MIME sniffing, etc.)
 app.use(
   helmet({
-    contentSecurityPolicy: false, // Disabled because we load CDN assets (Bootstrap, FontAwesome)
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "default-src": ["'self'"],
+        "script-src": ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+        "style-src": ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
+        "font-src": ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
+        "img-src": ["'self'", "data:"]
+      }
+    }
   })
 );
 
@@ -48,16 +57,15 @@ app.use(
   morgan(process.env.NODE_ENV === "production" ? "combined" : "dev")
 );
 
-// Global rate limiter
-app.use(
-  rateLimit({
-    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10) || 15 * 60 * 1000,
-    max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 100,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: { success: false, message: "Too many requests. Please try again later." },
-  })
-);
+// Global API rate limiter
+const apiLimiter = rateLimit({
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10) || 15 * 60 * 1000,
+  max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 500,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: "Too many requests. Please try again later." },
+});
+app.use("/api", apiLimiter);
 
 // Stricter rate limiter for login endpoint
 const loginLimiter = rateLimit({
@@ -81,11 +89,19 @@ app.use("/assets", express.static(path.join(viewsPath, "assets")));
 // SESSION (MySQL-backed store for production readiness)
 // ═══════════════════════════════════════════════════════════
 
+const requiredEnv = ["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME", "SESSION_SECRET"];
+for (const env of requiredEnv) {
+  if (process.env[env] === undefined) {
+    logger.error(`FATAL ERROR: Environment variable ${env} is missing.`);
+    process.exit(1);
+  }
+}
+
 const sessionStoreOptions = {
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "leoni_planning",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   clearExpired: true,
   checkExpirationInterval: 900000, // 15 minutes
   expiration: VALIDATION_RULES.SESSION_MAX_AGE_MS,
@@ -97,7 +113,7 @@ const sessionStore = new MySQLStore(sessionStoreOptions);
 app.use(
   session({
     key: "leoni_session",
-    secret: process.env.SESSION_SECRET || "leoni_secret",
+    secret: process.env.SESSION_SECRET,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
@@ -115,7 +131,6 @@ app.use(
 // ═══════════════════════════════════════════════════════════
 
 const csurf = require("csurf");
-const { auth, requireGroup, requirePermission } = require("./middlewares/auth");
 
 const csrfProtection = csurf({ cookie: false });
 app.use(csrfProtection);
@@ -128,78 +143,8 @@ app.get("/api/auth/csrf-token", (req, res) => {
 // VIEW (PAGE) ROUTES
 // ═══════════════════════════════════════════════════════════
 
-app.get("/", (req, res) => {
-  res.redirect("/login");
-});
-
-app.get("/login", (req, res) => {
-  if (req.session.user) {
-    if (req.session.user.must_change_password) {
-      return res.redirect("/change-password");
-    }
-    if (
-      req.session.user.role === ROLES.DATA_CLEANSING &&
-      (req.session.user.group_id == null || req.session.user.group_id === "")
-    ) {
-      return res.redirect("/select-group");
-    }
-    return res.redirect("/dashboard");
-  }
-  res.sendFile(path.join(viewsPath, "login.html"));
-});
-
-app.get("/change-password", auth, (req, res) => {
-  res.sendFile(path.join(viewsPath, "change-password.html"));
-});
-
-app.get("/select-group", auth, (req, res) => {
-  if (req.session.user.must_change_password) {
-    return res.redirect("/change-password");
-  }
-  if (req.session.user.group_id != null && req.session.user.group_id !== "") {
-    return res.redirect("/dashboard");
-  }
-  res.sendFile(path.join(viewsPath, "select-group.html"));
-});
-
-// Protected pages with permission-based access control
-app.get("/dashboard", auth, requireGroup, (req, res) => {
-  res.sendFile(path.join(viewsPath, "dashboard.html"));
-});
-
-app.get(
-  "/users-page",
-  auth,
-  requireGroup,
-  requirePermission(PERMISSIONS.USERS_READ),
-  (req, res) => {
-    res.sendFile(path.join(viewsPath, "users.html"));
-  }
-);
-
-app.get("/planning-page", auth, requireGroup, (req, res) => {
-  res.sendFile(path.join(viewsPath, "planning.html"));
-});
-
-app.get(
-  "/export-page",
-  auth,
-  requireGroup,
-  requirePermission(PERMISSIONS.EXPORT_CSV),
-  (req, res) => {
-    res.sendFile(path.join(viewsPath, "export.html"));
-  }
-);
-
-app.get(
-  "/logs-page",
-  auth,
-  requireGroup,
-  requirePermission(PERMISSIONS.AUDIT_READ),
-  (req, res) => {
-    res.sendFile(path.join(viewsPath, "logs.html"));
-  }
-);
+const viewRoutes = require("./routes/viewRoutes");
+app.use("/", viewRoutes);
 
 // ═══════════════════════════════════════════════════════════
 // API ROUTES
@@ -208,14 +153,17 @@ app.get(
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const planningRoutes = require("./routes/planningRoutes");
+const leaveRequestRoutes = require("./routes/leaveRequestRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const exportRoutes = require("./routes/exportRoutes");
 const logRoutes = require("./routes/logRoutes");
 
-// Apply login rate limiter to the auth login endpoint
-app.use("/api/auth", loginLimiter, authRoutes);
+// Apply login rate limiter ONLY to the auth login endpoint
+app.use("/api/auth/login", loginLimiter);
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/planning", planningRoutes);
+app.use("/api/leave-requests", leaveRequestRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/export", exportRoutes);
 app.use("/api/logs", logRoutes);

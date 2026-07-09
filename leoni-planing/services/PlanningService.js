@@ -138,6 +138,51 @@ class PlanningService {
     }
     return await Planning.findAll(conditions, params);
   }
+
+  static async getPlanningCalendars(loggedUser, ROLES) {
+    const conditions = ["users.is_deleted = 0"];
+    const params = [];
+
+    if (loggedUser.role !== ROLES.TEAM_LEADER) {
+      conditions.push("planning.user_id = ?");
+      params.push(loggedUser.id);
+    }
+
+    const rows = await Planning.findCalendarRows(conditions, params);
+    const calendarsByMonthAndUser = new Map();
+
+    rows.forEach((row) => {
+      const monthKey = String(row.month_key || "");
+      const date = String(row.date || "").slice(0, 10);
+
+      if (!/^\d{4}-\d{2}$/.test(monthKey) || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return;
+      }
+
+      const key = `${row.user_id}:${monthKey}`;
+      if (!calendarsByMonthAndUser.has(key)) {
+        calendarsByMonthAndUser.set(key, {
+          user_id: row.user_id,
+          user_name: row.user_name,
+          group_id: row.group_id,
+          month_key: monthKey,
+          days: [],
+        });
+      }
+
+      calendarsByMonthAndUser.get(key).days.push({
+        date,
+        status: row.status,
+        work_hour: row.work_hour,
+      });
+    });
+
+    return Array.from(calendarsByMonthAndUser.values()).map((calendar) => ({
+      ...calendar,
+      days: calendar.days.sort((a, b) => a.date.localeCompare(b.date)),
+      total_days: calendar.days.length,
+    }));
+  }
 }
 
 module.exports = PlanningService;

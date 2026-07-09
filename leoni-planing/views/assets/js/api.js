@@ -120,6 +120,7 @@ const LeoniAPI = (() => {
 
     // Planning
     getAllPlanning: () => request("/api/planning/all"),
+    getPlanningCalendars: () => request("/api/planning/calendar"),
     getPlanning: (filters = {}) =>
       request(`/api/planning${buildQuery(filters)}`),
     getPlanningByUser: (userId) => request(`/api/planning/${userId}`),
@@ -127,6 +128,27 @@ const LeoniAPI = (() => {
       request("/api/planning/generate", {
         method: "POST",
         body: JSON.stringify({ user_id, month }),
+      }),
+
+    // Leave Requests
+    getOwnLeaveRequests: () => request("/api/leave-requests/mine"),
+    getAllLeaveRequests: () => request("/api/leave-requests"),
+    createLeaveRequest: (body) =>
+      request("/api/leave-requests", {
+        method: "POST",
+        body: JSON.stringify(body),
+      }),
+    cancelLeaveRequest: (id) =>
+      request(`/api/leave-requests/${id}/cancel`, { method: "PATCH" }),
+    approveLeaveRequest: (id, body) =>
+      request(`/api/leave-requests/${id}/approve`, {
+        method: "PATCH",
+        body: JSON.stringify(body || {}),
+      }),
+    rejectLeaveRequest: (id, body) =>
+      request(`/api/leave-requests/${id}/reject`, {
+        method: "PATCH",
+        body: JSON.stringify(body || {}),
       }),
 
     // Export (returns raw response for blob download)

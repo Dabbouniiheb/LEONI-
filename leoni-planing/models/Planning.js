@@ -63,6 +63,25 @@ class Planning {
     );
     return results;
   }
+
+  static async findCalendarRows(conditions, params) {
+    const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+    const [results] = await db.query(
+      `SELECT planning.user_id,
+              DATE_FORMAT(planning.date, '%Y-%m-%d') AS date,
+              planning.status,
+              planning.month_key,
+              planning.work_hour,
+              CONCAT(users.first_name, ' ', users.last_name) AS user_name,
+              users.group_id
+       FROM planning
+       JOIN users ON users.id = planning.user_id
+       ${whereClause}
+       ORDER BY planning.month_key ASC, users.first_name, users.last_name, planning.date ASC`,
+      params
+    );
+    return results;
+  }
 }
 
 module.exports = Planning;

@@ -17,6 +17,8 @@ const LeoniLayout = (() => {
     { id: "dashboard", href: "/dashboard", icon: "fa-gauge-high", label: "Dashboard", permission: "dashboard.read" },
     { id: "users", href: "/users-page", icon: "fa-users", label: "Users", permission: "users.read" },
     { id: "planning", href: "/planning-page", icon: "fa-calendar-days", label: "Planning", permission: "planning.read.own" },
+    { id: "calendar", href: "/calendar-page", icon: "fa-calendar-week", label: "Calendar", permission: "planning.read.own" },
+    { id: "leave-requests", href: "/leave-requests-page", icon: "fa-calendar-plus", label: "Demande de congé", permission: "leave_requests.read.own" },
     { id: "export", href: "/export-page", icon: "fa-file-export", label: "Export", permission: "export.csv" },
     { id: "logs", href: "/logs-page", icon: "fa-clipboard-list", label: "Audit Logs", permission: "audit.read" },
     { id: "change-password", href: "/change-password", icon: "fa-key", label: "Change Password", permission: null },

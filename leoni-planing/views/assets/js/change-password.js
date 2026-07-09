@@ -4,7 +4,7 @@
 
   const user = LeoniAuth.getUser();
   const headerSubtitle = document.querySelector(".login-card-header p");
-  if (headerSubtitle && user && !user.must_change_password) {
+  if (headerSubtitle && user && !(user.first_login || user.must_change_password)) {
     headerSubtitle.textContent = "Update your account password";
   }
 

@@ -58,7 +58,7 @@ const LeoniAuth = (() => {
       return false;
     }
 
-    if (user.must_change_password && !allowPasswordChange) {
+    if ((user.first_login || user.must_change_password) && !allowPasswordChange) {
       window.location.href = "/change-password";
       return false;
     }
@@ -69,7 +69,7 @@ const LeoniAuth = (() => {
       user.role === "Data Cleansing" &&
       (user.group_id == null || user.group_id === "") &&
       !allowSelectGroup &&
-      !user.must_change_password
+      !(user.first_login || user.must_change_password)
     ) {
       window.location.href = "/select-group";
       return false;
@@ -82,7 +82,7 @@ const LeoniAuth = (() => {
     const user = await refreshSession();
     if (!user) return false;
 
-    if (user.must_change_password) {
+    if (user.first_login || user.must_change_password) {
       window.location.href = "/change-password";
       return true;
     }

@@ -40,7 +40,7 @@ function requireGroup(req, res, next) {
   }
 
   // Step 1: Force password change
-  if (req.session.user.must_change_password) {
+  if (req.session.user.first_login || req.session.user.must_change_password) {
     if (wantsJson(req)) {
       return res.status(403).json({
         success: false,
@@ -110,42 +110,9 @@ function requirePermission(permission) {
   };
 }
 
-/**
- * Legacy compatibility: requireRole(["Team Leader"])
- * Wraps the old role-array pattern to work with the permission system.
- * Kept temporarily for routes that haven't migrated to requirePermission yet.
- *
- * @param {string[]} allowedRoles
- * @returns {Function}
- */
-function requireRole(allowedRoles) {
-  return (req, res, next) => {
-    if (!req.session.user) {
-      if (wantsJson(req)) {
-        return res.status(401).json({ success: false, message: "Unauthorized" });
-      }
-      return res.redirect("/login");
-    }
-
-    if (!allowedRoles.includes(req.session.user.role)) {
-      if (wantsJson(req)) {
-        return res.status(403).json({
-          success: false,
-          message: "Access forbidden: insufficient permissions",
-        });
-      }
-      return res.status(403).sendFile(
-        require("path").join(__dirname, "..", "views", "403.html")
-      );
-    }
-    next();
-  };
-}
-
 module.exports = {
   auth,
   requireGroup,
   requirePermission,
-  requireRole,
   wantsJson,
 };

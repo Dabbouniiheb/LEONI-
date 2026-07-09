@@ -50,6 +50,16 @@ async function initializeDatabase() {
     }
     logger.info("Database schema initialized (CREATE IF NOT EXISTS — safe)");
 
+    // Safe Migration: Add soft-delete columns if they are missing
+    // This fixes the crash on older databases where `users` table already existed before refactoring
+    const [columns] = await connection.query("SHOW COLUMNS FROM users LIKE 'is_deleted'");
+    if (columns.length === 0) {
+      logger.info("Running automatic migration: adding is_deleted and deleted_at to users table");
+      await connection.query(
+        "ALTER TABLE users ADD COLUMN is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Soft delete flag', ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL COMMENT 'Soft delete timestamp'"
+      );
+    }
+
     // Seed default Team Leader if the table is empty
     const [rows] = await connection.query(
       "SELECT COUNT(*) AS count FROM users"

@@ -215,7 +215,7 @@
 
     if (!monthInput) {
       statusEl.textContent = "Please select a month.";
-      statusEl.style.color = "var(--leoni-rouge)";
+      statusEl.style.color = "var(--leoni-orange)";
       return;
     }
 
@@ -224,7 +224,7 @@
       const selectVal = document.getElementById("generateUser").value;
       if (!selectVal) {
         statusEl.textContent = "Please select an employee.";
-        statusEl.style.color = "var(--leoni-rouge)";
+        statusEl.style.color = "var(--leoni-orange)";
         return;
       }
       targetUserId = selectVal;
@@ -234,12 +234,12 @@
     try {
       const res = await LeoniAPI.generatePlanning(targetUserId, monthInput);
       statusEl.textContent = res.message || "Planning generated successfully!";
-      statusEl.style.color = "var(--leoni-bleu)";
+      statusEl.style.color = "var(--leoni-cyan)";
       // Reload planning view
       await loadPlanning();
     } catch (err) {
       statusEl.textContent = err.message || "Failed to generate planning.";
-      statusEl.style.color = "var(--leoni-rouge)";
+      statusEl.style.color = "var(--leoni-orange)";
     } finally {
       LeoniLayout.showLoading(false);
     }

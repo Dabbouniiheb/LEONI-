@@ -11,7 +11,7 @@ const userController = require("../controllers/userController");
 const { auth, requireGroup, requirePermission } = require("../middlewares/auth");
 const { PERMISSIONS } = require("../config/permissions");
 const validate = require("../middlewares/validate");
-const { createUserValidation, updateUserValidation } = require("../validations/userValidation");
+const { createUserValidation, updateUserValidation, userIdValidation } = require("../validations/userValidation");
 
 router.get(
   "/",
@@ -36,6 +36,7 @@ router.put(
   auth,
   requireGroup,
   requirePermission(PERMISSIONS.USERS_UPDATE),
+  userIdValidation,
   updateUserValidation,
   validate,
   userController.updateUser
@@ -46,6 +47,8 @@ router.delete(
   auth,
   requireGroup,
   requirePermission(PERMISSIONS.USERS_DELETE),
+  userIdValidation,
+  validate,
   userController.deleteUser
 );
 

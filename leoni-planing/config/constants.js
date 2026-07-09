@@ -27,6 +27,21 @@ const PLANNING_STATUS = Object.freeze({
   REMOTE: "remote",
 });
 
+const LEAVE_REQUEST_STATUS = Object.freeze({
+  PENDING: "pending",
+  APPROVED: "approved",
+  REJECTED: "rejected",
+  CANCELLED: "cancelled",
+});
+
+const LEAVE_TYPES = Object.freeze({
+  ANNUAL: "annual",
+  SICK: "sick",
+  EXCEPTIONAL: "exceptional",
+  UNPAID: "unpaid",
+  OTHER: "other",
+});
+
 const VALIDATION_STATUS = Object.freeze({
   VALIDATED: "validated",
   PENDING: "pending",
@@ -43,6 +58,10 @@ const AUDIT_ACTIONS = Object.freeze({
   DELETE_USER: "DELETE_USER",
   RESTORE_USER: "RESTORE_USER",
   GENERATE_PLANNING: "GENERATE_PLANNING",
+  LEAVE_REQUEST_CREATED: "LEAVE_REQUEST_CREATED",
+  LEAVE_REQUEST_APPROVED: "LEAVE_REQUEST_APPROVED",
+  LEAVE_REQUEST_REJECTED: "LEAVE_REQUEST_REJECTED",
+  LEAVE_REQUEST_CANCELLED: "LEAVE_REQUEST_CANCELLED",
   EXPORT_CSV: "EXPORT_CSV",
   EXPORT_XLSX: "EXPORT_XLSX",
 });
@@ -75,6 +94,8 @@ module.exports = {
   GROUP_LABELS,
   GROUP_VALUES,
   PLANNING_STATUS,
+  LEAVE_REQUEST_STATUS,
+  LEAVE_TYPES,
   VALIDATION_STATUS,
   AUDIT_ACTIONS,
   VALIDATION_RULES,

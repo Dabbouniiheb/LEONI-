@@ -86,10 +86,10 @@
           </div>
           <div class="panel-body">
             <ul class="list-unstyled mb-0 small">
-              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-bleu)"></i>Group A: Wednesday, Thursday, Alternate Friday A</li>
-              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-bleu)"></i>Group B: Monday, Tuesday, Alternate Friday B</li>
-              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-bleu)"></i>Selection window opens on the 25th of each month</li>
-              <li class="mb-0"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-bleu)"></i>Audit log actions logged dynamically</li>
+              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-cyan)"></i>Group A: Wednesday, Thursday, Alternate Friday A</li>
+              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-cyan)"></i>Group B: Monday, Tuesday, Alternate Friday B</li>
+              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-cyan)"></i>Selection window opens on the 25th of each month</li>
+              <li class="mb-0"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-cyan)"></i>Audit log actions logged dynamically</li>
             </ul>
           </div>
         </section>

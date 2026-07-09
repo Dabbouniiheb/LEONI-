@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS planning (
     status ENUM('onsite', 'remote') NOT NULL DEFAULT 'remote',
     month_key VARCHAR(7) NOT NULL COMMENT 'Format: YYYY-MM',
     work_hour INT NOT NULL DEFAULT 8,
+    horaire VARCHAR(50) NULL DEFAULT NULL COMMENT 'Placeholder for future remote work hour calculation',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

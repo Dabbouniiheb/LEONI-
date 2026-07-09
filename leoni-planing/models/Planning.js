@@ -28,7 +28,8 @@ class Planning {
     const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const [results] = await db.query(
       `SELECT planning.id, planning.user_id, planning.date, planning.status,
-              planning.month_key, CONCAT(users.first_name, ' ', users.last_name) AS user_name, users.group_id
+              planning.month_key, planning.horaire,
+              CONCAT(users.first_name, ' ', users.last_name) AS user_name, users.group_id
        FROM planning
        JOIN users ON users.id = planning.user_id
        ${whereClause}
@@ -54,7 +55,8 @@ class Planning {
     const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const [results] = await db.query(
       `SELECT planning.id, planning.user_id, planning.date, planning.status,
-              planning.month_key, CONCAT(users.first_name, ' ', users.last_name) AS user_name, users.group_id
+              planning.month_key, planning.horaire,
+              CONCAT(users.first_name, ' ', users.last_name) AS user_name, users.group_id
        FROM planning
        JOIN users ON users.id = planning.user_id
        ${whereClause}

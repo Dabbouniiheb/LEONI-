@@ -60,6 +60,14 @@ async function initializeDatabase() {
       );
     }
 
+    const [horaireColumns] = await connection.query("SHOW COLUMNS FROM planning LIKE 'horaire'");
+    if (horaireColumns.length === 0) {
+      logger.info("Running automatic migration: adding horaire to planning table");
+      await connection.query(
+        "ALTER TABLE planning ADD COLUMN horaire VARCHAR(50) NULL DEFAULT NULL COMMENT 'Placeholder for future remote work hour calculation' AFTER work_hour"
+      );
+    }
+
     // Seed default Team Leader if the table is empty
     const [rows] = await connection.query(
       "SELECT COUNT(*) AS count FROM users"

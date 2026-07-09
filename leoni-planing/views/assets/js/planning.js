@@ -89,10 +89,11 @@
                 <th>Month</th>
                 <th>Date Remote</th>
                 <th>Status</th>
+                <th>Horaire</th>
               </tr>
             </thead>
             <tbody id="planningTableBody">
-              <tr><td colspan="5" class="text-center py-4 text-muted">Loading planning…</td></tr>
+              <tr><td colspan="6" class="text-center py-4 text-muted">Loading planning…</td></tr>
             </tbody>
           </table>
         </div>
@@ -170,6 +171,7 @@
             <td>${escapeHtml(row.month_key || "—")}</td>
             <td><strong>${escapeHtml(dateStr)}</strong></td>
             <td><span class="badge-role">${escapeHtml(row.status || "remote")}</span></td>
+            <td>${escapeHtml(row.horaire || "—")}</td>
           </tr>`;
       })
       .join("");
@@ -182,7 +184,7 @@
       renderPlanning(rows);
     } catch {
       document.getElementById("planningTableBody").innerHTML = `
-        <tr><td colspan="5" class="text-center py-4 text-danger">Failed to load planning data.</td></tr>`;
+        <tr><td colspan="6" class="text-center py-4 text-danger">Failed to load planning data.</td></tr>`;
     } finally {
       LeoniLayout.showLoading(false);
     }

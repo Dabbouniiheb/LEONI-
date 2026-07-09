@@ -25,7 +25,7 @@ const LeoniAPI = (() => {
 
   async function request(path, options = {}) {
     const method = (options.method || "GET").toUpperCase();
-    const isStateChanging = ["POST", "PUT", "DELETE"].includes(method);
+    const isStateChanging = ["POST", "PUT", "PATCH", "DELETE"].includes(method);
     
     const headers = {
       "Content-Type": "application/json",

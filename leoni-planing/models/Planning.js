@@ -19,7 +19,7 @@ class Planning {
   static async batchInsert(values, connection = db) {
     if (values.length === 0) return;
     await connection.query(
-      "INSERT INTO planning (user_id, date, status, month_key, work_hour) VALUES ?",
+      "INSERT INTO planning (user_id, date, status, month_key, work_hour, planned_work_hour) VALUES ?",
       [values]
     );
   }
@@ -28,7 +28,7 @@ class Planning {
     const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const [results] = await db.query(
       `SELECT planning.id, planning.user_id, planning.date, planning.status,
-              planning.month_key, planning.horaire,
+              planning.month_key, planning.work_hour, planning.planned_work_hour, planning.horaire,
               CONCAT(users.first_name, ' ', users.last_name) AS user_name, users.group_id
        FROM planning
        JOIN users ON users.id = planning.user_id
@@ -55,7 +55,7 @@ class Planning {
     const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const [results] = await db.query(
       `SELECT planning.id, planning.user_id, planning.date, planning.status,
-              planning.month_key, planning.horaire,
+              planning.month_key, planning.work_hour, planning.planned_work_hour, planning.horaire,
               CONCAT(users.first_name, ' ', users.last_name) AS user_name, users.group_id
        FROM planning
        JOIN users ON users.id = planning.user_id
@@ -74,6 +74,7 @@ class Planning {
               planning.status,
               planning.month_key,
               planning.work_hour,
+              planning.planned_work_hour,
               CONCAT(users.first_name, ' ', users.last_name) AS user_name,
               users.group_id
        FROM planning

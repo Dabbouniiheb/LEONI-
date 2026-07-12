@@ -7,6 +7,12 @@
  */
 const LeoniAuth = (() => {
   let cachedUser = null;
+  const passwordChangeRequiredMessage =
+    "You must change your temporary password before accessing the application.";
+
+  function requiresPasswordChange(user = cachedUser) {
+    return !!(user && (user.first_login || user.must_change_password));
+  }
 
   async function refreshSession() {
     try {
@@ -58,8 +64,8 @@ const LeoniAuth = (() => {
       return false;
     }
 
-    if ((user.first_login || user.must_change_password) && !allowPasswordChange) {
-      window.location.href = "/change-password";
+    if (requiresPasswordChange(user) && !allowPasswordChange) {
+      window.location.href = "/change-password?reason=password-required";
       return false;
     }
 
@@ -69,7 +75,7 @@ const LeoniAuth = (() => {
       user.role === "Data Cleansing" &&
       (user.group_id == null || user.group_id === "") &&
       !allowSelectGroup &&
-      !(user.first_login || user.must_change_password)
+      !requiresPasswordChange(user)
     ) {
       window.location.href = "/select-group";
       return false;
@@ -82,8 +88,8 @@ const LeoniAuth = (() => {
     const user = await refreshSession();
     if (!user) return false;
 
-    if (user.first_login || user.must_change_password) {
-      window.location.href = "/change-password";
+    if (requiresPasswordChange(user)) {
+      window.location.href = "/change-password?reason=password-required";
       return true;
     }
     // Only Data Cleansing users need group selection
@@ -115,6 +121,8 @@ const LeoniAuth = (() => {
     hasPermission,
     ensureAccess,
     redirectIfAuthenticated,
+    requiresPasswordChange,
+    passwordChangeRequiredMessage,
     initials,
   };
 })();

@@ -85,11 +85,11 @@
             <h2>Quick info</h2>
           </div>
           <div class="panel-body">
-            <ul class="list-unstyled mb-0 small">
-              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-cyan)"></i>Group A: Wednesday, Thursday, Alternate Friday A</li>
-              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-cyan)"></i>Group B: Monday, Tuesday, Alternate Friday B</li>
-              <li class="mb-2"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-cyan)"></i>Selection window opens on the 25th of each month</li>
-              <li class="mb-0"><i class="fa-solid fa-circle-check me-2" style="color: var(--leoni-cyan)"></i>Audit log actions logged dynamically</li>
+            <ul class="list-unstyled mb-0 small quick-info-list">
+              <li class="mb-2"><i class="fa-solid fa-circle-check quick-info-icon"></i><span>Group A: Wednesday, Thursday, Alternate Friday A</span></li>
+              <li class="mb-2"><i class="fa-solid fa-circle-check quick-info-icon"></i><span>Group B: Monday, Tuesday, Alternate Friday B</span></li>
+              <li class="mb-2"><i class="fa-solid fa-circle-check quick-info-icon"></i><span>Selection window opens on the 25th of each month</span></li>
+              <li class="mb-0"><i class="fa-solid fa-circle-check quick-info-icon"></i><span>Audit log actions logged dynamically</span></li>
             </ul>
           </div>
         </section>
@@ -123,8 +123,8 @@
       if (hasPlanningForTargetMonth) {
         // Green state (Validé)
         alertsContainer.innerHTML = `
-          <div class="alert alert-success d-flex align-items-center mb-0 p-3" style="border-radius: var(--leoni-radius); border-left: 5px solid #198754;">
-            <i class="fa-solid fa-circle-check fa-lg me-3 text-success"></i>
+          <div class="alert alert-success status-alert status-alert-success d-flex align-items-center mb-0 p-3">
+            <i class="fa-solid fa-circle-check status-alert-icon me-3 text-success"></i>
             <div>
               <strong>Statut : Validé (Vert)</strong><br/>
               Votre planning Home Office pour le mois de <strong>${targetMonthKey}</strong> a été généré et validé avec succès.
@@ -134,8 +134,8 @@
         if (isNextMonth) {
           // Orange state (En attente)
           alertsContainer.innerHTML = `
-            <div class="alert alert-warning d-flex align-items-center mb-0 p-3" style="border-radius: var(--leoni-radius); border-left: 5px solid #ffc107;">
-              <i class="fa-solid fa-clock fa-lg me-3 text-warning"></i>
+            <div class="alert alert-warning status-alert status-alert-warning d-flex align-items-center mb-0 p-3">
+              <i class="fa-solid fa-clock status-alert-icon me-3 text-warning"></i>
               <div>
                 <strong>Statut : En attente (Orange)</strong><br/>
                 Veuillez sélectionner votre groupe Home Office et générer votre planning pour le mois prochain (<strong>${targetMonthKey}</strong>) avant la fin du mois.
@@ -145,8 +145,8 @@
         } else {
           // Red state (Délai dépassé)
           alertsContainer.innerHTML = `
-            <div class="alert alert-danger d-flex align-items-center mb-0 p-3" style="border-radius: var(--leoni-radius); border-left: 5px solid #dc3545;">
-              <i class="fa-solid fa-triangle-exclamation fa-lg me-3 text-danger"></i>
+            <div class="alert alert-danger status-alert status-alert-danger d-flex align-items-center mb-0 p-3">
+              <i class="fa-solid fa-triangle-exclamation status-alert-icon me-3 text-danger"></i>
               <div>
                 <strong>Statut : Délai dépassé (Rouge)</strong><br/>
                 Vous n'avez pas validé votre planning Home Office pour le mois en cours (<strong>${targetMonthKey}</strong>). Veuillez le soumettre immédiatement.
@@ -158,8 +158,8 @@
     } else if (loggedUser.role === "Team Leader") {
       // Render general validation banner
       alertsContainer.innerHTML = `
-        <div class="alert alert-info d-flex align-items-center mb-0 p-3" style="border-radius: var(--leoni-radius); border-left: 5px solid #0dcaf0;">
-          <i class="fa-solid fa-circle-info fa-lg me-3 text-info"></i>
+        <div class="alert alert-info status-alert status-alert-info d-flex align-items-center mb-0 p-3">
+          <i class="fa-solid fa-circle-info status-alert-icon me-3 text-info"></i>
           <div>
             <strong>Validation System Active</strong><br/>
             Current validation rate for month <strong>${targetMonthKey}</strong> is <strong>${stats.validationRate}%</strong>.

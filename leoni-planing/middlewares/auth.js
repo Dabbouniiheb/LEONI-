@@ -13,6 +13,10 @@ const { ROLES } = require("../config/constants");
 const { wantsJson } = require("../utils/helpers");
 const logger = require("../utils/appLogger");
 
+const PASSWORD_CHANGE_REQUIRED_MESSAGE =
+  "You must change your temporary password before accessing the application.";
+const PASSWORD_CHANGE_PATH = "/change-password?reason=password-required";
+
 /**
  * Verify the user is authenticated (has a session).
  */
@@ -44,11 +48,11 @@ function requireGroup(req, res, next) {
     if (wantsJson(req)) {
       return res.status(403).json({
         success: false,
-        message: "Password change required",
-        redirect: "/change-password",
+        message: PASSWORD_CHANGE_REQUIRED_MESSAGE,
+        redirect: PASSWORD_CHANGE_PATH,
       });
     }
-    return res.redirect("/change-password");
+    return res.redirect(PASSWORD_CHANGE_PATH);
   }
 
   // Step 2: Force group selection (Data Cleansing only — Team Leaders don't need a group)

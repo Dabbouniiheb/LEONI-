@@ -154,9 +154,11 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const planningRoutes = require("./routes/planningRoutes");
 const leaveRequestRoutes = require("./routes/leaveRequestRoutes");
+const workSessionRoutes = require("./routes/workSessionRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const exportRoutes = require("./routes/exportRoutes");
 const logRoutes = require("./routes/logRoutes");
+const WorkSessionService = require("./services/WorkSessionService");
 
 // Apply login rate limiter ONLY to the auth login endpoint
 app.use("/api/auth/login", loginLimiter);
@@ -164,6 +166,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/planning", planningRoutes);
 app.use("/api/leave-requests", leaveRequestRoutes);
+app.use("/api/work-sessions", workSessionRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/export", exportRoutes);
 app.use("/api/logs", logRoutes);
@@ -218,8 +221,16 @@ app.use((err, req, res, next) => {
 // ═══════════════════════════════════════════════════════════
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   logger.info(`Server running on http://localhost:${PORT}`, {
     env: process.env.NODE_ENV || "development",
+  });
+  WorkSessionService.startStaleSessionCleanup();
+});
+
+process.on("SIGTERM", () => {
+  WorkSessionService.stopStaleSessionCleanup();
+  server.close(() => {
+    logger.info("HTTP server closed");
   });
 });

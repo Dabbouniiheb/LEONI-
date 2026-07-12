@@ -11,14 +11,14 @@
         <h2>Export Filters</h2>
       </div>
       <div class="panel-body">
-        <div class="filter-bar d-flex align-items-end gap-3 flex-wrap">
+        <div class="filter-bar">
           <div>
             <label for="exportMonth" class="form-label">Month</label>
-            <input type="month" class="form-control" id="exportMonth" style="min-width: 180px;" />
+            <input type="month" class="form-control form-field-md" id="exportMonth" />
           </div>
           <div>
             <label for="exportGroup" class="form-label">Group</label>
-            <select class="form-select" id="exportGroup" style="min-width: 160px;">
+            <select class="form-select form-field-sm" id="exportGroup">
               <option value="">All groups</option>
               <option value="1">Group A</option>
               <option value="2">Group B</option>
@@ -26,7 +26,7 @@
           </div>
           <div>
             <label for="exportUser" class="form-label">Employee</label>
-            <select class="form-select" id="exportUser" style="min-width: 200px;">
+            <select class="form-select form-field-lg" id="exportUser">
               <option value="">All employees</option>
             </select>
           </div>
@@ -40,7 +40,7 @@
           <i class="fa-solid fa-file-excel"></i>
         </div>
         <h2 class="h4 mb-2">Export planning data</h2>
-        <p class="text-muted mb-4 mx-auto" style="max-width: 520px;">
+        <p class="text-muted mb-4 mx-auto export-copy">
           Download the planning schedule as CSV or Excel (XLSX).
           Applies the filters selected above (all records exported by default).
         </p>
@@ -56,7 +56,7 @@
             <span id="exportXlsxSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
           </button>
         </div>
-        <p class="small text-muted mt-3 mb-0" id="exportStatus"></p>
+        <p class="small form-status justify-content-center mt-3 mb-0" id="exportStatus" aria-live="polite"></p>
       </div>
     </section>
 
@@ -80,6 +80,11 @@
   });
 
   const exportStatus = document.getElementById("exportStatus");
+
+  function setExportStatus(message, type = "") {
+    exportStatus.textContent = message;
+    exportStatus.className = `small form-status justify-content-center mt-3 mb-0 ${type ? `form-status-${type}` : ""}`.trim();
+  }
 
   // Populate users select dropdown
   try {
@@ -141,15 +146,13 @@
       btn.disabled = true;
       label.textContent = "Preparing…";
       spinner.classList.remove("d-none");
-      exportStatus.textContent = "";
+      setExportStatus("");
 
       try {
         await downloadExport(fetchFn, filename);
-        exportStatus.textContent = "Export completed successfully.";
-        exportStatus.style.color = "";
+        setExportStatus("Export completed successfully.", "success");
       } catch (err) {
-        exportStatus.textContent = err.message || "Unable to export planning data.";
-        exportStatus.style.color = "var(--leoni-orange)";
+        setExportStatus(err.message || "Unable to export planning data.", "error");
       } finally {
         btn.disabled = false;
         label.textContent = labelText;

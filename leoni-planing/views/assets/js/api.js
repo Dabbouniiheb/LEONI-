@@ -85,6 +85,15 @@ const LeoniAPI = (() => {
     return s ? `?${s}` : "";
   }
 
+  function sendJsonBeacon(path, payload) {
+    if (!csrfToken || !navigator.sendBeacon) return false;
+    const blob = new Blob(
+      [JSON.stringify({ ...payload, _csrf: csrfToken })],
+      { type: "application/json" }
+    );
+    return navigator.sendBeacon(path, blob);
+  }
+
   return {
     // Auth
     getSession: () => request("/api/auth/session"),
@@ -129,6 +138,36 @@ const LeoniAPI = (() => {
         method: "POST",
         body: JSON.stringify({ user_id, month }),
       }),
+
+    // Work Sessions
+    autoStartWorkSession: (planning_id) =>
+      request("/api/work-sessions/auto-start", {
+        method: "POST",
+        body: JSON.stringify(planning_id ? { planning_id } : {}),
+      }),
+    heartbeatWorkSession: (session_id, is_active) =>
+      request("/api/work-sessions/heartbeat", {
+        method: "POST",
+        body: JSON.stringify({ session_id, is_active }),
+      }),
+    pauseWorkSession: (session_id) =>
+      request("/api/work-sessions/pause", {
+        method: "POST",
+        body: JSON.stringify({ session_id }),
+      }),
+    endWorkSession: (session_id) =>
+      request("/api/work-sessions/end", {
+        method: "POST",
+        body: JSON.stringify({ session_id }),
+      }),
+    getMyWorkSessions: (filters = {}) =>
+      request(`/api/work-sessions/mine${buildQuery(filters)}`),
+    getWorkSessionSummary: (filters = {}) =>
+      request(`/api/work-sessions/summary${buildQuery(filters)}`),
+    pauseWorkSessionBeacon: (session_id) =>
+      sendJsonBeacon("/api/work-sessions/pause", { session_id }),
+    endWorkSessionBeacon: (session_id) =>
+      sendJsonBeacon("/api/work-sessions/end", { session_id }),
 
     // Leave Requests
     getOwnLeaveRequests: () => request("/api/leave-requests/mine"),

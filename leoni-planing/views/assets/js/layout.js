@@ -39,13 +39,14 @@ const LeoniLayout = (() => {
     const visibleItems = getVisibleNavItems(user);
 
     const navHtml = visibleItems
-      .map(
-        (item) => `
-        <a href="${item.href}" class="${item.id === pageId ? "active" : ""}">
+      .map((item) => {
+        const isActive = item.id === pageId;
+        return `
+        <a href="${item.href}" class="${isActive ? "active" : ""}" ${isActive ? 'aria-current="page"' : ""}>
           <i class="fa-solid ${item.icon}"></i>
           <span>${item.label}</span>
-        </a>`
-      )
+        </a>`;
+      })
       .join("");
 
     return `
@@ -107,6 +108,8 @@ const LeoniLayout = (() => {
   function mount({ pageId, title, subtitle, contentHtml }) {
     document.body.innerHTML = renderShell({ pageId, title, subtitle });
     document.getElementById("pageContent").innerHTML = contentHtml;
+    const user = LeoniAuth.getUser();
+    const passwordChangeRequired = LeoniAuth.requiresPasswordChange?.(user);
 
     document.getElementById("logoutBtn")?.addEventListener("click", () => {
       LeoniAuth.logout();
@@ -118,7 +121,21 @@ const LeoniLayout = (() => {
     });
 
     document.querySelectorAll(".sidebar-nav a").forEach((link) => {
-      link.addEventListener("click", () => sidebar?.classList.remove("open"));
+      link.addEventListener("click", (event) => {
+        if (
+          passwordChangeRequired &&
+          link.getAttribute("href") !== "/change-password"
+        ) {
+          event.preventDefault();
+          sidebar?.classList.remove("open");
+          toast({
+            type: "warning",
+            message: LeoniAuth.passwordChangeRequiredMessage,
+          });
+          return;
+        }
+        sidebar?.classList.remove("open");
+      });
     });
   }
 

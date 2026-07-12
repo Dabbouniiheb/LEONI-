@@ -68,6 +68,93 @@ async function initializeDatabase() {
       );
     }
 
+    const [workHourColumns] = await connection.query("SHOW COLUMNS FROM planning LIKE 'work_hour'");
+    if (workHourColumns.length > 0) {
+      const workHourType = String(workHourColumns[0].Type || "").toLowerCase();
+      const workHourDefault = String(workHourColumns[0].Default || "");
+      if (!workHourType.startsWith("decimal") || workHourDefault !== "0.00") {
+        logger.info("Running automatic migration: normalizing planning.work_hour as actual tracked hours");
+        await connection.query(
+          "ALTER TABLE planning MODIFY COLUMN work_hour DECIMAL(5,2) NOT NULL DEFAULT 0.00"
+        );
+      }
+    }
+
+    const [plannedWorkHourColumns] = await connection.query("SHOW COLUMNS FROM planning LIKE 'planned_work_hour'");
+    if (plannedWorkHourColumns.length === 0) {
+      logger.info("Running automatic migration: adding planned_work_hour to planning table");
+      await connection.query(
+        "ALTER TABLE planning ADD COLUMN planned_work_hour DECIMAL(5,2) NOT NULL DEFAULT 8.00 AFTER work_hour"
+      );
+    }
+
+    const [updatedAtColumns] = await connection.query("SHOW COLUMNS FROM planning LIKE 'updated_at'");
+    if (updatedAtColumns.length === 0) {
+      logger.info("Running automatic migration: adding updated_at to planning table");
+      await connection.query(
+        "ALTER TABLE planning ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+      );
+    }
+
+    logger.info("Running automatic migration: recalculating planning.work_hour from tracked sessions");
+    await connection.query(
+      `UPDATE planning p
+       LEFT JOIN (
+         SELECT planning_id,
+                ROUND(LEAST(COALESCE(SUM(active_seconds), 0) / 3600, 8), 2) AS tracked_hours
+         FROM work_sessions
+         WHERE planning_id IS NOT NULL
+         GROUP BY planning_id
+       ) ws ON ws.planning_id = p.id
+       SET p.work_hour = COALESCE(ws.tracked_hours, 0.00)`
+    );
+
+    const [activeSlotColumns] = await connection.query("SHOW COLUMNS FROM work_sessions LIKE 'active_slot'");
+    if (activeSlotColumns.length === 0) {
+      logger.info("Running automatic migration: adding active_slot to work_sessions table");
+      await connection.query(
+        "ALTER TABLE work_sessions ADD COLUMN active_slot TINYINT NULL DEFAULT NULL COMMENT '1 only while active; NULL for historical sessions' AFTER status"
+      );
+    }
+
+    logger.info("Running automatic migration: closing duplicate active work sessions before unique index");
+    await connection.query(
+      `UPDATE work_sessions ws
+       JOIN (
+         SELECT user_id, planning_id, work_date, MAX(id) AS keep_id
+         FROM work_sessions
+         WHERE status = 'active' AND planning_id IS NOT NULL
+         GROUP BY user_id, planning_id, work_date
+         HAVING COUNT(*) > 1
+       ) dup
+         ON dup.user_id = ws.user_id
+        AND dup.planning_id = ws.planning_id
+        AND dup.work_date = ws.work_date
+       SET ws.status = 'expired',
+           ws.ended_at = COALESCE(ws.ended_at, ws.last_heartbeat_at, ws.started_at),
+           ws.active_slot = NULL
+       WHERE ws.status = 'active'
+         AND ws.id <> dup.keep_id`
+    );
+
+    await connection.query(
+      "UPDATE work_sessions SET active_slot = CASE WHEN status = 'active' THEN 1 ELSE NULL END"
+    );
+
+    const [activeSessionIndexes] = await connection.query(
+      `SELECT COUNT(*) AS count
+       FROM INFORMATION_SCHEMA.STATISTICS
+       WHERE TABLE_SCHEMA = DATABASE()
+         AND TABLE_NAME = 'work_sessions'
+         AND INDEX_NAME = 'uq_work_sessions_active'`
+    );
+    if (Number(activeSessionIndexes[0]?.count || 0) === 0) {
+      logger.info("Running automatic migration: adding unique active work-session index");
+      await connection.query(
+        "ALTER TABLE work_sessions ADD UNIQUE KEY uq_work_sessions_active (user_id, planning_id, work_date, active_slot)"
+      );
+    }
+
     // Seed default Team Leader if the table is empty
     const [rows] = await connection.query(
       "SELECT COUNT(*) AS count FROM users"

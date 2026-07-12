@@ -49,15 +49,15 @@
     <!-- CREATE USER MODAL -->
     <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 10px;">
+        <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="createUserModalLabel">Register New User</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div id="createAlert" class="alert alert-danger d-none"></div>
+            <div id="createAlert" class="alert alert-danger alert-leoni d-none" role="alert"></div>
             <form id="createUserForm">
-              <div class="row">
+              <div class="row g-3">
                 <div class="col-6 mb-3">
                   <label for="createFirstName" class="form-label">First Name</label>
                   <input type="text" class="form-control" id="createFirstName" required />
@@ -107,15 +107,15 @@
     <!-- EDIT USER MODAL -->
     <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 10px;">
+        <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editUserModalLabel">Edit User Details</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div id="editAlert" class="alert alert-danger d-none"></div>
+            <div id="editAlert" class="alert alert-danger alert-leoni d-none" role="alert"></div>
             <input type="hidden" id="editUserId" />
-            <div class="row">
+            <div class="row g-3">
               <div class="col-6 mb-3">
                 <label for="editFirstName" class="form-label">First Name</label>
                 <input type="text" class="form-control" id="editFirstName" required />
@@ -195,10 +195,10 @@
             <td><span class="badge-group ${badgeClass}">Group ${group}</span></td>
             <td>${esc(user.department || "—")}</td>
             <td class="text-end">
-              <button type="button" class="btn btn-sm btn-leoni-outline me-1" data-action="edit" data-id="${user.id}">
+              <button type="button" class="btn btn-sm btn-leoni-outline btn-icon me-1" data-action="edit" data-id="${user.id}" aria-label="Edit ${esc(user.name)}" title="Edit user">
                 <i class="fa-solid fa-pen"></i>
               </button>
-              <button type="button" class="btn btn-sm btn-leoni-outline btn-leoni-danger-outline" data-action="delete" data-id="${user.id}">
+              <button type="button" class="btn btn-sm btn-leoni-outline btn-leoni-danger-outline btn-icon" data-action="delete" data-id="${user.id}" aria-label="Delete ${esc(user.name)}" title="Delete user">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </td>

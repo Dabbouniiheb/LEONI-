@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 router.get("/login", (req, res) => {
   if (req.session.user) {
     if (req.session.user.first_login || req.session.user.must_change_password) {
-      return res.redirect("/change-password");
+      return res.redirect("/change-password?reason=password-required");
     }
     if (
       req.session.user.role === ROLES.DATA_CLEANSING &&
@@ -33,7 +33,7 @@ router.get("/change-password", auth, (req, res) => {
 
 router.get("/select-group", auth, (req, res) => {
   if (req.session.user.first_login || req.session.user.must_change_password) {
-    return res.redirect("/change-password");
+    return res.redirect("/change-password?reason=password-required");
   }
   if (req.session.user.group_id != null && req.session.user.group_id !== "") {
     return res.redirect("/dashboard");

@@ -26,6 +26,9 @@ const PERMISSIONS = Object.freeze({
   PLANNING_GENERATE_OWN: "planning.generate.own",
   PLANNING_GENERATE_ALL: "planning.generate.all",
 
+  // Work Sessions
+  WORK_SESSIONS_READ_SUMMARY: "work_sessions.read.summary",
+
   // Leave Requests
   LEAVE_REQUESTS_READ_OWN: "leave_requests.read.own",
   LEAVE_REQUESTS_MANAGE: "leave_requests.manage",
@@ -54,6 +57,7 @@ const ROLE_PERMISSIONS = Object.freeze({
     PERMISSIONS.PLANNING_READ_ALL,
     PERMISSIONS.PLANNING_GENERATE_OWN,
     PERMISSIONS.PLANNING_GENERATE_ALL,
+    PERMISSIONS.WORK_SESSIONS_READ_SUMMARY,
     PERMISSIONS.LEAVE_REQUESTS_READ_OWN,
     PERMISSIONS.LEAVE_REQUESTS_MANAGE,
     PERMISSIONS.EXPORT_CSV,

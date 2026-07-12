@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS planning (
     date DATE NOT NULL,
     status ENUM('onsite', 'remote') NOT NULL DEFAULT 'remote',
     month_key VARCHAR(7) NOT NULL COMMENT 'Format: YYYY-MM',
-    work_hour INT NOT NULL DEFAULT 8,
+    work_hour DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+    planned_work_hour DECIMAL(5,2) NOT NULL DEFAULT 8.00,
     horaire VARCHAR(50) NULL DEFAULT NULL COMMENT 'Placeholder for future remote work hour calculation',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -52,7 +53,31 @@ CREATE TABLE IF NOT EXISTS planning (
     INDEX idx_planning_month (month_key)
 ) ENGINE=InnoDB;
 
--- 3. Leave Requests Table
+-- 3. Work Sessions Table
+CREATE TABLE IF NOT EXISTS work_sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    planning_id INT NULL,
+    work_date DATE NOT NULL,
+    started_at DATETIME NOT NULL,
+    last_heartbeat_at DATETIME NULL,
+    ended_at DATETIME NULL,
+    active_seconds INT NOT NULL DEFAULT 0,
+    status ENUM('active', 'paused', 'ended', 'expired') NOT NULL DEFAULT 'active',
+    active_slot TINYINT NULL DEFAULT NULL COMMENT '1 only while active; NULL for historical sessions',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_work_sessions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_work_sessions_planning FOREIGN KEY (planning_id) REFERENCES planning(id) ON DELETE SET NULL,
+    INDEX idx_work_sessions_user_date (user_id, work_date),
+    INDEX idx_work_sessions_planning (planning_id),
+    INDEX idx_work_sessions_status (status),
+    INDEX idx_work_sessions_heartbeat (last_heartbeat_at),
+    UNIQUE KEY uq_work_sessions_active (user_id, planning_id, work_date, active_slot)
+) ENGINE=InnoDB;
+
+-- 4. Leave Requests Table
 CREATE TABLE IF NOT EXISTS leave_requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -75,7 +100,7 @@ CREATE TABLE IF NOT EXISTS leave_requests (
     INDEX idx_leave_date_range (start_date, end_date)
 ) ENGINE=InnoDB;
 
--- 4. Audit Logs Table
+-- 5. Audit Logs Table
 CREATE TABLE IF NOT EXISTS audit_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,

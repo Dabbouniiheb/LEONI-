@@ -1,6 +1,6 @@
 const db = require("../config/db");
 const Planning = require("../models/Planning");
-const { PLANNING_STATUS } = require("../config/constants");
+const { PLANNING_STATUS, VALIDATION_RULES } = require("../config/constants");
 
 class PlanningService {
   /**
@@ -79,7 +79,14 @@ class PlanningService {
 
       // Batch INSERT instead of N individual inserts
       if (planningDays.length > 0) {
-        const values = planningDays.map((day) => [userId, day.date, day.status, month, 8]);
+        const values = planningDays.map((day) => [
+          userId,
+          day.date,
+          day.status,
+          month,
+          VALIDATION_RULES.DEFAULT_ACTUAL_WORK_HOUR,
+          VALIDATION_RULES.DEFAULT_WORK_HOUR,
+        ]);
         await Planning.batchInsert(values, connection);
       }
 
@@ -174,6 +181,7 @@ class PlanningService {
         date,
         status: row.status,
         work_hour: row.work_hour,
+        planned_work_hour: row.planned_work_hour,
       });
     });
 

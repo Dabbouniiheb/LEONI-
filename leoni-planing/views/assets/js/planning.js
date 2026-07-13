@@ -6,6 +6,7 @@
   const HEARTBEAT_INTERVAL_MS = 60 * 1000;
   const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000;
   const ACTIVITY_RESUME_DELAY_MS = 800;
+  const GENERATION_WINDOW_REFRESH_INTERVAL_MS = 60 * 1000;
 
   let planningRowsCache = [];
   let workSessionSummary = null;
@@ -20,6 +21,16 @@
   let lastActivityAt = Date.now();
   let displayBaseSeconds = 0;
   let displayBaseAt = Date.now();
+  let monthlySelection = null;
+  let monthlyPlanningExists = false;
+  let monthlySelectionLoading = false;
+  let monthlySelectionError = null;
+  let monthlySelectionKey = "";
+  let monthlySelectionRequestId = 0;
+  let pendingMonthlyGroupId = null;
+  let generationWindow = null;
+  let generationWindowLoading = true;
+  let generationWindowError = null;
 
   const content = `
     <!-- GENERATE PLANNING SECTION -->
@@ -28,10 +39,10 @@
         <h2>Generate Home Office Calendar</h2>
       </div>
       <div class="panel-body">
-        <div class="filter-bar">
+        <div class="planning-generation-grid${loggedUser.role === "Team Leader" ? " with-employee" : ""}">
           ${
             loggedUser.role === "Team Leader"
-              ? `<div>
+              ? `<div class="planning-generation-field">
                    <label for="generateUser" class="form-label text-uppercase small fw-semibold opacity-75">Employee</label>
                    <select class="form-select form-field-lg" id="generateUser">
                      <option value="">Choose employee…</option>
@@ -39,17 +50,74 @@
                  </div>`
               : ""
           }
-          <div>
-            <label for="generateMonth" class="form-label text-uppercase small fw-semibold opacity-75">Month</label>
-            <input type="month" class="form-control form-field-md" id="generateMonth" />
+          <div class="planning-generation-field">
+            <label for="generateMonthDisplay" class="form-label text-uppercase small fw-semibold opacity-75">Generation month</label>
+            <input type="text" class="form-control form-field-md generation-month-display" id="generateMonthDisplay" value="Checking availability…" readonly aria-describedby="generationWindowMessage" />
+            <input type="hidden" id="generateMonth" value="" />
           </div>
-          <button type="button" class="btn btn-leoni-primary" id="generatePlanningBtn">
-            <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Planning
-          </button>
-          <span id="genStatus" class="small form-status" aria-live="polite"></span>
+          <div class="monthly-group-control planning-generation-field">
+            <label for="monthlyGroupBtn" class="form-label text-uppercase small fw-semibold opacity-75">Monthly group</label>
+            <div class="monthly-group-control-row">
+              <button type="button" class="btn btn-leoni-outline" id="monthlyGroupBtn" disabled>
+                <i class="fa-solid fa-people-group me-2"></i><span id="monthlyGroupBtnLabel">Select Group</span>
+              </button>
+              <span class="monthly-group-state" id="monthlyGroupState" aria-live="polite">Not selected</span>
+            </div>
+            <small class="monthly-group-help" id="monthlyGroupHelp">Choose a month to load its group selection.</small>
+          </div>
+          <div class="planning-generation-action">
+            <button type="button" class="btn btn-leoni-primary" id="generatePlanningBtn" disabled>
+              <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Planning
+            </button>
+          </div>
         </div>
+        <div class="planning-generation-window is-loading" id="generationWindowNotice" role="status" aria-live="polite">
+          <i class="fa-solid fa-clock" id="generationWindowIcon" aria-hidden="true"></i>
+          <span id="generationWindowMessage">Checking the server generation window…</span>
+        </div>
+        <span id="genStatus" class="small form-status planning-generation-status" aria-live="polite"></span>
       </div>
     </section>
+
+    <!-- MONTHLY GROUP SELECTION MODAL -->
+    <div class="modal fade" id="monthlyGroupModal" tabindex="-1" aria-labelledby="monthlyGroupModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h3 class="modal-title" id="monthlyGroupModalLabel">Select monthly Home Office group</h3>
+              <p class="small text-muted mb-0 mt-1" id="monthlyGroupModalMonth"></p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="monthly-group-options" role="group" aria-label="Home Office group options">
+              <button type="button" class="monthly-group-option" data-monthly-group="1" aria-pressed="false">
+                <span class="monthly-group-option-icon group-a"><i class="fa-solid fa-a"></i></span>
+                <span>
+                  <strong>Group A</strong>
+                  <small>Wednesday, Thursday, and Fridays 1, 3, and 5 of the month.</small>
+                </span>
+                <i class="fa-solid fa-circle-check monthly-group-option-check" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="monthly-group-option" data-monthly-group="2" aria-pressed="false">
+                <span class="monthly-group-option-icon group-b"><i class="fa-solid fa-b"></i></span>
+                <span>
+                  <strong>Group B</strong>
+                  <small>Monday, Tuesday, and Fridays 2 and 4 of the month.</small>
+                </span>
+                <i class="fa-solid fa-circle-check monthly-group-option-check" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="alert alert-danger alert-leoni d-none mt-3 mb-0" id="monthlyGroupError" role="alert"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-leoni-outline" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-leoni-primary" id="saveMonthlyGroupBtn" disabled>Save selection</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- REMOTE WORK SESSION SECTION -->
     <section class="panel mb-3 work-session-panel" id="workSessionPanel">
@@ -163,6 +231,22 @@
     contentHtml: content,
   });
 
+  const monthlyGroupModal = new bootstrap.Modal(document.getElementById("monthlyGroupModal"));
+  const monthlyGroupBtn = document.getElementById("monthlyGroupBtn");
+  const monthlyGroupBtnLabel = document.getElementById("monthlyGroupBtnLabel");
+  const monthlyGroupStateEl = document.getElementById("monthlyGroupState");
+  const monthlyGroupHelp = document.getElementById("monthlyGroupHelp");
+  const generatePlanningBtn = document.getElementById("generatePlanningBtn");
+  const saveMonthlyGroupBtn = document.getElementById("saveMonthlyGroupBtn");
+  const generateMonthDisplay = document.getElementById("generateMonthDisplay");
+  const generationWindowNotice = document.getElementById("generationWindowNotice");
+  const generationWindowIcon = document.getElementById("generationWindowIcon");
+  const generationWindowMessage = document.getElementById("generationWindowMessage");
+  const MONTH_NAMES = Object.freeze([
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ]);
+
   function escapeHtml(str) {
     return String(str ?? "")
       .replace(/&/g, "&amp;")
@@ -246,7 +330,280 @@
   function setGenerationStatus(message, type = "") {
     const statusEl = document.getElementById("genStatus");
     statusEl.textContent = message;
-    statusEl.className = `small form-status ${type ? `form-status-${type}` : ""}`.trim();
+    statusEl.className = `small form-status planning-generation-status ${type ? `form-status-${type}` : ""}`.trim();
+  }
+
+  function getGenerationMonth() {
+    return document.getElementById("generateMonth").value;
+  }
+
+  function formatMonthLabel(monthKey) {
+    const match = /^(\d{4})-(\d{2})$/.exec(String(monthKey || ""));
+    if (!match) return "Unavailable";
+    const monthIndex = Number(match[2]) - 1;
+    return MONTH_NAMES[monthIndex] ? `${MONTH_NAMES[monthIndex]} ${match[1]}` : "Unavailable";
+  }
+
+  function formatDateLabel(dateKey) {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateKey || ""));
+    if (!match) return "";
+    const monthIndex = Number(match[2]) - 1;
+    if (!MONTH_NAMES[monthIndex]) return "";
+    return `${MONTH_NAMES[monthIndex]} ${Number(match[3])}, ${match[1]}`;
+  }
+
+  function isGenerationWindowOpen() {
+    const month = getGenerationMonth();
+    return Boolean(
+      !generationWindowLoading &&
+      !generationWindowError &&
+      generationWindow?.is_open &&
+      generationWindow.allowed_month &&
+      month === generationWindow.allowed_month
+    );
+  }
+
+  function renderGenerationWindow() {
+    const monthInput = document.getElementById("generateMonth");
+
+    if (generationWindowLoading) {
+      monthInput.value = "";
+      generateMonthDisplay.value = "Checking availability…";
+      generationWindowNotice.className = "planning-generation-window is-loading";
+      generationWindowIcon.className = "fa-solid fa-clock";
+      generationWindowMessage.textContent = "Checking the server generation window…";
+      return;
+    }
+
+    if (generationWindowError || !generationWindow) {
+      monthInput.value = "";
+      generateMonthDisplay.value = "Unavailable";
+      generationWindowNotice.className = "planning-generation-window is-error";
+      generationWindowIcon.className = "fa-solid fa-triangle-exclamation";
+      generationWindowMessage.textContent =
+        generationWindowError || "Unable to verify the server generation window. Generation remains disabled.";
+      return;
+    }
+
+    if (generationWindow.is_open && generationWindow.allowed_month) {
+      const monthLabel = formatMonthLabel(generationWindow.allowed_month);
+      monthInput.value = generationWindow.allowed_month;
+      generateMonthDisplay.value = monthLabel;
+      generationWindowNotice.className = "planning-generation-window is-open";
+      generationWindowIcon.className = "fa-solid fa-circle-check";
+      generationWindowMessage.textContent =
+        `Generation window is open until ${formatDateLabel(generationWindow.closes_on)}. Generation month: ${monthLabel}.`;
+      return;
+    }
+
+    monthInput.value = "";
+    generateMonthDisplay.value = "Unavailable";
+    generationWindowNotice.className = "planning-generation-window is-closed";
+    generationWindowIcon.className = "fa-solid fa-lock";
+    const nextOpening = formatDateLabel(generationWindow.opens_on);
+    generationWindowMessage.textContent =
+      `Planning generation is available from the 25th until the end of each month.${nextOpening ? ` Next opening: ${nextOpening}.` : ""}`;
+  }
+
+  async function loadGenerationWindow(options = {}) {
+    const { silent = false } = options;
+    const previousWindowKey = generationWindow
+      ? `${generationWindow.server_date}:${generationWindow.is_open}:${generationWindow.allowed_month || ""}`
+      : "";
+
+    if (!silent) {
+      generationWindowLoading = true;
+      generationWindowError = null;
+      generationWindow = null;
+      renderGenerationWindow();
+      renderMonthlyGroupState();
+    }
+
+    try {
+      const result = await LeoniAPI.getPlanningGenerationWindow();
+      if (!result?.window) throw new Error("Invalid generation-window response");
+      generationWindow = result.window;
+      generationWindowError = null;
+    } catch (err) {
+      generationWindow = null;
+      generationWindowError = err.message ||
+        "Unable to verify the server generation window. Generation remains disabled.";
+    } finally {
+      generationWindowLoading = false;
+      renderGenerationWindow();
+    }
+
+    const filterMonth = document.getElementById("filterMonth");
+    if (filterMonth && !filterMonth.value && generationWindow) {
+      filterMonth.value = generationWindow.allowed_month || generationWindow.current_month || "";
+    }
+
+    const currentWindowKey = generationWindow
+      ? `${generationWindow.server_date}:${generationWindow.is_open}:${generationWindow.allowed_month || ""}`
+      : "";
+    if (!silent || previousWindowKey !== currentWindowKey || generationWindowError) {
+      await loadMonthlyGroupState();
+    } else {
+      renderMonthlyGroupState();
+    }
+  }
+
+  function getGenerationTargetUserId() {
+    if (loggedUser.role !== "Team Leader") return String(loggedUser.id);
+    return document.getElementById("generateUser")?.value || "";
+  }
+
+  function getMonthlySelectionKey() {
+    const month = getGenerationMonth();
+    const targetUserId = getGenerationTargetUserId();
+    return month && targetUserId ? `${targetUserId}:${month}` : "";
+  }
+
+  function isOwnGenerationTarget() {
+    return String(getGenerationTargetUserId()) === String(loggedUser.id);
+  }
+
+  function renderMonthlyGroupState() {
+    const month = getGenerationMonth();
+    const targetUserId = getGenerationTargetUserId();
+    const currentKey = getMonthlySelectionKey();
+    const stateIsCurrent = currentKey && currentKey === monthlySelectionKey;
+    const selection = stateIsCurrent ? monthlySelection : null;
+    const planningExists = stateIsCurrent ? monthlyPlanningExists : false;
+    const loading = stateIsCurrent && monthlySelectionLoading;
+    const error = stateIsCurrent ? monthlySelectionError : null;
+    const ownTarget = isOwnGenerationTarget();
+    const windowOpen = isGenerationWindowOpen();
+
+    monthlyGroupStateEl.className = "monthly-group-state";
+    monthlyGroupBtnLabel.textContent = selection ? "Change Group" : "Select Group";
+
+    if (generationWindowLoading) {
+      monthlyGroupStateEl.textContent = "Checking window";
+      monthlyGroupHelp.textContent = "Waiting for the server generation window.";
+    } else if (generationWindowError) {
+      monthlyGroupStateEl.textContent = "Unavailable";
+      monthlyGroupHelp.textContent = "Group selection is disabled until the server window can be verified.";
+    } else if (!windowOpen) {
+      monthlyGroupStateEl.textContent = "Window closed";
+      monthlyGroupHelp.textContent = "Group selection becomes available when the generation window opens.";
+    } else if (!targetUserId) {
+      monthlyGroupStateEl.textContent = "Choose employee";
+      monthlyGroupHelp.textContent = "Choose an employee to load the monthly selection.";
+    } else if (loading) {
+      monthlyGroupStateEl.textContent = "Loading…";
+      monthlyGroupHelp.textContent = `Loading the group selection for ${month}.`;
+    } else if (error) {
+      monthlyGroupStateEl.textContent = "Unable to load";
+      monthlyGroupHelp.textContent = error;
+    } else if (selection) {
+      monthlyGroupStateEl.textContent = planningExists
+        ? `Group ${selection.group_code} — Locked after generation`
+        : `Group ${selection.group_code}`;
+      monthlyGroupStateEl.classList.add(`group-${selection.group_code.toLowerCase()}`);
+      if (planningExists) monthlyGroupStateEl.classList.add("locked");
+      monthlyGroupHelp.textContent = planningExists
+        ? "The calendar already exists, so this monthly group can no longer be changed."
+        : ownTarget
+          ? "You may change this selection until the calendar is generated."
+          : "This monthly group was selected by the employee.";
+    } else if (planningExists) {
+      monthlyGroupStateEl.textContent = "Calendar exists — Group not recorded";
+      monthlyGroupStateEl.classList.add("locked");
+      monthlyGroupHelp.textContent = "This is historical planning; no monthly selection was inferred from the legacy group.";
+    } else {
+      monthlyGroupStateEl.textContent = "Group: Not selected";
+      monthlyGroupHelp.textContent = ownTarget
+        ? `Select Group A or Group B for ${month} before generating.`
+        : "The employee must select a group for this month before generation.";
+    }
+
+    const canEdit = Boolean(
+      windowOpen &&
+      month &&
+      targetUserId &&
+      stateIsCurrent &&
+      !loading &&
+      !error &&
+      !planningExists &&
+      ownTarget
+    );
+    monthlyGroupBtn.disabled = !canEdit;
+    if (!ownTarget && targetUserId) monthlyGroupBtnLabel.textContent = "Employee selection";
+
+    generatePlanningBtn.disabled = !Boolean(
+      windowOpen &&
+      month &&
+      targetUserId &&
+      stateIsCurrent &&
+      !loading &&
+      !error &&
+      selection &&
+      !planningExists
+    );
+  }
+
+  async function loadMonthlyGroupState() {
+    const month = getGenerationMonth();
+    const targetUserId = getGenerationTargetUserId();
+    const key = getMonthlySelectionKey();
+    const requestId = ++monthlySelectionRequestId;
+
+    monthlySelectionKey = key;
+    monthlySelection = null;
+    monthlyPlanningExists = false;
+    monthlySelectionError = null;
+    monthlySelectionLoading = Boolean(key);
+    renderMonthlyGroupState();
+
+    if (!key) return;
+
+    try {
+      let data;
+      if (String(targetUserId) === String(loggedUser.id)) {
+        data = await LeoniAPI.getMyMonthlyGroupSelection(month);
+      } else {
+        const status = await LeoniAPI.getMonthlyGroupSelectionStatus(month);
+        const employeeStatus = status.selections.find(
+          (item) => String(item.user_id) === String(targetUserId)
+        );
+        data = {
+          selection: employeeStatus?.selection || null,
+          planning_exists: Boolean(employeeStatus?.planning_exists),
+        };
+      }
+
+      if (requestId !== monthlySelectionRequestId || key !== getMonthlySelectionKey()) return;
+      monthlySelection = data.selection || null;
+      monthlyPlanningExists = Boolean(data.planning_exists);
+    } catch (err) {
+      if (requestId !== monthlySelectionRequestId || key !== getMonthlySelectionKey()) return;
+      monthlySelectionError = err.message || "Unable to load the monthly group selection.";
+    } finally {
+      if (requestId === monthlySelectionRequestId && key === getMonthlySelectionKey()) {
+        monthlySelectionLoading = false;
+        renderMonthlyGroupState();
+      }
+    }
+  }
+
+  function renderMonthlyGroupOptions() {
+    document.querySelectorAll("[data-monthly-group]").forEach((option) => {
+      const selected = Number(option.dataset.monthlyGroup) === Number(pendingMonthlyGroupId);
+      option.classList.toggle("selected", selected);
+      option.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
+    saveMonthlyGroupBtn.disabled = !pendingMonthlyGroupId ||
+      Number(pendingMonthlyGroupId) === Number(monthlySelection?.group_id);
+  }
+
+  function openMonthlyGroupSelector() {
+    if (monthlyGroupBtn.disabled) return;
+    pendingMonthlyGroupId = monthlySelection?.group_id || null;
+    document.getElementById("monthlyGroupModalMonth").textContent = `Selection for ${getGenerationMonth()}`;
+    document.getElementById("monthlyGroupError").classList.add("d-none");
+    renderMonthlyGroupOptions();
+    monthlyGroupModal.show();
   }
 
   function renderPlanning(rows) {
@@ -602,6 +959,74 @@
     stopHeartbeatLoop();
   });
 
+  monthlyGroupBtn.addEventListener("click", openMonthlyGroupSelector);
+
+  document.querySelectorAll("[data-monthly-group]").forEach((option) => {
+    option.addEventListener("click", () => {
+      pendingMonthlyGroupId = Number(option.dataset.monthlyGroup);
+      renderMonthlyGroupOptions();
+    });
+  });
+
+  saveMonthlyGroupBtn.addEventListener("click", async () => {
+    const month = getGenerationMonth();
+    const saveKey = getMonthlySelectionKey();
+    const errorEl = document.getElementById("monthlyGroupError");
+    const originalLabel = saveMonthlyGroupBtn.textContent;
+    errorEl.classList.add("d-none");
+
+    if (!month || !pendingMonthlyGroupId) {
+      errorEl.textContent = "Choose Group A or Group B.";
+      errorEl.classList.remove("d-none");
+      return;
+    }
+
+    saveMonthlyGroupBtn.disabled = true;
+    saveMonthlyGroupBtn.textContent = "Saving…";
+    try {
+      const result = await LeoniAPI.saveMyMonthlyGroupSelection(month, pendingMonthlyGroupId);
+      monthlyGroupModal.hide();
+      LeoniLayout.toast({ type: "success", message: result.message || "Monthly group saved." });
+      if (saveKey === getMonthlySelectionKey()) {
+        monthlySelectionKey = saveKey;
+        monthlySelection = result.selection;
+        monthlyPlanningExists = Boolean(result.planning_exists);
+        monthlySelectionError = null;
+        monthlySelectionLoading = false;
+        renderMonthlyGroupState();
+      } else {
+        await loadMonthlyGroupState();
+      }
+    } catch (err) {
+      if (
+        err.code === "PLANNING_GENERATION_WINDOW_CLOSED" ||
+        err.code === "INVALID_PLANNING_GENERATION_MONTH"
+      ) {
+        monthlyGroupModal.hide();
+        LeoniLayout.toast({ type: "warning", message: err.message });
+        await loadGenerationWindow();
+      } else if (
+        err.code === "MONTHLY_GROUP_SELECTION_LOCKED" ||
+        err.code === "PLANNING_ALREADY_EXISTS"
+      ) {
+        monthlyGroupModal.hide();
+        LeoniLayout.toast({ type: "warning", message: err.message });
+        await loadMonthlyGroupState();
+      } else {
+        errorEl.textContent = err.message || "Unable to save the monthly group.";
+        errorEl.classList.remove("d-none");
+      }
+    } finally {
+      saveMonthlyGroupBtn.textContent = originalLabel;
+      renderMonthlyGroupOptions();
+    }
+  });
+
+  document.getElementById("generateUser")?.addEventListener("change", () => {
+    setGenerationStatus("");
+    loadMonthlyGroupState();
+  });
+
   // Populate users dropdown if Team Leader
   if (loggedUser.role === "Team Leader") {
     try {
@@ -622,11 +1047,20 @@
 
   // Generate Planning Trigger
   document.getElementById("generatePlanningBtn").addEventListener("click", async () => {
-    const monthInput = document.getElementById("generateMonth").value;
+    const monthInput = getGenerationMonth();
     setGenerationStatus("");
 
-    if (!monthInput) {
-      setGenerationStatus("Please select a month.", "warning");
+    if (generationWindowLoading) {
+      setGenerationStatus("Wait for the server generation window to finish loading.", "warning");
+      return;
+    }
+
+    if (!isGenerationWindowOpen() || !monthInput) {
+      setGenerationStatus(
+        generationWindowError ||
+          "Home Office planning can only be generated from the 25th until the end of the month.",
+        "warning"
+      );
       return;
     }
 
@@ -640,14 +1074,51 @@
       targetUserId = selectVal;
     }
 
+    if (monthlySelectionKey !== getMonthlySelectionKey() || monthlySelectionLoading) {
+      setGenerationStatus("Wait for the monthly group selection to finish loading.", "warning");
+      return;
+    }
+
+    if (monthlyPlanningExists) {
+      setGenerationStatus("The Home Office Calendar has already been generated for this month.", "warning");
+      return;
+    }
+
+    if (!monthlySelection) {
+      setGenerationStatus("Select Group A or Group B before generating the Home Office Calendar.", "warning");
+      if (isOwnGenerationTarget()) openMonthlyGroupSelector();
+      return;
+    }
+
     LeoniLayout.showLoading(true);
     try {
       const res = await LeoniAPI.generatePlanning(targetUserId, monthInput);
       setGenerationStatus(res.message || "Planning generated successfully!", "success");
       // Reload planning view
       await loadPlanning();
+      await loadMonthlyGroupState();
     } catch (err) {
-      setGenerationStatus(err.message || "Failed to generate planning.", "error");
+      const warningCodes = [
+        "PLANNING_GENERATION_WINDOW_CLOSED",
+        "INVALID_PLANNING_GENERATION_MONTH",
+        "MONTHLY_GROUP_SELECTION_REQUIRED",
+        "PLANNING_ALREADY_EXISTS",
+      ];
+      const type = warningCodes.includes(err.code)
+        ? "warning"
+        : "error";
+      setGenerationStatus(err.message || "Failed to generate planning.", type);
+      if (
+        err.code === "PLANNING_GENERATION_WINDOW_CLOSED" ||
+        err.code === "INVALID_PLANNING_GENERATION_MONTH"
+      ) {
+        await loadGenerationWindow();
+      } else if (err.code === "MONTHLY_GROUP_SELECTION_REQUIRED") {
+        await loadMonthlyGroupState();
+        if (isOwnGenerationTarget()) openMonthlyGroupSelector();
+      } else if (err.code === "PLANNING_ALREADY_EXISTS") {
+        await loadMonthlyGroupState();
+      }
     } finally {
       LeoniLayout.showLoading(false);
     }
@@ -671,15 +1142,11 @@
     loadPlanning();
   });
 
-  // Set default values for generation datepicker (e.g. next month if after 25th)
-  const today = new Date();
-  let defaultMonthVal = today.toISOString().slice(0, 7);
-  if (today.getDate() >= 25) {
-    const nextMonthObj = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    defaultMonthVal = nextMonthObj.toISOString().slice(0, 7);
-  }
-  document.getElementById("generateMonth").value = defaultMonthVal;
-  document.getElementById("filterMonth").value = defaultMonthVal;
-
+  // The backend is the only authority for the generation window and target month.
+  await loadGenerationWindow();
+  setInterval(
+    () => loadGenerationWindow({ silent: true }),
+    GENERATION_WINDOW_REFRESH_INTERVAL_MS
+  );
   await loadPlanning();
 })();

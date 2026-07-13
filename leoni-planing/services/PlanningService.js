@@ -1,8 +1,22 @@
 const db = require("../config/db");
 const Planning = require("../models/Planning");
-const { PLANNING_STATUS, VALIDATION_RULES } = require("../config/constants");
+const MonthlyGroupSelection = require("../models/MonthlyGroupSelection");
+const PlanningGenerationWindowService = require("./PlanningGenerationWindowService");
+const {
+  MONTHLY_GROUP_SELECTION_ERROR_CODES,
+  PLANNING_STATUS,
+  VALIDATION_RULES,
+} = require("../config/constants");
+const { ConflictError, withErrorCode } = require("../utils/errors");
+
+const MONTHLY_SELECTION_REQUIRED_MESSAGE =
+  "Select Group A or Group B for the next month before generating the Home Office Calendar.";
 
 class PlanningService {
+  static async getPlanningGenerationWindow(connection) {
+    return PlanningGenerationWindowService.getPlanningGenerationWindow(connection);
+  }
+
   /**
    * Core business logic: Calculate Home Office days per the LEONI Cahier des Charges.
    * Group A: Wednesday + Thursday every week, Friday on weeks 1, 3, 5
@@ -54,7 +68,7 @@ class PlanningService {
   }
 
   static async generatePlanning(userId, month) {
-    if (!month || !/^\d{4}-\d{2}$/.test(month)) {
+    if (!month || !VALIDATION_RULES.MONTH_KEY_REGEX.test(month)) {
       throw new Error("Invalid month format. Expected YYYY-MM");
     }
 
@@ -62,20 +76,52 @@ class PlanningService {
     try {
       await connection.beginTransaction();
 
+      let generationWindow =
+        await PlanningGenerationWindowService.getPlanningGenerationWindow(connection);
+      const allowedMonth =
+        PlanningGenerationWindowService.validatePlanningGenerationWindow(
+          month,
+          generationWindow
+        );
+
       const user = await Planning.findUserForPlanning(userId, connection);
       if (!user) {
         throw new Error("User not found");
       }
 
-      if (user.group_id == null) {
-        throw new Error("User has not selected a Home Office group");
+      const monthlySelection = await MonthlyGroupSelection.findByUserAndMonth(
+        userId,
+        allowedMonth,
+        connection,
+        true
+      );
+      const planningExists = await Planning.existsForMonth(userId, allowedMonth, connection);
+
+      if (planningExists) {
+        throw withErrorCode(
+          new ConflictError("The Home Office Calendar has already been generated for this month."),
+          MONTHLY_GROUP_SELECTION_ERROR_CODES.PLANNING_EXISTS
+        );
       }
 
-      const [year, monthNum] = month.split("-").map(Number);
-      const planningDays = this.calculateHomeOfficeDays(year, monthNum, user.group_id);
+      if (!monthlySelection) {
+        throw withErrorCode(
+          new ConflictError(MONTHLY_SELECTION_REQUIRED_MESSAGE),
+          MONTHLY_GROUP_SELECTION_ERROR_CODES.REQUIRED
+        );
+      }
 
-      // Clear previous entries for this user and month (idempotent)
-      await Planning.deleteForMonth(userId, month, connection);
+      // Re-check immediately before the write so a request crossing business midnight
+      // cannot use a window that has just closed.
+      generationWindow =
+        await PlanningGenerationWindowService.getPlanningGenerationWindow(connection);
+      PlanningGenerationWindowService.validatePlanningGenerationWindow(
+        allowedMonth,
+        generationWindow
+      );
+
+      const [year, monthNum] = allowedMonth.split("-").map(Number);
+      const planningDays = this.calculateHomeOfficeDays(year, monthNum, monthlySelection.group_id);
 
       // Batch INSERT instead of N individual inserts
       if (planningDays.length > 0) {
@@ -83,7 +129,7 @@ class PlanningService {
           userId,
           day.date,
           day.status,
-          month,
+          allowedMonth,
           VALIDATION_RULES.DEFAULT_ACTUAL_WORK_HOUR,
           VALIDATION_RULES.DEFAULT_WORK_HOUR,
         ]);
@@ -91,7 +137,12 @@ class PlanningService {
       }
 
       await connection.commit();
-      return planningDays;
+      return {
+        planningDays,
+        generationWindow,
+        groupId: Number(monthlySelection.group_id),
+        groupCode: Number(monthlySelection.group_id) === 1 ? "A" : "B",
+      };
     } catch (err) {
       await connection.rollback();
       throw err;
@@ -122,7 +173,7 @@ class PlanningService {
 
     const normalizedGroup = normalizeGroupId(group_id);
     if (normalizedGroup != null) {
-      conditions.push("users.group_id = ?");
+      conditions.push("mgs.group_id = ?");
       params.push(normalizedGroup);
     }
 

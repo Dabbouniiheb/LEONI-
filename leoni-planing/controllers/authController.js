@@ -12,10 +12,9 @@
 
 const bcrypt = require("bcrypt");
 const db = require("../config/db");
-const { ROLES, AUDIT_ACTIONS, VALIDATION_RULES } = require("../config/constants");
+const { AUDIT_ACTIONS, VALIDATION_RULES } = require("../config/constants");
 const { getPermissionsForRole } = require("../config/permissions");
 const { logAction } = require("../utils/logger");
-const { normalizeGroupId } = require("../utils/helpers");
 const logger = require("../utils/appLogger");
 const asyncHandler = require("../utils/asyncHandler");
 const AppError = require("../utils/errors");
@@ -66,11 +65,6 @@ exports.login = asyncHandler(async (req, res) => {
   let redirect = "/dashboard";
   if (req.session.user.first_login || req.session.user.must_change_password) {
     redirect = "/change-password";
-  } else if (
-    req.session.user.role === ROLES.DATA_CLEANSING &&
-    (req.session.user.group_id == null || req.session.user.group_id === "")
-  ) {
-    redirect = "/select-group";
   }
 
   const { password: _pwd, ...safeUser } = user;
@@ -125,33 +119,5 @@ exports.changePassword = asyncHandler(async (req, res) => {
 
   await logAction(userId, AUDIT_ACTIONS.PASSWORD_CHANGED, "First login / forced change completed", req.ip);
 
-  let redirect = "/dashboard";
-  if (
-    req.session.user.role === ROLES.DATA_CLEANSING &&
-    (req.session.user.group_id == null || req.session.user.group_id === "")
-  ) {
-    redirect = "/select-group";
-  }
-
-  res.json({ success: true, message: "Password updated", redirect });
-});
-
-exports.selectGroup = asyncHandler(async (req, res) => {
-  if (req.session.user.first_login || req.session.user.must_change_password) {
-    return res.status(403).json({ success: false, message: "Change your password first" });
-  }
-
-  const group_id = normalizeGroupId(req.body.group_id);
-  const userId = req.session.user.id;
-
-  if (group_id == null) {
-    return res.status(400).json({ success: false, message: "Invalid group selection" });
-  }
-
-  await db.query("UPDATE users SET group_id = ? WHERE id = ? AND is_deleted = 0", [group_id, userId]);
-  req.session.user.group_id = group_id;
-
-  await logAction(userId, AUDIT_ACTIONS.SELECT_GROUP, `Group ${group_id}`, req.ip);
-
-  res.json({ success: true, redirect: "/dashboard" });
+  res.json({ success: true, message: "Password updated", redirect: "/dashboard" });
 });

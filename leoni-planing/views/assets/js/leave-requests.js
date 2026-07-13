@@ -97,7 +97,7 @@
                        <th>Status</th>
                        <th>Reason</th>
                        <th>Reviewed</th>
-                       <th class="text-end">Actions</th>
+                       <th class="text-end leave-actions-column">Actions</th>
                      </tr>
                    </thead>
                    <tbody id="allLeaveTableBody">
@@ -200,11 +200,13 @@
       }
       return `
         <div class="leave-actions">
-          <button type="button" class="btn btn-sm btn-leoni-outline" data-action="approve" data-id="${Number(request.id)}">
-            <i class="fa-solid fa-check me-1"></i>Approve
+          <button type="button" class="btn btn-leoni-outline leave-action-btn leave-action-btn-approve" data-action="approve" data-id="${Number(request.id)}" aria-label="Approve leave request" title="Approve">
+            <i class="fa-solid fa-check" aria-hidden="true"></i>
+            <span class="visually-hidden">Approve</span>
           </button>
-          <button type="button" class="btn btn-sm btn-leoni-outline btn-leoni-danger-outline" data-action="reject" data-id="${Number(request.id)}">
-            <i class="fa-solid fa-xmark me-1"></i>Reject
+          <button type="button" class="btn btn-leoni-outline btn-leoni-danger-outline leave-action-btn leave-action-btn-reject" data-action="reject" data-id="${Number(request.id)}" aria-label="Reject leave request" title="Reject">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            <span class="visually-hidden">Reject</span>
           </button>
         </div>`;
     }
@@ -233,7 +235,7 @@
           <div>${esc(reviewedText(request))}</div>
           ${decision}
         </td>
-        <td class="text-end">${actionButtons(request, scope)}</td>
+        <td class="text-end leave-actions-column">${actionButtons(request, scope)}</td>
       </tr>`;
   }
 

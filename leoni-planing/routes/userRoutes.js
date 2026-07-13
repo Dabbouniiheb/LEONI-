@@ -2,13 +2,13 @@
  * User Management Routes
  *
  * Mounted at: /api/users
- * All routes require authentication + group selection + USERS_READ permission.
+ * All routes require authentication + completed password onboarding + permission.
  */
 
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
-const { auth, requireGroup, requirePermission } = require("../middlewares/auth");
+const { auth, requireOnboardingComplete, requirePermission } = require("../middlewares/auth");
 const { PERMISSIONS } = require("../config/permissions");
 const validate = require("../middlewares/validate");
 const { createUserValidation, updateUserValidation, userIdValidation } = require("../validations/userValidation");
@@ -16,7 +16,7 @@ const { createUserValidation, updateUserValidation, userIdValidation } = require
 router.get(
   "/",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.USERS_READ),
   userController.getUsers
 );
@@ -24,7 +24,7 @@ router.get(
 router.post(
   "/",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.USERS_CREATE),
   createUserValidation,
   validate,
@@ -34,7 +34,7 @@ router.post(
 router.put(
   "/:id",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.USERS_UPDATE),
   userIdValidation,
   updateUserValidation,
@@ -45,7 +45,7 @@ router.put(
 router.delete(
   "/:id",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.USERS_DELETE),
   userIdValidation,
   validate,

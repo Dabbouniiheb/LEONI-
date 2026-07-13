@@ -2,8 +2,7 @@
  * LEONI Frontend Authentication Module
  *
  * Manages session state, access control, and permissions on the client side.
- * Bug fix: Team Leaders no longer get redirected to group selection
- * (they don't need a group — only Data Cleansing users do).
+ * First-login onboarding requires only the mandatory password change.
  */
 const LeoniAuth = (() => {
   let cachedUser = null;
@@ -53,10 +52,7 @@ const LeoniAuth = (() => {
   }
 
   async function ensureAccess(options = {}) {
-    const {
-      allowPasswordChange = false,
-      allowSelectGroup = false,
-    } = options;
+    const { allowPasswordChange = false } = options;
 
     const user = await refreshSession();
     if (!user) {
@@ -69,18 +65,6 @@ const LeoniAuth = (() => {
       return false;
     }
 
-    // BUG FIX: Only Data Cleansing users need group selection.
-    // Team Leaders should never be redirected to group selection.
-    if (
-      user.role === "Data Cleansing" &&
-      (user.group_id == null || user.group_id === "") &&
-      !allowSelectGroup &&
-      !requiresPasswordChange(user)
-    ) {
-      window.location.href = "/select-group";
-      return false;
-    }
-
     return true;
   }
 
@@ -90,14 +74,6 @@ const LeoniAuth = (() => {
 
     if (requiresPasswordChange(user)) {
       window.location.href = "/change-password?reason=password-required";
-      return true;
-    }
-    // Only Data Cleansing users need group selection
-    if (
-      user.role === "Data Cleansing" &&
-      (user.group_id == null || user.group_id === "")
-    ) {
-      window.location.href = "/select-group";
       return true;
     }
     window.location.href = "/dashboard";

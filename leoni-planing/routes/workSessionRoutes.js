@@ -7,7 +7,7 @@
 const express = require("express");
 const router = express.Router();
 const workSessionController = require("../controllers/workSessionController");
-const { auth, requireGroup, requirePermission } = require("../middlewares/auth");
+const { auth, requireOnboardingComplete, requirePermission } = require("../middlewares/auth");
 const { PERMISSIONS } = require("../config/permissions");
 const validate = require("../middlewares/validate");
 const {
@@ -21,7 +21,7 @@ const {
 router.post(
   "/auto-start",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.PLANNING_READ_OWN),
   autoStartSessionValidation,
   validate,
@@ -31,7 +31,7 @@ router.post(
 router.post(
   "/heartbeat",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.PLANNING_READ_OWN),
   heartbeatValidation,
   validate,
@@ -41,7 +41,7 @@ router.post(
 router.post(
   "/pause",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.PLANNING_READ_OWN),
   sessionIdValidation,
   validate,
@@ -51,7 +51,7 @@ router.post(
 router.post(
   "/end",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.PLANNING_READ_OWN),
   sessionIdValidation,
   validate,
@@ -61,7 +61,7 @@ router.post(
 router.get(
   "/mine",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.PLANNING_READ_OWN),
   mineValidation,
   validate,
@@ -71,7 +71,7 @@ router.get(
 router.get(
   "/summary",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.WORK_SESSIONS_READ_SUMMARY),
   summaryValidation,
   validate,

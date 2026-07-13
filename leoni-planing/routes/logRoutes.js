@@ -7,13 +7,13 @@
 const express = require("express");
 const router = express.Router();
 const logController = require("../controllers/logController");
-const { auth, requireGroup, requirePermission } = require("../middlewares/auth");
+const { auth, requireOnboardingComplete, requirePermission } = require("../middlewares/auth");
 const { PERMISSIONS } = require("../config/permissions");
 
 router.get(
   "/",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.AUDIT_READ),
   logController.getLogs
 );

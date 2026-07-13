@@ -21,6 +21,5 @@ exports.updateUserValidation = [
   body("last_name").trim().notEmpty().withMessage("Last name is required").isLength({ max: 50 }),
   body("matricule").trim().notEmpty().withMessage("Matricule is required").isLength({ max: 50 }),
   body("department").trim().notEmpty().withMessage("Department is required").isLength({ max: 100 }),
-  body("role").notEmpty().withMessage("Role is required").isIn(Object.values(ROLES)).withMessage("Invalid role"),
-  body("group_id").optional({ checkFalsy: true }).isInt({ min: 1, max: 2 }).withMessage("Group must be 1 or 2")
+  body("role").notEmpty().withMessage("Role is required").isIn(Object.values(ROLES)).withMessage("Invalid role")
 ];

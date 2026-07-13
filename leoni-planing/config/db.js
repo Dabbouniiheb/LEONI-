@@ -50,6 +50,16 @@ async function initializeDatabase() {
     }
     logger.info("Database schema initialized (CREATE IF NOT EXISTS — safe)");
 
+    const [auditIpColumns] = await connection.query(
+      "SHOW COLUMNS FROM audit_logs LIKE 'ip_address'"
+    );
+    if (auditIpColumns.length === 0) {
+      logger.info("Running automatic migration: adding ip_address to audit_logs");
+      await connection.query(
+        "ALTER TABLE audit_logs ADD COLUMN ip_address VARCHAR(45) NULL COMMENT 'Client IP for security tracking'"
+      );
+    }
+
     // Safe Migration: Add soft-delete columns if they are missing
     // This fixes the crash on older databases where `users` table already existed before refactoring
     const [columns] = await connection.query("SHOW COLUMNS FROM users LIKE 'is_deleted'");

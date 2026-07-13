@@ -1,5 +1,4 @@
 const { body } = require("express-validator");
-const { ROLES } = require("../config/constants");
 
 exports.loginValidation = [
   body("email")
@@ -24,10 +23,4 @@ exports.changePasswordValidation = [
   body("confirmPassword")
     .notEmpty().withMessage("Please confirm new password")
     .isLength({ max: 200 })
-];
-
-exports.selectGroupValidation = [
-  body("group_id")
-    .notEmpty().withMessage("Group ID is required")
-    .isInt({ min: 1, max: 2 }).withMessage("Group ID must be 1 (Group A) or 2 (Group B)")
 ];

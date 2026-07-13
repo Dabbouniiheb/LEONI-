@@ -56,14 +56,20 @@ const LeoniAPI = (() => {
 
       let message = `Request failed (${response.status})`;
       let redirect = null;
+      let errorCode = null;
+      let details = null;
       if (contentType.includes("application/json")) {
         const data = await response.json();
         message = data.message || message;
         redirect = data.redirect || null;
+        errorCode = data.code || null;
+        details = data.details || data.errors || null;
       }
       const err = new Error(message);
       err.status = response.status;
       err.redirect = redirect;
+      err.code = errorCode;
+      err.details = details;
       throw err;
     }
 
@@ -108,12 +114,6 @@ const LeoniAPI = (() => {
         method: "POST",
         body: JSON.stringify(body),
       }),
-    selectGroup: (group_id) =>
-      request("/api/auth/select-group", {
-        method: "POST",
-        body: JSON.stringify({ group_id }),
-      }),
-
     // Dashboard
     getStats: (filters = {}) =>
       request(`/api/dashboard/stats${buildQuery(filters)}`),
@@ -133,11 +133,23 @@ const LeoniAPI = (() => {
     getPlanning: (filters = {}) =>
       request(`/api/planning${buildQuery(filters)}`),
     getPlanningByUser: (userId) => request(`/api/planning/${userId}`),
+    getPlanningGenerationWindow: () => request("/api/planning/generation-window"),
     generatePlanning: (user_id, month) =>
       request("/api/planning/generate", {
         method: "POST",
         body: JSON.stringify({ user_id, month }),
       }),
+
+    // Monthly Home Office group selections
+    getMyMonthlyGroupSelection: (month) =>
+      request(`/api/monthly-group-selections/mine${buildQuery({ month })}`),
+    saveMyMonthlyGroupSelection: (month, group_id) =>
+      request("/api/monthly-group-selections/mine", {
+        method: "PUT",
+        body: JSON.stringify({ month, group_id }),
+      }),
+    getMonthlyGroupSelectionStatus: (month) =>
+      request(`/api/monthly-group-selections${buildQuery({ month })}`),
 
     // Work Sessions
     autoStartWorkSession: (planning_id) =>

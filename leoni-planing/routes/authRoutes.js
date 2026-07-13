@@ -10,12 +10,11 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 const { auth } = require("../middlewares/auth");
 const validate = require("../middlewares/validate");
-const { loginValidation, changePasswordValidation, selectGroupValidation } = require("../validations/authValidation");
+const { loginValidation, changePasswordValidation } = require("../validations/authValidation");
 
 router.get("/session", authController.getSession);
 router.post("/login", loginValidation, validate, authController.login);
 router.post("/logout", authController.logout);
 router.post("/change-password", auth, changePasswordValidation, validate, authController.changePassword);
-router.post("/select-group", auth, selectGroupValidation, validate, authController.selectGroup);
 
 module.exports = router;

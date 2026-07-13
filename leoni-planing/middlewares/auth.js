@@ -5,11 +5,10 @@
  * Never hardcodes role names in route files — always checks permissions.
  *
  * Middleware chain for protected routes:
- *   auth → requireGroup → requirePermission("users.read")
+ *   auth → requireOnboardingComplete → requirePermission("users.read")
  */
 
-const { hasPermission, getPermissionsForRole } = require("../config/permissions");
-const { ROLES } = require("../config/constants");
+const { hasPermission } = require("../config/permissions");
 const { wantsJson } = require("../utils/helpers");
 const logger = require("../utils/appLogger");
 
@@ -31,11 +30,9 @@ function auth(req, res, next) {
 }
 
 /**
- * Verify the user has completed the onboarding flow:
- *  1. Password changed (if must_change_password)
- *  2. Group selected (if Data Cleansing role)
+ * Verify the user has completed the mandatory password-change step.
  */
-function requireGroup(req, res, next) {
+function requireOnboardingComplete(req, res, next) {
   if (!req.session.user) {
     if (wantsJson(req)) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
@@ -43,7 +40,7 @@ function requireGroup(req, res, next) {
     return res.redirect("/login");
   }
 
-  // Step 1: Force password change
+  // Force password change before allowing access to the application.
   if (req.session.user.first_login || req.session.user.must_change_password) {
     if (wantsJson(req)) {
       return res.status(403).json({
@@ -53,21 +50,6 @@ function requireGroup(req, res, next) {
       });
     }
     return res.redirect(PASSWORD_CHANGE_PATH);
-  }
-
-  // Step 2: Force group selection (Data Cleansing only — Team Leaders don't need a group)
-  if (
-    req.session.user.role === ROLES.DATA_CLEANSING &&
-    (req.session.user.group_id == null || req.session.user.group_id === "")
-  ) {
-    if (wantsJson(req)) {
-      return res.status(403).json({
-        success: false,
-        message: "Veuillez sélectionner votre groupe Home Office",
-        redirect: "/select-group",
-      });
-    }
-    return res.redirect("/select-group");
   }
 
   next();
@@ -116,7 +98,7 @@ function requirePermission(permission) {
 
 module.exports = {
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission,
   wantsJson,
 };

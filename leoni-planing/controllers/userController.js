@@ -12,7 +12,7 @@
 
 const bcrypt = require("bcrypt");
 const db = require("../config/db");
-const { AUDIT_ACTIONS, VALIDATION_RULES } = require("../config/constants");
+const { AUDIT_ACTIONS, ROLES, VALIDATION_RULES } = require("../config/constants");
 const { logAction } = require("../utils/logger");
 const logger = require("../utils/appLogger");
 const asyncHandler = require("../utils/asyncHandler");
@@ -40,7 +40,7 @@ exports.createUser = asyncHandler(async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, VALIDATION_RULES.BCRYPT_SALT_ROUNDS);
-  const userRole = role || "Data Cleansing";
+  const userRole = role || ROLES.DATA_CLEANSING;
 
   const [result] = await db.query(
     `INSERT INTO users (first_name, last_name, username, email, password, role, matricule, department, must_change_password, first_login)
@@ -69,7 +69,7 @@ exports.createUser = asyncHandler(async (req, res) => {
 });
 
 exports.updateUser = asyncHandler(async (req, res) => {
-  const { first_name, last_name, role, matricule, department, group_id } = req.body;
+  const { first_name, last_name, role, matricule, department } = req.body;
   const targetId = req.params.id;
 
   const [existing] = await db.query("SELECT id FROM users WHERE id = ? AND is_deleted = 0", [targetId]);
@@ -77,11 +77,9 @@ exports.updateUser = asyncHandler(async (req, res) => {
     return res.status(404).json({ success: false, message: "User not found" });
   }
 
-  const normalizedGroupId = group_id === "" || group_id == null ? null : parseInt(group_id, 10);
-
   await db.query(
     `UPDATE users
-     SET first_name = ?, last_name = ?, role = ?, matricule = ?, department = ?, group_id = ?
+     SET first_name = ?, last_name = ?, role = ?, matricule = ?, department = ?
      WHERE id = ?`,
     [
       first_name,
@@ -89,7 +87,6 @@ exports.updateUser = asyncHandler(async (req, res) => {
       role,
       matricule,
       department,
-      normalizedGroupId,
       targetId,
     ]
   );

@@ -60,6 +60,11 @@ class ValidationError extends BadRequestError {
   }
 }
 
+function withErrorCode(error, code) {
+  error.code = code;
+  return error;
+}
+
 module.exports = {
   AppError,
   BadRequestError,
@@ -68,4 +73,5 @@ module.exports = {
   NotFoundError,
   ConflictError,
   ValidationError,
+  withErrorCode,
 };

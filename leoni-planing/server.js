@@ -153,6 +153,7 @@ app.use("/", viewRoutes);
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const planningRoutes = require("./routes/planningRoutes");
+const monthlyGroupSelectionRoutes = require("./routes/monthlyGroupSelectionRoutes");
 const leaveRequestRoutes = require("./routes/leaveRequestRoutes");
 const workSessionRoutes = require("./routes/workSessionRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
@@ -165,6 +166,7 @@ app.use("/api/auth/login", loginLimiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/planning", planningRoutes);
+app.use("/api/monthly-group-selections", monthlyGroupSelectionRoutes);
 app.use("/api/leave-requests", leaveRequestRoutes);
 app.use("/api/work-sessions", workSessionRoutes);
 app.use("/api/dashboard", dashboardRoutes);
@@ -211,6 +213,7 @@ app.use((err, req, res, next) => {
 
   res.status(statusCode).json({
     success: false,
+    ...(isOperational && err.code ? { code: err.code } : {}),
     message,
     ...(err.details ? { details: err.details } : {}),
   });

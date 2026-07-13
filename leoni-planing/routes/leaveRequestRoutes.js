@@ -7,7 +7,7 @@
 const express = require("express");
 const router = express.Router();
 const leaveRequestController = require("../controllers/leaveRequestController");
-const { auth, requireGroup, requirePermission } = require("../middlewares/auth");
+const { auth, requireOnboardingComplete, requirePermission } = require("../middlewares/auth");
 const { PERMISSIONS } = require("../config/permissions");
 const validate = require("../middlewares/validate");
 const {
@@ -19,7 +19,7 @@ const {
 router.get(
   "/mine",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.LEAVE_REQUESTS_READ_OWN),
   leaveRequestController.getOwnRequests
 );
@@ -27,7 +27,7 @@ router.get(
 router.post(
   "/",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.LEAVE_REQUESTS_READ_OWN),
   createLeaveRequestValidation,
   validate,
@@ -37,7 +37,7 @@ router.post(
 router.patch(
   "/:id/cancel",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.LEAVE_REQUESTS_READ_OWN),
   leaveRequestIdValidation,
   validate,
@@ -47,7 +47,7 @@ router.patch(
 router.get(
   "/",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.LEAVE_REQUESTS_MANAGE),
   leaveRequestController.getAllRequests
 );
@@ -55,7 +55,7 @@ router.get(
 router.patch(
   "/:id/approve",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.LEAVE_REQUESTS_MANAGE),
   leaveRequestIdValidation,
   reviewLeaveRequestValidation,
@@ -66,7 +66,7 @@ router.patch(
 router.patch(
   "/:id/reject",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.LEAVE_REQUESTS_MANAGE),
   leaveRequestIdValidation,
   reviewLeaveRequestValidation,

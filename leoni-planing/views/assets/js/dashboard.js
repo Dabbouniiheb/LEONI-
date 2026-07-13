@@ -38,7 +38,7 @@
       <div class="col-sm-6 col-xl-3">
         <article class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
-          <div class="stat-label">Group A / B Users</div>
+          <div class="stat-label">Monthly Groups A / B (${targetMonthKey})</div>
           <p class="stat-value" id="statGroups">—</p>
         </article>
       </div>
@@ -168,11 +168,17 @@
         </div>`;
 
       // Render validation tracking table for Team Leaders
-      const users = await LeoniAPI.getUsers();
-      const planningData = await LeoniAPI.getPlanning({ month: targetMonthKey });
+      const [users, planningData, monthlyStatus] = await Promise.all([
+        LeoniAPI.getUsers(),
+        LeoniAPI.getPlanning({ month: targetMonthKey }),
+        LeoniAPI.getMonthlyGroupSelectionStatus(targetMonthKey),
+      ]);
 
       const employees = users.filter(u => u.role === "Data Cleansing");
       const validatedUserIds = new Set(planningData.map(row => row.user_id));
+      const monthlySelectionByUser = new Map(
+        monthlyStatus.selections.map((item) => [String(item.user_id), item.selection])
+      );
 
       const rowsHtml = employees.map(emp => {
         const isValidated = validatedUserIds.has(emp.id);
@@ -182,14 +188,19 @@
               ? `<span class="badge bg-warning text-dark">En attente</span>` 
               : `<span class="badge bg-danger">Délai dépassé</span>`
             );
-        const groupLabel = LeoniLayout.formatGroup(emp.group_id);
-        const groupBadge = LeoniLayout.groupBadgeClass(emp.group_id);
+        const monthlySelection = monthlySelectionByUser.get(String(emp.id));
+        const monthlyGroupId = monthlySelection?.group_id ?? null;
+        const groupLabel = LeoniLayout.formatGroup(monthlyGroupId);
+        const groupBadge = LeoniLayout.groupBadgeClass(monthlyGroupId);
+        const groupHtml = monthlySelection
+          ? `<span class="badge-group ${groupBadge}">Group ${groupLabel}</span>`
+          : `<span class="text-muted">Not selected</span>`;
 
         return `
           <tr>
             <td><code>${emp.matricule}</code></td>
             <td class="fw-semibold">${escapeHtml(emp.name)}</td>
-            <td><span class="badge-group ${groupBadge}">Group ${groupLabel}</span></td>
+            <td>${groupHtml}</td>
             <td>${escapeHtml(emp.department || "—")}</td>
             <td>${statusBadge}</td>
           </tr>`;

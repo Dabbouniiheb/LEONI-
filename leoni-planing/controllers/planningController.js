@@ -10,9 +10,15 @@
 
 const PlanningService = require("../services/PlanningService");
 const { ROLES, AUDIT_ACTIONS } = require("../config/constants");
+const { PERMISSIONS, hasPermission } = require("../config/permissions");
 const { logAction } = require("../utils/logger");
 const { normalizeGroupId } = require("../utils/helpers");
 const asyncHandler = require("../utils/asyncHandler");
+
+exports.getGenerationWindow = asyncHandler(async (req, res) => {
+  const window = await PlanningService.getPlanningGenerationWindow();
+  res.json({ success: true, window });
+});
 
 exports.generatePlanning = asyncHandler(async (req, res) => {
   const { user_id, month } = req.body;
@@ -20,18 +26,22 @@ exports.generatePlanning = asyncHandler(async (req, res) => {
 
   const targetUserId = user_id || loggedUser.id;
 
-  // Access Control: Data Cleansing can only generate for themselves
-  if (loggedUser.role !== ROLES.TEAM_LEADER && String(targetUserId) !== String(loggedUser.id)) {
+  const requiredPermission = String(targetUserId) === String(loggedUser.id)
+    ? PERMISSIONS.PLANNING_GENERATE_OWN
+    : PERMISSIONS.PLANNING_GENERATE_ALL;
+
+  if (!hasPermission(loggedUser.role, requiredPermission)) {
     return res.status(403).json({ success: false, message: "Forbidden: You cannot generate planning for other users" });
   }
 
   try {
-    const planningDays = await PlanningService.generatePlanning(targetUserId, month);
+    const result = await PlanningService.generatePlanning(targetUserId, month);
+    const { planningDays, generationWindow, groupCode } = result;
 
     await logAction(
       loggedUser.id,
       AUDIT_ACTIONS.GENERATE_PLANNING,
-      `Generated ${planningDays.length} days for user ID ${targetUserId} (${month})`,
+      `actor_user_id=${loggedUser.id}; target_user_id=${targetUserId}; server_date=${generationWindow.server_date}; timezone=${generationWindow.timezone}; allowed_month=${generationWindow.allowed_month}; group=${groupCode}; generated_rows=${planningDays.length}`,
       req.ip
     );
 
@@ -39,9 +49,10 @@ exports.generatePlanning = asyncHandler(async (req, res) => {
       success: true,
       message: `Generated ${planningDays.length} planning entries`,
       planning: planningDays,
+      window: generationWindow,
     });
   } catch (err) {
-    if (err.message === "Invalid month format. Expected YYYY-MM" || err.message === "User has not selected a Home Office group") {
+    if (err.message === "Invalid month format. Expected YYYY-MM") {
       return res.status(400).json({ success: false, message: err.message });
     }
     if (err.message === "User not found") {

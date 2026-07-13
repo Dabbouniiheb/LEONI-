@@ -65,10 +65,10 @@ class User {
   }
 
   static async update(id, updateData) {
-    const { first_name, last_name, role, matricule, department, group_id } = updateData;
+    const { first_name, last_name, role, matricule, department } = updateData;
     await db.query(
       `UPDATE users
-       SET first_name = ?, last_name = ?, role = ?, matricule = ?, department = ?, group_id = ?
+       SET first_name = ?, last_name = ?, role = ?, matricule = ?, department = ?
        WHERE id = ? AND is_deleted = 0`,
       [
         first_name,
@@ -76,7 +76,6 @@ class User {
         role,
         matricule,
         department,
-        group_id,
         id,
       ]
     );
@@ -96,9 +95,6 @@ class User {
     );
   }
 
-  static async updateGroup(id, groupId) {
-    await db.query("UPDATE users SET group_id = ? WHERE id = ? AND is_deleted = 0", [groupId, id]);
-  }
 }
 
 module.exports = User;

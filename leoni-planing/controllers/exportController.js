@@ -20,7 +20,7 @@ async function fetchExportRows(filters) {
   const params = [];
 
   if (group_id) {
-    conditions.push("u.group_id = ?");
+    conditions.push("mgs.group_id = ?");
     params.push(group_id);
   }
   if (user_id) {
@@ -44,6 +44,8 @@ async function fetchExportRows(filters) {
        p.work_hour
      FROM planning p
      JOIN users u ON u.id = p.user_id
+     LEFT JOIN monthly_group_selections mgs
+       ON mgs.user_id = p.user_id AND mgs.month_key = p.month_key
      ${whereClause}
      ORDER BY u.first_name, u.last_name, p.date`,
     params

@@ -7,13 +7,13 @@
 const express = require("express");
 const router = express.Router();
 const exportController = require("../controllers/exportController");
-const { auth, requireGroup, requirePermission } = require("../middlewares/auth");
+const { auth, requireOnboardingComplete, requirePermission } = require("../middlewares/auth");
 const { PERMISSIONS } = require("../config/permissions");
 
 router.get(
   "/csv",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.EXPORT_CSV),
   exportController.exportCsv
 );
@@ -21,7 +21,7 @@ router.get(
 router.get(
   "/xlsx",
   auth,
-  requireGroup,
+  requireOnboardingComplete,
   requirePermission(PERMISSIONS.EXPORT_XLSX),
   exportController.exportXlsx
 );

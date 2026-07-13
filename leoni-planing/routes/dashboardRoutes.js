@@ -7,8 +7,8 @@
 const express = require("express");
 const router = express.Router();
 const dashboardController = require("../controllers/dashboardController");
-const { auth, requireGroup } = require("../middlewares/auth");
+const { auth, requireOnboardingComplete } = require("../middlewares/auth");
 
-router.get("/stats", auth, requireGroup, dashboardController.getStats);
+router.get("/stats", auth, requireOnboardingComplete, dashboardController.getStats);
 
 module.exports = router;

@@ -29,13 +29,12 @@
                 <th>Matricule</th>
                 <th>Email</th>
                 <th>Role</th>
-                <th>Group</th>
                 <th>Department</th>
                 <th class="text-end">Actions</th>
               </tr>
             </thead>
             <tbody id="usersTableBody">
-              <tr><td colspan="8" class="text-center py-4 text-muted">Loading users…</td></tr>
+              <tr><td colspan="7" class="text-center py-4 text-muted">Loading users…</td></tr>
             </tbody>
           </table>
         </div>
@@ -133,19 +132,11 @@
               <label for="editDepartment" class="form-label">Department</label>
               <input type="text" class="form-control" id="editDepartment" required />
             </div>
-            <div class="mb-3">
+            <div class="mb-0">
               <label for="editRole" class="form-label">Role</label>
               <select class="form-select" id="editRole">
                 <option value="Data Cleansing">Data Cleansing</option>
                 <option value="Team Leader">Team Leader</option>
-              </select>
-            </div>
-            <div class="mb-0">
-              <label for="editGroup" class="form-label">Home Office Group</label>
-              <select class="form-select" id="editGroup">
-                <option value="">No Group</option>
-                <option value="1">Group A</option>
-                <option value="2">Group B</option>
               </select>
             </div>
           </div>
@@ -167,7 +158,6 @@
   let usersCache = [];
   const editModal = new bootstrap.Modal(document.getElementById("editUserModal"));
   const createModal = new bootstrap.Modal(document.getElementById("createUserModal"));
-
   function renderUsers(users) {
     const tbody = document.getElementById("usersTableBody");
     const empty = document.getElementById("usersEmpty");
@@ -183,8 +173,6 @@
     const esc = LeoniLayout.escapeHtml;
     tbody.innerHTML = users
       .map((user) => {
-        const group = LeoniLayout.formatGroup(user.group_id);
-        const badgeClass = LeoniLayout.groupBadgeClass(user.group_id);
         return `
           <tr>
             <td class="fw-semibold">${esc(user.name)}</td>
@@ -192,7 +180,6 @@
             <td><code>${esc(user.matricule)}</code></td>
             <td>${esc(user.email)}</td>
             <td><span class="badge-role">${esc(user.role)}</span></td>
-            <td><span class="badge-group ${badgeClass}">Group ${group}</span></td>
             <td>${esc(user.department || "—")}</td>
             <td class="text-end">
               <button type="button" class="btn btn-sm btn-leoni-outline btn-icon me-1" data-action="edit" data-id="${user.id}" aria-label="Edit ${esc(user.name)}" title="Edit user">
@@ -283,7 +270,6 @@
       document.getElementById("editMatricule").value = user.matricule || "";
       document.getElementById("editDepartment").value = user.department || "";
       document.getElementById("editRole").value = user.role;
-      document.getElementById("editGroup").value = user.group_id != null ? String(user.group_id) : "";
       editModal.show();
     }
 
@@ -317,7 +303,6 @@
     const matricule = document.getElementById("editMatricule").value.trim();
     const department = document.getElementById("editDepartment").value.trim();
     const role = document.getElementById("editRole").value;
-    const group_id = document.getElementById("editGroup").value;
 
     const alertEl = document.getElementById("editAlert");
     alertEl.classList.add("d-none");
@@ -327,7 +312,6 @@
       alertEl.classList.remove("d-none");
       return;
     }
-
     LeoniLayout.showLoading(true);
     try {
       await LeoniAPI.updateUser(id, {
@@ -336,7 +320,6 @@
         role,
         matricule,
         department,
-        group_id,
       });
       editModal.hide();
       usersCache = await LeoniAPI.getUsers();
@@ -357,7 +340,7 @@
     renderUsers(usersCache);
   } catch {
     document.getElementById("usersTableBody").innerHTML = `
-      <tr><td colspan="8" class="text-center py-4 text-danger">Failed to load users.</td></tr>`;
+      <tr><td colspan="7" class="text-center py-4 text-danger">Failed to load users.</td></tr>`;
   } finally {
     LeoniLayout.showLoading(false);
   }

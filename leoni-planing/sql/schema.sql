@@ -35,7 +35,24 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_user_deleted (is_deleted)
 ) ENGINE=InnoDB;
 
--- 2. Planning Table
+-- 2. Monthly Home Office Group Selections Table
+CREATE TABLE IF NOT EXISTS monthly_group_selections (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    month_key CHAR(7) NOT NULL COMMENT 'Format: YYYY-MM',
+    group_id TINYINT NOT NULL COMMENT '1 = Group A, 2 = Group B',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_monthly_group_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT chk_monthly_group_id CHECK (group_id IN (1, 2)),
+    UNIQUE KEY uq_monthly_group_user_month (user_id, month_key),
+    INDEX idx_monthly_group_month (month_key),
+    INDEX idx_monthly_group_group (group_id),
+    INDEX idx_monthly_group_month_group (month_key, group_id)
+) ENGINE=InnoDB;
+
+-- 3. Planning Table
 CREATE TABLE IF NOT EXISTS planning (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -53,7 +70,7 @@ CREATE TABLE IF NOT EXISTS planning (
     INDEX idx_planning_month (month_key)
 ) ENGINE=InnoDB;
 
--- 3. Work Sessions Table
+-- 4. Work Sessions Table
 CREATE TABLE IF NOT EXISTS work_sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -77,7 +94,7 @@ CREATE TABLE IF NOT EXISTS work_sessions (
     UNIQUE KEY uq_work_sessions_active (user_id, planning_id, work_date, active_slot)
 ) ENGINE=InnoDB;
 
--- 4. Leave Requests Table
+-- 5. Leave Requests Table
 CREATE TABLE IF NOT EXISTS leave_requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -100,7 +117,7 @@ CREATE TABLE IF NOT EXISTS leave_requests (
     INDEX idx_leave_date_range (start_date, end_date)
 ) ENGINE=InnoDB;
 
--- 5. Audit Logs Table
+-- 6. Audit Logs Table
 CREATE TABLE IF NOT EXISTS audit_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,

@@ -7,14 +7,30 @@
 const express = require("express");
 const router = express.Router();
 const planningController = require("../controllers/planningController");
-const { auth, requireGroup } = require("../middlewares/auth");
+const { auth, requireOnboardingComplete, requirePermission } = require("../middlewares/auth");
+const { PERMISSIONS } = require("../config/permissions");
 const validate = require("../middlewares/validate");
 const { generatePlanningValidation, getPlanningValidation } = require("../validations/planningValidation");
 
-router.post("/generate", auth, requireGroup, generatePlanningValidation, validate, planningController.generatePlanning);
-router.get("/calendar", auth, requireGroup, planningController.getPlanningCalendars);
-router.get("/", auth, requireGroup, getPlanningValidation, validate, planningController.getPlanning);
-router.get("/all", auth, requireGroup, planningController.getAllPlanning);
-router.get("/:user_id", auth, requireGroup, planningController.getPlanningByUser);
+router.get(
+  "/generation-window",
+  auth,
+  requireOnboardingComplete,
+  requirePermission(PERMISSIONS.PLANNING_GENERATE_OWN),
+  planningController.getGenerationWindow
+);
+router.post(
+  "/generate",
+  auth,
+  requireOnboardingComplete,
+  requirePermission(PERMISSIONS.PLANNING_GENERATE_OWN),
+  generatePlanningValidation,
+  validate,
+  planningController.generatePlanning
+);
+router.get("/calendar", auth, requireOnboardingComplete, planningController.getPlanningCalendars);
+router.get("/", auth, requireOnboardingComplete, getPlanningValidation, validate, planningController.getPlanning);
+router.get("/all", auth, requireOnboardingComplete, planningController.getAllPlanning);
+router.get("/:user_id", auth, requireOnboardingComplete, planningController.getPlanningByUser);
 
 module.exports = router;

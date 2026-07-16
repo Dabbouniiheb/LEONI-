@@ -1,0 +1,26 @@
+@startuml
+title Séquence d'export CSV ou XLSX
+autonumber
+skinparam shadowing false
+actor "Team Leader" as TL
+boundary "Page Export" as Page
+control "Auth, onboarding et permission" as MW
+control "ExportController" as C
+control "ExcelJS" as Excel
+database "MySQL" as DB
+TL -> Page : choisir mois, groupe, utilisateur et format
+Page -> MW : GET /api/export/csv ou /xlsx
+MW -> MW : exiger export.csv ou export.xlsx
+MW -> C : export avec filtres
+C -> DB : SELECT planning JOIN users\nconditions fixes et valeurs paramétrées
+DB --> C : lignes filtrées
+alt Format CSV
+  C -> C : échapper et assembler les lignes CSV
+  C --> Page : flux text/csv
+else Format XLSX
+  C -> Excel : créer classeur, feuille, colonnes et lignes
+  Excel --> C : flux XLSX
+  C --> Page : classeur téléchargé
+end
+C -> DB : INSERT audit_logs EXPORT_CSV ou EXPORT_XLSX
+@enduml

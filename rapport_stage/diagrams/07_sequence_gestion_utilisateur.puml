@@ -1,0 +1,30 @@
+@startuml
+title Séquence de création d'un utilisateur
+autonumber
+skinparam shadowing false
+actor "Team Leader" as TL
+boundary "Page Utilisateurs" as Page
+control "Auth, onboarding, users.create" as MW
+control "Validation utilisateur" as V
+control "UserController" as C
+control "bcrypt" as BCrypt
+database "MySQL" as DB
+TL -> Page : renseigner le compte
+Page -> MW : POST /api/users avec jeton CSRF
+MW -> V : vérifier identité, e-mail, rôle, matricule, mot de passe
+alt Accès ou données refusés
+  V --> Page : 400 ou 403
+else Requête autorisée
+  V -> C : createUser(req, res)
+  C -> DB : rechercher conflits uniques
+  alt Conflit
+    DB --> Page : 409
+  else Aucun conflit
+    C -> BCrypt : hash(mot de passe, 10 tours)
+    BCrypt --> C : hash
+    C -> DB : INSERT users avec onboarding actif
+    C -> DB : INSERT audit_logs CREATE_USER
+    C --> Page : 201 et identifiant
+  end
+end
+@enduml

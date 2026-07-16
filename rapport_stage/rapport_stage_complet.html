@@ -1,0 +1,3039 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rapport de stage — Planning Home Office</title><style>
+@page { size: A4; margin: 2.2cm 2.4cm 2.2cm 2.5cm; }
+:root { --ink:#171717; --muted:#555; --line:#9a9a9a; --shade:#f1f1f1; --accent:#2f3a45; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { max-width: 21cm; margin:0 auto; padding:1.2cm; color:var(--ink); background:white; font-family:"Times New Roman", Times, serif; font-size:12pt; line-height:1.5; text-align:justify; }
+h1,h2,h3,h4,h5,h6 { color:#111; text-align:left; page-break-after:avoid; break-after:avoid; }
+h1 { font-size:18pt; margin:1.2em 0 .65em; border-bottom:1px solid var(--line); padding-bottom:.18em; }
+h2 { font-size:14pt; margin:1.15em 0 .45em; }
+h3 { font-size:12.5pt; margin:1em 0 .35em; }
+p { margin:.35em 0 .75em; orphans:3; widows:3; }
+.cover-title { text-align:center; border:0; margin-top:1.1cm; }
+.cover-line { text-align:center; margin:.45em 0; }
+.page-break { break-before:page; page-break-before:always; height:0; }
+.placeholder { background:#fff1a8; border:1px solid #c8ad43; padding:0 .15em; font-weight:600; }
+code { font-family:"Courier New", monospace; font-size:.88em; background:#f3f3f3; padding:.08em .22em; }
+pre { white-space:pre-wrap; background:#f3f3f3; border-left:3px solid #777; padding:.7em; font-size:9pt; line-height:1.3; text-align:left; break-inside:avoid; }
+blockquote { border-left:3px solid #777; margin:.8em 0; padding:.25em .9em; color:#333; }
+ul,ol { margin:.35em 0 .8em 1.4em; padding-left:.5em; }
+li { margin:.15em 0; }
+.table-wrap { overflow-x:auto; margin:.7em 0 1em; }
+table { width:100%; border-collapse:collapse; font-size:8.6pt; line-height:1.25; text-align:left; break-inside:auto; }
+thead { display:table-header-group; }
+tr { break-inside:avoid; page-break-inside:avoid; }
+th,td { border:1px solid #777; padding:.28em .38em; vertical-align:top; }
+th { background:#dedede; font-weight:700; }
+.toc { text-align:left; border:1px solid #aaa; padding:.7em 1em; background:#fafafa; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc-level-2 { margin-left:1.2em; }
+.toc-level-3 { margin-left:2.4em; font-size:10.5pt; }
+a { color:#1e3e5c; text-decoration:none; }
+@media print { body { max-width:none; margin:0; padding:0; } a { color:#111; } .toc { border:0; } }
+</style></head><body>
+<h1 id="rapport-de-stage" class="cover-title">RAPPORT DE STAGE</h1>
+<h2 id="conception-et-developpement-d-une-application-web-de-gestion-du-planning-home-office-et-de-suivi-du-travail-a-distance" class="cover-title">Conception et développement d’une application web de gestion du planning Home Office et de suivi du travail à distance</h2>
+<p class="cover-line"><strong>Titre officiel :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : titre officiel validé par l’établissement et l’organisme d’accueil]</span></p>
+<p class="cover-line"><strong>Réalisé par :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : nom et prénom de l’étudiant]</span></p>
+<p class="cover-line"><strong>Matricule :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : matricule de l’étudiant]</span></p>
+<p class="cover-line"><strong>Établissement :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : nom de l’établissement]</span></p>
+<p class="cover-line"><strong>Filière et niveau :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : filière et niveau d’études]</span></p>
+<p class="cover-line"><strong>Organisme d’accueil :</strong> LEONI — <span class="placeholder">[INFORMATION À COMPLÉTER : entité et site exacts]</span></p>
+<p class="cover-line"><strong>Département d’accueil :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : département ou service]</span></p>
+<p class="cover-line"><strong>Encadrant professionnel :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : nom, fonction et qualité]</span></p>
+<p class="cover-line"><strong>Encadrant académique :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : nom, fonction et qualité]</span></p>
+<p class="cover-line"><strong>Période du stage :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : date de début]</span> — <span class="placeholder">[INFORMATION À COMPLÉTER : date de fin]</span></p>
+<p class="cover-line"><strong>Année universitaire :</strong> <span class="placeholder">[INFORMATION À COMPLÉTER : année universitaire]</span></p>
+<p class="cover-line"><span class="placeholder">[INFORMATION À COMPLÉTER : insérer les logos autorisés de l’établissement et de l’organisme d’accueil]</span></p>
+<div class="page-break"></div>
+<h1 id="dedicace">Dédicace</h1>
+<p><span class="placeholder">[INFORMATION À COMPLÉTER : texte personnel de dédicace, si cette page est exigée par le modèle académique]</span></p>
+<div class="page-break"></div>
+<h1 id="remerciements">Remerciements</h1>
+<p>Je tiens à remercier <span class="placeholder">[INFORMATION À COMPLÉTER : nom et fonction de l’encadrant professionnel]</span> pour <span class="placeholder">[INFORMATION À COMPLÉTER : accompagnement réellement reçu]</span>. J’adresse également mes remerciements à <span class="placeholder">[INFORMATION À COMPLÉTER : équipe, département ou personnes à citer avec leur autorisation]</span> ainsi qu’à <span class="placeholder">[INFORMATION À COMPLÉTER : encadrant académique]</span> pour <span class="placeholder">[INFORMATION À COMPLÉTER : nature de l’accompagnement académique]</span>.</p>
+<p>Ce texte doit être personnalisé avant dépôt afin de refléter fidèlement les contributions et les conditions réelles du stage.</p>
+<div class="page-break"></div>
+<h1 id="resume">Résumé</h1>
+<p>Le présent rapport décrit une application web interne de gestion du planning Home Office et de suivi du travail à distance, identifiée techniquement sous le nom <code>leoni-planing</code>. La solution distingue deux rôles, <strong>Team Leader</strong> et <strong>Data Cleansing</strong>, puis centralise l’authentification, l’administration des utilisateurs, la sélection mensuelle d’un groupe, la génération des jours de travail distant, la consultation du planning, les demandes de congé, le suivi des sessions distantes, les exports et l’audit.</p>
+<p>Le backend repose sur Node.js, Express et MySQL. Il combine des routes, des contrôleurs, des services et des modèles, avec des transactions sur les traitements sensibles. Le frontend est constitué de pages HTML, de styles CSS et de scripts JavaScript natifs s’appuyant sur Bootstrap. Les mécanismes observables de sécurité comprennent notamment le hashage bcrypt, les sessions stockées dans MySQL, la protection CSRF, Helmet, une politique de sécurité du contenu, la limitation de requêtes, la validation des entrées et une matrice de permissions.</p>
+<p>La génération du planning applique une règle temporelle contrôlée par le serveur : du 25 au dernier jour du mois courant, seul le mois suivant peut être préparé. Une sélection mensuelle du groupe A ou B est exigée. Le groupe A reçoit les mercredis, les jeudis et les vendredis impairs du mois ; le groupe B reçoit les lundis, les mardis et les vendredis pairs. Les tests automatisés existants, exécutés le 15 juillet 2026 avec la commande <code>node --test tests/*.test.js</code>, ont produit 19 succès sur 19 tests. Leur couverture reste concentrée sur la fenêtre temporelle, la sélection mensuelle et la génération.</p>
+<p>Le rapport distingue systématiquement les comportements confirmés par le code, les tests réellement exécutés et les validations fonctionnelles restant à effectuer. Les informations administratives, le contexte détaillé de l’organisme et l’état de déploiement ne pouvant pas être déduits du dépôt sont conservés sous forme de champs à compléter.</p>
+<p><strong>Mots-clés :</strong> application web, Home Office, planning, Node.js, Express, MySQL, sessions, contrôle d’accès, audit, travail à distance.</p>
+<div class="page-break"></div>
+<h1 id="abstract">Abstract</h1>
+<p>This report presents an internal web application for Home Office scheduling and remote-work activity tracking, technically identified as <code>leoni-planing</code>. The solution defines two roles, <strong>Team Leader</strong> and <strong>Data Cleansing</strong>, and centralizes authentication, user administration, monthly group selection, remote-day generation, schedule consultation, leave requests, remote work sessions, exports, and audit events.</p>
+<p>The backend relies on Node.js, Express, and MySQL. It combines routes, controllers, services, and models, with transactions for consistency-sensitive operations. The frontend consists of HTML pages, CSS styles, and native browser-side JavaScript using Bootstrap. Observable security controls include bcrypt password hashing, MySQL-backed sessions, CSRF protection, Helmet, a Content Security Policy, rate limiting, input validation, and permission-based access control.</p>
+<p>Schedule generation is governed by a server-side time window: from the 25th through the actual last day of the current month, only the immediately following month can be prepared. A monthly selection of group A or B is mandatory. Group A receives Wednesdays, Thursdays, and odd-ranked Fridays; group B receives Mondays, Tuesdays, and even-ranked Fridays. The existing automated suite was run on 15 July 2026 with <code>node --test tests/*.test.js</code>; all 19 tests passed. Its scope is focused on the time window, monthly selection, and generation guards.</p>
+<p>The report separates code-confirmed behavior, actually executed tests, and functional checks that remain to be performed. Administrative information, detailed organizational context, and deployment status that cannot be established from the repository are explicitly left to be completed.</p>
+<p><strong>Keywords:</strong> web application, Home Office, scheduling, Node.js, Express, MySQL, sessions, access control, audit, remote work.</p>
+<div class="page-break"></div>
+<h1 id="table-des-matieres">Table des matières</h1>
+<nav class="toc"><ol>
+<li class="toc-level-1"><a href="#rapport-de-stage">RAPPORT DE STAGE</a></li>
+<li class="toc-level-2"><a href="#conception-et-developpement-d-une-application-web-de-gestion-du-planning-home-office-et-de-suivi-du-travail-a-distance">Conception et développement d’une application web de gestion du planning Home Office et de suivi du travail à distance</a></li>
+<li class="toc-level-1"><a href="#dedicace">Dédicace</a></li>
+<li class="toc-level-1"><a href="#remerciements">Remerciements</a></li>
+<li class="toc-level-1"><a href="#resume">Résumé</a></li>
+<li class="toc-level-1"><a href="#abstract">Abstract</a></li>
+<li class="toc-level-1"><a href="#liste-des-figures">Liste des figures</a></li>
+<li class="toc-level-1"><a href="#liste-des-tableaux">Liste des tableaux</a></li>
+<li class="toc-level-1"><a href="#liste-des-abreviations">Liste des abréviations</a></li>
+<li class="toc-level-1"><a href="#introduction-generale">Introduction générale</a></li>
+<li class="toc-level-1"><a href="#chapitre-1-presentation-de-l-organisme-et-cadre-du-stage">Chapitre 1 — Présentation de l’organisme et cadre du stage</a></li>
+<li class="toc-level-2"><a href="#1-1-introduction">1.1 Introduction</a></li>
+<li class="toc-level-2"><a href="#1-2-presentation-de-leoni">1.2 Présentation de LEONI</a></li>
+<li class="toc-level-2"><a href="#1-3-structure-ou-departement-d-accueil">1.3 Structure ou département d’accueil</a></li>
+<li class="toc-level-2"><a href="#1-4-cadre-du-stage">1.4 Cadre du stage</a></li>
+<li class="toc-level-2"><a href="#1-5-contexte-du-projet">1.5 Contexte du projet</a></li>
+<li class="toc-level-2"><a href="#1-6-problematique-traitee">1.6 Problématique traitée</a></li>
+<li class="toc-level-2"><a href="#1-7-objectifs-du-projet-realise">1.7 Objectifs du projet réalisé</a></li>
+<li class="toc-level-2"><a href="#1-8-organisation-du-travail">1.8 Organisation du travail</a></li>
+<li class="toc-level-2"><a href="#1-9-deroulement-du-stage">1.9 Déroulement du stage</a></li>
+<li class="toc-level-2"><a href="#1-10-conclusion">1.10 Conclusion</a></li>
+<li class="toc-level-1"><a href="#chapitre-2-analyse-du-systeme-realise-et-conception">Chapitre 2 — Analyse du système réalisé et conception</a></li>
+<li class="toc-level-2"><a href="#2-1-introduction">2.1 Introduction</a></li>
+<li class="toc-level-2"><a href="#2-2-presentation-fonctionnelle-de-la-solution">2.2 Présentation fonctionnelle de la solution</a></li>
+<li class="toc-level-2"><a href="#2-3-identification-des-acteurs">2.3 Identification des acteurs</a></li>
+<li class="toc-level-2"><a href="#2-4-modules-fonctionnels">2.4 Modules fonctionnels</a></li>
+<li class="toc-level-2"><a href="#2-5-besoins-fonctionnels-deduits-de-l-application-realisee">2.5 Besoins fonctionnels déduits de l’application réalisée</a></li>
+<li class="toc-level-2"><a href="#2-6-besoins-non-fonctionnels-observables">2.6 Besoins non fonctionnels observables</a></li>
+<li class="toc-level-2"><a href="#2-7-regles-de-gestion-implementees">2.7 Règles de gestion implémentées</a></li>
+<li class="toc-level-2"><a href="#2-8-cas-d-utilisation-global">2.8 Cas d’utilisation global</a></li>
+<li class="toc-level-2"><a href="#2-9-description-detaillee-des-cas-d-utilisation">2.9 Description détaillée des cas d’utilisation</a></li>
+<li class="toc-level-3"><a href="#2-9-1-cu-01-s-authentifier">2.9.1 CU-01 — S’authentifier</a></li>
+<li class="toc-level-3"><a href="#2-9-2-cu-02-selectionner-le-groupe-mensuel">2.9.2 CU-02 — Sélectionner le groupe mensuel</a></li>
+<li class="toc-level-3"><a href="#2-9-3-cu-03-generer-le-planning">2.9.3 CU-03 — Générer le planning</a></li>
+<li class="toc-level-3"><a href="#2-9-4-cu-04-traiter-une-demande-de-conge">2.9.4 CU-04 — Traiter une demande de congé</a></li>
+<li class="toc-level-3"><a href="#2-9-5-cu-05-suivre-une-session-distante">2.9.5 CU-05 — Suivre une session distante</a></li>
+<li class="toc-level-2"><a href="#2-10-architecture-globale">2.10 Architecture globale</a></li>
+<li class="toc-level-2"><a href="#2-11-architecture-backend">2.11 Architecture backend</a></li>
+<li class="toc-level-2"><a href="#2-12-organisation-frontend">2.12 Organisation frontend</a></li>
+<li class="toc-level-2"><a href="#2-13-modele-de-donnees">2.13 Modèle de données</a></li>
+<li class="toc-level-2"><a href="#2-14-controle-d-acces">2.14 Contrôle d’accès</a></li>
+<li class="toc-level-2"><a href="#2-15-conception-de-la-securite">2.15 Conception de la sécurité</a></li>
+<li class="toc-level-2"><a href="#2-16-conclusion">2.16 Conclusion</a></li>
+<li class="toc-level-1"><a href="#chapitre-3-realisation-de-l-application">Chapitre 3 — Réalisation de l’application</a></li>
+<li class="toc-level-2"><a href="#3-1-introduction">3.1 Introduction</a></li>
+<li class="toc-level-2"><a href="#3-2-environnement-technique">3.2 Environnement technique</a></li>
+<li class="toc-level-2"><a href="#3-3-choix-technologiques">3.3 Choix technologiques</a></li>
+<li class="toc-level-2"><a href="#3-4-organisation-des-fichiers">3.4 Organisation des fichiers</a></li>
+<li class="toc-level-2"><a href="#3-5-configuration-du-serveur-express">3.5 Configuration du serveur Express</a></li>
+<li class="toc-level-2"><a href="#3-6-connexion-et-acces-a-mysql">3.6 Connexion et accès à MySQL</a></li>
+<li class="toc-level-2"><a href="#3-7-gestion-des-sessions">3.7 Gestion des sessions</a></li>
+<li class="toc-level-2"><a href="#3-8-authentification">3.8 Authentification</a></li>
+<li class="toc-level-2"><a href="#3-9-changement-obligatoire-du-mot-de-passe">3.9 Changement obligatoire du mot de passe</a></li>
+<li class="toc-level-2"><a href="#3-10-gestion-des-roles-et-permissions">3.10 Gestion des rôles et permissions</a></li>
+<li class="toc-level-2"><a href="#3-11-gestion-des-utilisateurs">3.11 Gestion des utilisateurs</a></li>
+<li class="toc-level-2"><a href="#3-12-selection-mensuelle-du-groupe-home-office">3.12 Sélection mensuelle du groupe Home Office</a></li>
+<li class="toc-level-2"><a href="#3-13-fenetre-de-generation">3.13 Fenêtre de génération</a></li>
+<li class="toc-level-2"><a href="#3-14-algorithme-de-generation-du-planning">3.14 Algorithme de génération du planning</a></li>
+<li class="toc-level-2"><a href="#3-15-consultation-du-planning">3.15 Consultation du planning</a></li>
+<li class="toc-level-2"><a href="#3-16-calendrier">3.16 Calendrier</a></li>
+<li class="toc-level-2"><a href="#3-17-tableau-de-bord">3.17 Tableau de bord</a></li>
+<li class="toc-level-2"><a href="#3-18-export-csv-et-xlsx">3.18 Export CSV et XLSX</a></li>
+<li class="toc-level-2"><a href="#3-19-journal-d-audit">3.19 Journal d’audit</a></li>
+<li class="toc-level-2"><a href="#3-20-gestion-des-conges">3.20 Gestion des congés</a></li>
+<li class="toc-level-2"><a href="#3-21-suivi-du-travail-a-distance">3.21 Suivi du travail à distance</a></li>
+<li class="toc-level-2"><a href="#3-22-gestion-des-validations">3.22 Gestion des validations</a></li>
+<li class="toc-level-2"><a href="#3-23-gestion-des-erreurs">3.23 Gestion des erreurs</a></li>
+<li class="toc-level-2"><a href="#3-24-securite">3.24 Sécurité</a></li>
+<li class="toc-level-2"><a href="#3-25-presentation-des-interfaces">3.25 Présentation des interfaces</a></li>
+<li class="toc-level-2"><a href="#3-26-difficultes-techniques-observables-et-solutions-implementees">3.26 Difficultés techniques observables et solutions implémentées</a></li>
+<li class="toc-level-2"><a href="#3-27-limites-actuelles-du-systeme">3.27 Limites actuelles du système</a></li>
+<li class="toc-level-2"><a href="#3-28-conclusion">3.28 Conclusion</a></li>
+<li class="toc-level-1"><a href="#chapitre-4-tests-et-validation">Chapitre 4 — Tests et validation</a></li>
+<li class="toc-level-2"><a href="#4-1-introduction">4.1 Introduction</a></li>
+<li class="toc-level-2"><a href="#4-2-strategie-de-validation">4.2 Stratégie de validation</a></li>
+<li class="toc-level-2"><a href="#4-3-tests-automatises-existants">4.3 Tests automatisés existants</a></li>
+<li class="toc-level-2"><a href="#4-4-resultats-reels">4.4 Résultats réels</a></li>
+<li class="toc-level-2"><a href="#4-5-validation-de-l-authentification">4.5 Validation de l’authentification</a></li>
+<li class="toc-level-2"><a href="#4-6-validation-des-autorisations">4.6 Validation des autorisations</a></li>
+<li class="toc-level-2"><a href="#4-7-validation-des-utilisateurs">4.7 Validation des utilisateurs</a></li>
+<li class="toc-level-2"><a href="#4-8-validation-de-la-selection-mensuelle">4.8 Validation de la sélection mensuelle</a></li>
+<li class="toc-level-2"><a href="#4-9-validation-de-la-generation-du-planning">4.9 Validation de la génération du planning</a></li>
+<li class="toc-level-2"><a href="#4-10-validation-du-calendrier">4.10 Validation du calendrier</a></li>
+<li class="toc-level-2"><a href="#4-11-validation-des-conges">4.11 Validation des congés</a></li>
+<li class="toc-level-2"><a href="#4-12-validation-des-sessions-de-travail">4.12 Validation des sessions de travail</a></li>
+<li class="toc-level-2"><a href="#4-13-validation-des-exports">4.13 Validation des exports</a></li>
+<li class="toc-level-2"><a href="#4-14-validation-de-l-audit">4.14 Validation de l’audit</a></li>
+<li class="toc-level-2"><a href="#4-15-validation-de-la-base-de-donnees">4.15 Validation de la base de données</a></li>
+<li class="toc-level-2"><a href="#4-16-validation-des-interfaces">4.16 Validation des interfaces</a></li>
+<li class="toc-level-2"><a href="#4-17-couverture-et-limites-des-tests">4.17 Couverture et limites des tests</a></li>
+<li class="toc-level-2"><a href="#4-18-bilan-des-resultats">4.18 Bilan des résultats</a></li>
+<li class="toc-level-2"><a href="#4-19-conclusion">4.19 Conclusion</a></li>
+<li class="toc-level-1"><a href="#conclusion-generale">Conclusion générale</a></li>
+<li class="toc-level-1"><a href="#perspectives">Perspectives</a></li>
+<li class="toc-level-2"><a href="#p-01-elargir-la-couverture-automatisee">P-01 — Élargir la couverture automatisée</a></li>
+<li class="toc-level-2"><a href="#p-02-raccorder-la-commande-de-test-standard">P-02 — Raccorder la commande de test standard</a></li>
+<li class="toc-level-2"><a href="#p-03-uniformiser-l-architecture-des-donnees">P-03 — Uniformiser l’architecture des données</a></li>
+<li class="toc-level-2"><a href="#p-04-separer-migrations-et-demarrage">P-04 — Séparer migrations et démarrage</a></li>
+<li class="toc-level-2"><a href="#p-05-aligner-toutes-les-autorisations">P-05 — Aligner toutes les autorisations</a></li>
+<li class="toc-level-2"><a href="#p-06-unifier-la-notion-de-groupe">P-06 — Unifier la notion de groupe</a></li>
+<li class="toc-level-2"><a href="#p-07-consolider-les-fonctions-operationnelles">P-07 — Consolider les fonctions opérationnelles</a></li>
+<li class="toc-level-2"><a href="#p-08-ameliorer-les-notifications-et-la-coherence-temporelle">P-08 — Améliorer les notifications et la cohérence temporelle</a></li>
+<li class="toc-level-2"><a href="#p-09-renforcer-l-exploitation">P-09 — Renforcer l’exploitation</a></li>
+<li class="toc-level-2"><a href="#p-10-documenter-l-api-et-homogeneiser-l-interface">P-10 — Documenter l’API et homogénéiser l’interface</a></li>
+<li class="toc-level-1"><a href="#annexes">Annexes</a></li>
+<li class="toc-level-2"><a href="#annexe-a-structure-du-projet">Annexe A — Structure du projet</a></li>
+<li class="toc-level-2"><a href="#annexe-b-catalogue-des-routes-de-pages">Annexe B — Catalogue des routes de pages</a></li>
+<li class="toc-level-2"><a href="#annexe-c-catalogue-des-routes-api">Annexe C — Catalogue des routes API</a></li>
+<li class="toc-level-2"><a href="#annexe-d-matrice-complete-des-permissions">Annexe D — Matrice complète des permissions</a></li>
+<li class="toc-level-2"><a href="#annexe-e-resume-des-tables">Annexe E — Résumé des tables</a></li>
+<li class="toc-level-2"><a href="#annexe-f-catalogue-synthetique-des-regles">Annexe F — Catalogue synthétique des règles</a></li>
+<li class="toc-level-2"><a href="#annexe-g-catalogue-des-tests">Annexe G — Catalogue des tests</a></li>
+<li class="toc-level-2"><a href="#annexe-h-liste-des-captures">Annexe H — Liste des captures</a></li>
+<li class="toc-level-2"><a href="#annexe-i-liste-des-diagrammes">Annexe I — Liste des diagrammes</a></li>
+<li class="toc-level-2"><a href="#annexe-j-guide-d-installation-sans-secrets">Annexe J — Guide d’installation sans secrets</a></li>
+<li class="toc-level-2"><a href="#annexe-k-glossaire">Annexe K — Glossaire</a></li>
+<li class="toc-level-1"><a href="#references">Références</a></li>
+<li class="toc-level-2"><a href="#sources-internes">Sources internes</a></li>
+<li class="toc-level-2"><a href="#documentations-officielles-consultees-le-15-juillet-2026">Documentations officielles consultées le 15 juillet 2026</a></li>
+</ol></nav>
+<p>La version DOCX contient un champ de table des matières actualisable dans le traitement de texte. La version HTML propose une navigation vers les titres. La structure du document est la suivante :</p>
+<ol>
+<li>Introduction générale</li>
+<li>Chapitre 1 — Présentation de l’organisme et cadre du stage</li>
+<li>Chapitre 2 — Analyse du système réalisé et conception</li>
+<li>Chapitre 3 — Réalisation de l’application</li>
+<li>Chapitre 4 — Tests et validation</li>
+<li>Conclusion générale</li>
+<li>Perspectives</li>
+<li>Annexes</li>
+<li>Références</li>
+</ol>
+<div class="page-break"></div>
+<h1 id="liste-des-figures">Liste des figures</h1>
+<div class="table-wrap"><table><thead><tr>
+<th>No</th>
+<th>Figure prévue</th>
+<th>Source ou statut</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td>Cas d’utilisation global</td>
+<td><code>diagrams/01_cas_utilisation_global.puml</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Architecture globale</td>
+<td><code>diagrams/02_architecture_globale.puml</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Composants de l’application</td>
+<td><code>diagrams/03_composants_application.puml</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Modèle de données</td>
+<td><code>diagrams/04_modele_donnees.puml</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Séquence d’authentification</td>
+<td><code>diagrams/05_sequence_authentification.puml</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Séquence de changement du mot de passe</td>
+<td><code>diagrams/06_sequence_changement_mot_de_passe.puml</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Séquence de gestion d’un utilisateur</td>
+<td><code>diagrams/07_sequence_gestion_utilisateur.puml</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Séquence de sélection mensuelle</td>
+<td><code>diagrams/08_sequence_selection_groupe.puml</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Séquence de génération du planning</td>
+<td><code>diagrams/09_sequence_generation_planning.puml</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Séquence de consultation du planning</td>
+<td><code>diagrams/10_sequence_consultation_planning.puml</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Séquence de création d’une demande de congé</td>
+<td><code>diagrams/11_sequence_demande_conge.puml</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Séquence de traitement d’un congé</td>
+<td><code>diagrams/12_sequence_traitement_conge.puml</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Séquence d’une session de travail distant</td>
+<td><code>diagrams/13_sequence_session_travail.puml</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Séquence d’export</td>
+<td><code>diagrams/14_sequence_export.puml</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Séquence de consultation de l’audit</td>
+<td><code>diagrams/15_sequence_audit.puml</code></td>
+</tr>
+<tr>
+<td>16 à 31</td>
+<td>Captures des interfaces existantes</td>
+<td>À réaliser selon <code>03_plan_captures.md</code></td>
+</tr>
+</tbody></table></div>
+<div class="page-break"></div>
+<h1 id="liste-des-tableaux">Liste des tableaux</h1>
+<ol>
+<li>Acteurs et responsabilités observables.</li>
+<li>Besoins fonctionnels déduits de la solution.</li>
+<li>Besoins non fonctionnels observables.</li>
+<li>Catalogue des règles de gestion.</li>
+<li>Matrice synthétique des permissions.</li>
+<li>Stack technique et versions.</li>
+<li>Organisation des répertoires.</li>
+<li>Tables et relations principales.</li>
+<li>Interfaces et captures à insérer.</li>
+<li>Résultats des tests automatisés.</li>
+<li>Catalogue des validations manuelles.</li>
+<li>Limites de couverture et perspectives.</li>
+<li>Catalogue des routes.</li>
+</ol>
+<h1 id="liste-des-abreviations">Liste des abréviations</h1>
+<div class="table-wrap"><table><thead><tr>
+<th>Abréviation</th>
+<th>Signification</th>
+</tr></thead><tbody>
+<tr>
+<td>API</td>
+<td>Application Programming Interface</td>
+</tr>
+<tr>
+<td>CSP</td>
+<td>Content Security Policy</td>
+</tr>
+<tr>
+<td>CSRF</td>
+<td>Cross-Site Request Forgery</td>
+</tr>
+<tr>
+<td>CSV</td>
+<td>Comma-Separated Values</td>
+</tr>
+<tr>
+<td>DB / BDD</td>
+<td>Database / Base de données</td>
+</tr>
+<tr>
+<td>HO</td>
+<td>Home Office</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>Hypertext Transfer Protocol</td>
+</tr>
+<tr>
+<td>MVC</td>
+<td>Model–View–Controller</td>
+</tr>
+<tr>
+<td>SQL</td>
+<td>Structured Query Language</td>
+</tr>
+<tr>
+<td>TL</td>
+<td>Team Leader</td>
+</tr>
+<tr>
+<td>UI</td>
+<td>User Interface</td>
+</tr>
+<tr>
+<td>UTC</td>
+<td>Coordinated Universal Time</td>
+</tr>
+<tr>
+<td>XLSX</td>
+<td>Format de classeur Microsoft Excel</td>
+</tr>
+</tbody></table></div>
+<div class="page-break"></div>
+<h1 id="introduction-generale">Introduction générale</h1>
+<p>Les organisations qui alternent présence sur site et travail à distance ont besoin de rendre lisibles les jours planifiés, les responsabilités de validation et les données utiles au suivi. Le code étudié matérialise ce besoin au moyen d’une application web qui regroupe les utilisateurs, les choix mensuels de groupe, les dates Home Office, les absences, les temps de travail réalisés, les exports et les événements d’audit. Le contexte détaillé qui a motivé cette réalisation n’est pas enregistré dans les sources : <span class="placeholder">[INFORMATION À COMPLÉTER : formulation du contexte métier validée par l’encadrant, sans donnée confidentielle]</span>.</p>
+<p>La problématique technique traitée peut néanmoins être établie à partir du comportement de l’application : comment fournir, dans une même interface, une préparation mensuelle contrôlée du planning Home Office, une consultation adaptée aux droits de chaque rôle, un suivi non intrusif du temps actif et une traçabilité des opérations principales ? Cette question implique de coordonner plusieurs dimensions : la date métier, les permissions, les contraintes de base de données, les transactions, les validations serveur et l’expérience du navigateur.</p>
+<p>La solution développée s’appuie sur un backend Node.js/Express connecté à MySQL et sur un frontend HTML/CSS/JavaScript. Deux rôles sont définis. Le Team Leader administre les comptes, consulte les données globales, traite les demandes, exporte et lit le journal. Le profil Data Cleansing accède principalement à ses propres données et opérations. Cette séparation s’appuie sur des permissions atomiques vérifiées côté serveur ; le menu est également adapté côté interface.</p>
+<p>Le projet comprend une règle métier centrale de préparation du mois suivant. La fenêtre est calculée depuis l’horloge MySQL convertie dans le fuseau <code>Africa/Tunis</code>. Elle est ouverte à partir du 25 et se termine au dernier jour réel du mois. Pendant cette période, l’utilisateur choisit un groupe mensuel, puis le service génère les jours distants correspondants. Les contraintes uniques, les transactions et certains verrous limitent les incohérences concurrentes et les doublons.</p>
+<p>Ce rapport adopte une démarche de rétrodocumentation : chaque description technique provient du code, du schéma, des migrations ou des tests actuels. L’inspection statique est distinguée de l’exécution. Ainsi, le résultat « 19 tests réussis » ne concerne que les trois fichiers de test effectivement lancés ; les autres parcours sont accompagnés de scénarios manuels « À valider ». Les informations administratives ou organisationnelles absentes sont signalées avec des placeholders.</p>
+<p>Le premier chapitre présente le cadre du stage en séparant clairement les informations à compléter des éléments techniques confirmés. Le deuxième analyse les acteurs, les besoins déduits, les règles, l’architecture et les données. Le troisième expose la réalisation module par module. Le quatrième documente les validations exécutées et celles qui restent à conduire. La conclusion et les perspectives synthétisent les acquis, les limites observables et les consolidations possibles.</p>
+<div class="page-break"></div>
+<h1 id="chapitre-1-presentation-de-l-organisme-et-cadre-du-stage">Chapitre 1 — Présentation de l’organisme et cadre du stage</h1>
+<h2 id="1-1-introduction">1.1 Introduction</h2>
+<p>Ce chapitre situe le projet dans son cadre académique et professionnel. Les fichiers applicatifs ne constituent pas une source suffisante pour décrire l’histoire, l’organisation, les chiffres, les sites ou la stratégie de LEONI. Ces éléments sont donc laissés à compléter à partir de sources institutionnelles autorisées et d’informations validées par l’encadrement. Les seules affirmations fermes concernent l’application effectivement analysée.</p>
+<h2 id="1-2-presentation-de-leoni">1.2 Présentation de LEONI</h2>
+<p>LEONI est l’organisme d’accueil indiqué pour ce stage. Toute présentation institutionnelle détaillée doit être complétée et vérifiée avant remise :</p>
+<ul>
+<li><span class="placeholder">[INFORMATION À COMPLÉTER : dénomination juridique exacte de l’entité d’accueil]</span> ;</li>
+<li><span class="placeholder">[INFORMATION À COMPLÉTER : activité de l’entité et position dans l’organisation, validées par une source autorisée]</span> ;</li>
+<li><span class="placeholder">[INFORMATION À COMPLÉTER : adresse et site du stage]</span> ;</li>
+<li><span class="placeholder">[INFORMATION À COMPLÉTER : chiffres ou dates dont la publication est autorisée]</span> ;</li>
+<li><span class="placeholder">[INFORMATION À COMPLÉTER : logo officiel et règles d’utilisation]</span>.</li>
+</ul>
+<p>Le texte final ne devra inclure aucune information interne, statistique ou affirmation institutionnelle sans validation.</p>
+<h2 id="1-3-structure-ou-departement-d-accueil">1.3 Structure ou département d’accueil</h2>
+<p><span class="placeholder">[INFORMATION À COMPLÉTER : nom exact du département, mission, rattachement hiérarchique et composition utile à la compréhension du stage]</span></p>
+<p><span class="placeholder">[INFORMATION À COMPLÉTER : relation vérifiée entre le département d’accueil et les deux catégories d’utilisateurs représentées dans l’application]</span></p>
+<p>Le code emploie les libellés de rôle « Team Leader » et « Data Cleansing ». Cette présence prouve les profils fonctionnels de l’application, mais ne permet pas à elle seule de décrire l’organigramme réel ni le nombre de personnes concernées.</p>
+<h2 id="1-4-cadre-du-stage">1.4 Cadre du stage</h2>
+<p>Le cadre administratif doit être renseigné avec les éléments suivants :</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Élément</th>
+<th>Valeur à valider</th>
+</tr></thead><tbody>
+<tr>
+<td>Nature du stage</td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : stage d’été, stage obligatoire ou autre désignation officielle]</span></td>
+</tr>
+<tr>
+<td>Période</td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : dates exactes]</span></td>
+</tr>
+<tr>
+<td>Durée</td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : durée officielle]</span></td>
+</tr>
+<tr>
+<td>Étudiant</td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : identité et cursus]</span></td>
+</tr>
+<tr>
+<td>Encadrement professionnel</td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : identité, fonction et rôle réel]</span></td>
+</tr>
+<tr>
+<td>Encadrement académique</td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : identité et fonction]</span></td>
+</tr>
+<tr>
+<td>Lieu et modalités</td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : site, présence, accès et contraintes pertinentes]</span></td>
+</tr>
+<tr>
+<td>Confidentialité</td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : règles applicables au rapport et aux captures]</span></td>
+</tr>
+</tbody></table></div>
+<h2 id="1-5-contexte-du-projet">1.5 Contexte du projet</h2>
+<p>L’application actuelle regroupe plusieurs fonctions liées au planning Home Office. Elle conserve les comptes utilisateurs, associe une sélection de groupe à un utilisateur et à un mois, génère des dates distantes, affiche ces données sous forme tabulaire et calendaire, gère des congés, mesure des secondes actives pour les jours distants et fournit des exports. Elle offre également des indicateurs et un journal d’audit.</p>
+<p>Ces fonctionnalités indiquent un besoin de centralisation et de contrôle cohérent des opérations. En revanche, le dépôt ne permet pas d’affirmer quel processus était employé auparavant, quel volume est traité ni si l’application est aujourd’hui déployée. Ces points doivent être validés : <span class="placeholder">[INFORMATION À COMPLÉTER : contexte opérationnel et état réel d’utilisation]</span>.</p>
+<h2 id="1-6-problematique-traitee">1.6 Problématique traitée</h2>
+<p>La problématique déduite de la solution réalisée est la suivante : <strong>comment centraliser la préparation et la consultation du planning Home Office, tout en contrôlant les droits, la période de génération, les opérations associées et leur traçabilité ?</strong></p>
+<p>Cette problématique se décompose en plusieurs enjeux vérifiables : identifier les utilisateurs ; distinguer l’administration de l’usage personnel ; appliquer une date métier commune ; empêcher plusieurs générations pour le même mois ; fiabiliser les écritures liées ; préserver la propriété des données individuelles ; calculer les heures réalisées ; permettre l’extraction des informations ; et conserver une trace des actions importantes.</p>
+<h2 id="1-7-objectifs-du-projet-realise">1.7 Objectifs du projet réalisé</h2>
+<p>Les objectifs techniques observables, formulés depuis les fonctions présentes, sont :</p>
+<ol>
+<li>authentifier les utilisateurs et imposer le renouvellement initial du mot de passe lorsque les indicateurs correspondants sont actifs ;</li>
+<li>administrer les comptes et leur rôle sans supprimer physiquement les utilisateurs ;</li>
+<li>autoriser une sélection mensuelle de groupe A ou B pendant une fenêtre serveur déterminée ;</li>
+<li>générer automatiquement les jours Home Office du mois suivant selon le groupe sélectionné ;</li>
+<li>consulter le planning sous plusieurs représentations et selon le périmètre autorisé ;</li>
+<li>gérer le cycle des demandes de congé ;</li>
+<li>suivre les sessions actives d’un utilisateur sur une date distante qui lui appartient ;</li>
+<li>exporter les données de planning en CSV ou XLSX pour un rôle autorisé ;</li>
+<li>journaliser les opérations majeures ;</li>
+<li>appliquer des validations, permissions et traitements d’erreur partagés.</li>
+</ol>
+<h2 id="1-8-organisation-du-travail">1.8 Organisation du travail</h2>
+<p><span class="placeholder">[INFORMATION À COMPLÉTER : méthode de travail réellement suivie, outils de suivi, fréquence des échanges et méthode de validation]</span></p>
+<p>Il ne serait pas exact de qualifier la démarche d’Agile, Scrum, cycle en V ou autre sans preuve externe au code. La documentation technique montre uniquement une organisation du logiciel par répertoires, des migrations successives numérotées et trois fichiers de tests automatisés. Ces éléments ne démontrent pas, à eux seuls, une méthodologie de projet.</p>
+<h2 id="1-9-deroulement-du-stage">1.9 Déroulement du stage</h2>
+<p><span class="placeholder">[INFORMATION À COMPLÉTER : déroulement chronologique réel du stage, jalons, tâches, revues et livraisons]</span></p>
+<p>Le déroulement final peut être présenté sous forme de tableau après validation :</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Période</th>
+<th>Activité réelle</th>
+<th>Livrable ou résultat</th>
+<th>Validation obtenue</th>
+</tr></thead><tbody>
+<tr>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : période 1]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : activité]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : résultat]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : validation]</span></td>
+</tr>
+<tr>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : période 2]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : activité]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : résultat]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : validation]</span></td>
+</tr>
+<tr>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : période 3]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : activité]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : résultat]</span></td>
+<td><span class="placeholder">[INFORMATION À COMPLÉTER : validation]</span></td>
+</tr>
+</tbody></table></div>
+<h2 id="1-10-conclusion">1.10 Conclusion</h2>
+<p>Le cadre administratif et institutionnel nécessite une contribution directe de l’étudiant et de ses encadrants. Le périmètre technique, lui, est clairement identifiable : une application web de planification Home Office et de suivi de fonctions connexes. Le chapitre suivant transforme ce périmètre implémenté en acteurs, besoins fonctionnels, règles de gestion, architecture et modèle de données, sans extrapoler au-delà des sources.</p>
+<div class="page-break"></div>
+<h1 id="chapitre-2-analyse-du-systeme-realise-et-conception">Chapitre 2 — Analyse du système réalisé et conception</h1>
+<h2 id="2-1-introduction">2.1 Introduction</h2>
+<p>L’analyse présentée ici part du produit réalisé. Elle reformule en besoins et en règles les comportements confirmés par les routes, les contrôleurs, les services, les modèles, le schéma SQL, les vues et les tests. Cette approche permet de documenter précisément la solution sans attribuer au projet un objectif ou un processus qui ne serait pas observable.</p>
+<h2 id="2-2-presentation-fonctionnelle-de-la-solution">2.2 Présentation fonctionnelle de la solution</h2>
+<p>La solution est une application web à pages statiques servies par Express et alimentées par des API JSON. Un utilisateur se connecte par e-mail et mot de passe. Selon son rôle et l’état de son onboarding, il accède à un tableau de bord et aux modules autorisés. Le Team Leader possède un périmètre d’administration et de consultation globale ; le profil Data Cleansing dispose d’un périmètre centré sur ses opérations.</p>
+<p>Le planning est préparé par mois. Une date serveur de référence détermine si la période de préparation est ouverte. L’utilisateur sélectionne alors un groupe pour le mois suivant. Ce groupe fixe les jours de la semaine et les rangs de vendredi à générer. Une fois le planning créé, la sélection est verrouillée pour préserver la cohérence entre le choix et les lignes produites.</p>
+<p>Les modules complémentaires restent reliés au même compte : congés personnels, sessions de travail à distance, heures réelles, export des données et journalisation. Ils forment un ensemble cohérent autour des personnes, des dates et de la traçabilité, même si toutes les couches techniques ne sont pas employées de manière uniforme.</p>
+<h2 id="2-3-identification-des-acteurs">2.3 Identification des acteurs</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Acteur</th>
+<th>Responsabilités et accès observables</th>
+<th>Restrictions principales</th>
+</tr></thead><tbody>
+<tr>
+<td>Visiteur non authentifié</td>
+<td>Afficher la page de connexion, soumettre un e-mail et un mot de passe, demander l’état de session</td>
+<td>Aucun accès aux pages métiers ; limitation spécifique des tentatives de connexion</td>
+</tr>
+<tr>
+<td>Utilisateur en onboarding</td>
+<td>Consulter la page de changement du mot de passe et remplacer son mot de passe temporaire</td>
+<td>Redirigé hors des autres pages tant que <code>first_login</code> ou <code>must_change_password</code> reste actif</td>
+</tr>
+<tr>
+<td>Data Cleansing</td>
+<td>Consulter son planning et le calendrier, sélectionner son groupe mensuel, générer son planning, gérer ses demandes de congé, utiliser ses sessions de travail, changer son mot de passe</td>
+<td>Pas d’administration des comptes, pas d’export, pas de lecture des journaux, pas de traitement global des congés</td>
+</tr>
+<tr>
+<td>Team Leader</td>
+<td>Réaliser les opérations personnelles et administrer les utilisateurs ; lire/générer les plannings autorisés ; lire les statuts mensuels ; voir les synthèses ; gérer les congés ; exporter ; lire l’audit</td>
+<td>Ne peut pas approuver ou rejeter sa propre demande ; reste soumis aux validations et à la fenêtre de génération</td>
+</tr>
+<tr>
+<td>Horloge et ordonnanceur internes</td>
+<td>Calculer la date métier, expirer les sessions obsolètes au démarrage et périodiquement</td>
+<td>Acteur technique sans interface ; dépend du serveur et de MySQL</td>
+</tr>
+</tbody></table></div>
+<p>Le rôle n’est pas seulement utilisé pour masquer des éléments du menu. Les routes d’administration, d’export, d’audit et de congé appliquent <code>requirePermission</code>. Les services de planning et de sessions complètent ces vérifications par des contrôles de propriété ou de périmètre.</p>
+<h2 id="2-4-modules-fonctionnels">2.4 Modules fonctionnels</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Module</th>
+<th>Finalité confirmée</th>
+<th>Acteurs</th>
+<th>Persistance principale</th>
+</tr></thead><tbody>
+<tr>
+<td>Authentification</td>
+<td>Ouvrir et fermer une session après vérification du mot de passe</td>
+<td>Tous les comptes actifs</td>
+<td><code>users</code> et magasin de sessions MySQL</td>
+</tr>
+<tr>
+<td>Onboarding du mot de passe</td>
+<td>Bloquer les pages métiers jusqu’au renouvellement requis</td>
+<td>Utilisateur concerné</td>
+<td><code>users</code></td>
+</tr>
+<tr>
+<td>Utilisateurs</td>
+<td>Lister, créer, mettre à jour et désactiver logiquement un compte</td>
+<td>Team Leader</td>
+<td><code>users</code>, <code>audit_logs</code></td>
+</tr>
+<tr>
+<td>Contrôle d’accès</td>
+<td>Associer des permissions atomiques aux deux rôles</td>
+<td>Serveur et frontend</td>
+<td>Constantes et session</td>
+</tr>
+<tr>
+<td>Sélection mensuelle</td>
+<td>Enregistrer le groupe A/B d’un utilisateur pour un mois cible</td>
+<td>Tous pour soi ; lecture globale TL</td>
+<td><code>monthly_group_selections</code></td>
+</tr>
+<tr>
+<td>Génération</td>
+<td>Calculer et insérer les jours distants autorisés</td>
+<td>Tous pour soi ; TL selon permission</td>
+<td><code>planning</code>, <code>monthly_group_selections</code></td>
+</tr>
+<tr>
+<td>Consultation</td>
+<td>Filtrer et afficher les lignes de planning</td>
+<td>Tous selon périmètre</td>
+<td><code>planning</code>, <code>users</code></td>
+</tr>
+<tr>
+<td>Calendrier</td>
+<td>Regrouper les jours par utilisateur et par mois</td>
+<td>Tous selon périmètre</td>
+<td><code>planning</code>, <code>users</code></td>
+</tr>
+<tr>
+<td>Tableau de bord</td>
+<td>Fournir des statistiques et des états mensuels</td>
+<td>Utilisateurs authentifiés avec onboarding terminé</td>
+<td>Agrégats sur <code>users</code>, <code>planning</code>, sélections</td>
+</tr>
+<tr>
+<td>Congés</td>
+<td>Créer, annuler, approuver ou rejeter selon le rôle et le statut</td>
+<td>Tous pour soi ; TL pour traitement</td>
+<td><code>leave_requests</code>, <code>audit_logs</code></td>
+</tr>
+<tr>
+<td>Sessions de travail</td>
+<td>Démarrer/reprendre, maintenir, mettre en pause, terminer ou expirer une session distante</td>
+<td>Propriétaire ; synthèse TL</td>
+<td><code>work_sessions</code>, <code>planning</code>, <code>audit_logs</code></td>
+</tr>
+<tr>
+<td>Export</td>
+<td>Produire un CSV ou un classeur XLSX filtré</td>
+<td>Team Leader</td>
+<td>Lecture de <code>planning</code> et <code>users</code>, audit</td>
+</tr>
+<tr>
+<td>Audit</td>
+<td>Enregistrer et afficher les opérations principales</td>
+<td>Écriture applicative ; lecture TL</td>
+<td><code>audit_logs</code></td>
+</tr>
+</tbody></table></div>
+<h2 id="2-5-besoins-fonctionnels-deduits-de-l-application-realisee">2.5 Besoins fonctionnels déduits de l’application réalisée</h2>
+<p>Les priorités ci-dessous sont des priorités techniques déduites des protections et dépendances du code. Elles ne représentent pas une hiérarchisation contractuelle.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Titre</th>
+<th>Acteur</th>
+<th>Description et préconditions</th>
+<th>Résultat</th>
+<th>Priorité technique</th>
+<th>Preuve source</th>
+</tr></thead><tbody>
+<tr>
+<td>BF-01</td>
+<td>Se connecter</td>
+<td>Compte actif</td>
+<td>E-mail valide et mot de passe soumis à l’API</td>
+<td>Session contenant un profil réduit ou erreur d’authentification</td>
+<td>Critique</td>
+<td><code>authRoutes.js</code>, <code>authController.js</code></td>
+</tr>
+<tr>
+<td>BF-02</td>
+<td>Terminer l’onboarding</td>
+<td>Utilisateur concerné</td>
+<td>Session authentifiée, ancien mot de passe et nouveau mot de passe valide</td>
+<td>Hash remplacé et indicateurs d’onboarding désactivés</td>
+<td>Critique</td>
+<td><code>auth.js</code>, <code>authValidation.js</code>, <code>authController.js</code></td>
+</tr>
+<tr>
+<td>BF-03</td>
+<td>Se déconnecter</td>
+<td>Utilisateur authentifié</td>
+<td>Session existante</td>
+<td>Session détruite et cookie effacé</td>
+<td>Élevée</td>
+<td><code>authController.js</code></td>
+</tr>
+<tr>
+<td>BF-04</td>
+<td>Administrer un utilisateur</td>
+<td>Team Leader</td>
+<td>Permission d’action et données valides</td>
+<td>Compte créé, modifié ou désactivé logiquement</td>
+<td>Élevée</td>
+<td><code>userRoutes.js</code>, <code>userController.js</code></td>
+</tr>
+<tr>
+<td>BF-05</td>
+<td>Consulter la fenêtre de génération</td>
+<td>Utilisateur autorisé</td>
+<td>Session et onboarding terminés</td>
+<td>État de la fenêtre, date métier et mois cible renvoyés</td>
+<td>Critique</td>
+<td><code>planningRoutes.js</code>, <code>PlanningGenerationWindowService.js</code></td>
+</tr>
+<tr>
+<td>BF-06</td>
+<td>Choisir un groupe mensuel</td>
+<td>Utilisateur pour lui-même</td>
+<td>Fenêtre ouverte, mois suivant, groupe 1 ou 2, aucun planning verrouillant</td>
+<td>Sélection créée ou mise à jour</td>
+<td>Critique</td>
+<td><code>monthlyGroupSelectionRoutes.js</code>, <code>MonthlyGroupSelectionService.js</code></td>
+</tr>
+<tr>
+<td>BF-07</td>
+<td>Lire les sélections du mois</td>
+<td>Team Leader</td>
+<td>Permission de lecture globale et mois valide</td>
+<td>État des choix mensuels des comptes concernés</td>
+<td>Moyenne</td>
+<td><code>monthlyGroupSelectionController.js</code></td>
+</tr>
+<tr>
+<td>BF-08</td>
+<td>Générer son planning</td>
+<td>Utilisateur autorisé</td>
+<td>Fenêtre ouverte, mois suivant, sélection présente, planning absent</td>
+<td>Lignes <code>remote</code> insérées pour les dates calculées</td>
+<td>Critique</td>
+<td><code>PlanningService.js</code></td>
+</tr>
+<tr>
+<td>BF-09</td>
+<td>Générer pour un autre compte</td>
+<td>Team Leader</td>
+<td>Permission globale et sélection du compte cible</td>
+<td>Planning du compte cible créé</td>
+<td>Élevée</td>
+<td><code>planningController.js</code>, <code>PlanningService.js</code></td>
+</tr>
+<tr>
+<td>BF-10</td>
+<td>Consulter le planning</td>
+<td>Utilisateur authentifié</td>
+<td>Filtres valides ; périmètre appliqué par le service</td>
+<td>Lignes autorisées renvoyées</td>
+<td>Élevée</td>
+<td><code>planningRoutes.js</code>, <code>PlanningService.js</code></td>
+</tr>
+<tr>
+<td>BF-11</td>
+<td>Consulter le calendrier</td>
+<td>Utilisateur authentifié</td>
+<td>Mois ou filtres autorisés</td>
+<td>Jours regroupés pour l’affichage calendaire</td>
+<td>Moyenne</td>
+<td><code>planningController.js</code>, <code>calendar.js</code></td>
+</tr>
+<tr>
+<td>BF-12</td>
+<td>Lire le tableau de bord</td>
+<td>Utilisateur authentifié</td>
+<td>Onboarding terminé</td>
+<td>Agrégats et données d’état affichés</td>
+<td>Moyenne</td>
+<td><code>dashboardRoutes.js</code>, <code>dashboardController.js</code></td>
+</tr>
+<tr>
+<td>BF-13</td>
+<td>Créer une demande de congé</td>
+<td>Utilisateur</td>
+<td>Dates, type et motif valides, sans chevauchement actif</td>
+<td>Demande <code>pending</code> créée</td>
+<td>Élevée</td>
+<td><code>leaveRequestRoutes.js</code>, <code>LeaveRequestService.js</code></td>
+</tr>
+<tr>
+<td>BF-14</td>
+<td>Annuler sa demande</td>
+<td>Propriétaire</td>
+<td>Demande encore <code>pending</code></td>
+<td>Statut <code>cancelled</code></td>
+<td>Moyenne</td>
+<td><code>LeaveRequestService.js</code></td>
+</tr>
+<tr>
+<td>BF-15</td>
+<td>Traiter une demande</td>
+<td>Team Leader</td>
+<td>Demande d’un autre utilisateur encore <code>pending</code></td>
+<td>Statut <code>approved</code> ou <code>rejected</code>, réviseur mémorisé</td>
+<td>Élevée</td>
+<td><code>LeaveRequestService.js</code></td>
+</tr>
+<tr>
+<td>BF-16</td>
+<td>Démarrer une session distante</td>
+<td>Utilisateur</td>
+<td>Planning <code>remote</code> personnel pour la date serveur</td>
+<td>Session créée ou reprise</td>
+<td>Élevée</td>
+<td><code>WorkSessionService.js</code></td>
+</tr>
+<tr>
+<td>BF-17</td>
+<td>Maintenir ou suspendre une session</td>
+<td>Propriétaire</td>
+<td>Session valide</td>
+<td>Heartbeat, pause ou cumul de secondes</td>
+<td>Élevée</td>
+<td><code>workSessionRoutes.js</code>, <code>WorkSessionService.js</code></td>
+</tr>
+<tr>
+<td>BF-18</td>
+<td>Terminer ou expirer une session</td>
+<td>Propriétaire ou tâche interne</td>
+<td>Session existante ou heartbeat obsolète</td>
+<td>Session clôturée et heures réelles recalculées</td>
+<td>Élevée</td>
+<td><code>WorkSessionService.js</code>, <code>server.js</code></td>
+</tr>
+<tr>
+<td>BF-19</td>
+<td>Exporter le planning</td>
+<td>Team Leader</td>
+<td>Permission CSV/XLSX et filtres reçus</td>
+<td>Téléchargement du fichier et événement d’audit</td>
+<td>Moyenne</td>
+<td><code>exportRoutes.js</code>, <code>exportController.js</code></td>
+</tr>
+<tr>
+<td>BF-20</td>
+<td>Consulter l’audit</td>
+<td>Team Leader</td>
+<td>Permission <code>audit.read</code></td>
+<td>Jusqu’aux cent événements les plus récents</td>
+<td>Moyenne</td>
+<td><code>logRoutes.js</code>, <code>logController.js</code></td>
+</tr>
+</tbody></table></div>
+<h2 id="2-6-besoins-non-fonctionnels-observables">2.6 Besoins non fonctionnels observables</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Besoin observable</th>
+<th>Mise en œuvre vérifiée</th>
+<th>Réserve</th>
+</tr></thead><tbody>
+<tr>
+<td>BNF-01</td>
+<td>Confidentialité des mots de passe</td>
+<td>Hashage bcrypt avec dix tours ; mots de passe non renvoyés dans la session</td>
+<td>Aucun audit cryptographique exécuté</td>
+</tr>
+<tr>
+<td>BNF-02</td>
+<td>Contrôle d’accès</td>
+<td>Authentification, onboarding, permissions et contrôles de propriété</td>
+<td>Quelques routes de lecture s’appuient davantage sur le service que sur une permission déclarée dans la route</td>
+</tr>
+<tr>
+<td>BNF-03</td>
+<td>Intégrité des données</td>
+<td>Contraintes uniques, clés étrangères, transactions et verrous sur des flux sensibles</td>
+<td>Validation avec une instance MySQL non exécutée dans cette mission</td>
+</tr>
+<tr>
+<td>BNF-04</td>
+<td>Protection HTTP</td>
+<td>Helmet, CSP, CSRF, cookies configurés, limitation de requêtes</td>
+<td>Les résultats d’un test dynamique des en-têtes ne sont pas disponibles</td>
+</tr>
+<tr>
+<td>BNF-05</td>
+<td>Traçabilité</td>
+<td>Table d’audit et actions nommées pour les opérations principales</td>
+<td>La complétude de l’audit n’est pas garantie pour chaque lecture ou erreur</td>
+</tr>
+<tr>
+<td>BNF-06</td>
+<td>Maintenabilité</td>
+<td>Découpage routes/contrôleurs/services/modèles et constantes partagées</td>
+<td>Architecture hétérogène : certains contrôleurs requêtent directement MySQL</td>
+</tr>
+<tr>
+<td>BNF-07</td>
+<td>Compatibilité responsive</td>
+<td>Feuille CSS avec points de rupture, composants Bootstrap et styles adaptatifs</td>
+<td>Aucun test multi-navigateur automatisé identifié</td>
+</tr>
+<tr>
+<td>BNF-08</td>
+<td>Résilience des sessions de travail</td>
+<td>Heartbeat, expiration, nettoyage au démarrage et périodique</td>
+<td>Dépend de l’exécution continue du processus serveur</td>
+</tr>
+<tr>
+<td>BNF-09</td>
+<td>Testabilité</td>
+<td>Services de fenêtre isolés et tests natifs Node avec substituts</td>
+<td>Couverture limitée à trois fichiers et script <code>npm test</code> non relié à la suite</td>
+</tr>
+<tr>
+<td>BNF-10</td>
+<td>Portabilité de configuration</td>
+<td>Variables d’environnement référencées et exemple de noms génériques</td>
+<td>Version Node exigée et procédure de déploiement non précisées dans le projet</td>
+</tr>
+</tbody></table></div>
+<h2 id="2-7-regles-de-gestion-implementees">2.7 Règles de gestion implémentées</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Règle confirmée par le code</th>
+</tr></thead><tbody>
+<tr>
+<td>RG-01</td>
+<td>L’identifiant de connexion soumis par l’interface et validé par le serveur est une adresse e-mail.</td>
+</tr>
+<tr>
+<td>RG-02</td>
+<td>Seul un utilisateur non supprimé logiquement peut ouvrir une session.</td>
+</tr>
+<tr>
+<td>RG-03</td>
+<td>Le mot de passe est vérifié avec bcrypt et les nouveaux mots de passe doivent contenir au moins huit caractères.</td>
+</tr>
+<tr>
+<td>RG-04</td>
+<td>Tant que <code>first_login</code> ou <code>must_change_password</code> est actif, l’utilisateur est limité au changement du mot de passe.</td>
+</tr>
+<tr>
+<td>RG-05</td>
+<td>Le changement personnel exige l’ancien mot de passe correct.</td>
+</tr>
+<tr>
+<td>RG-06</td>
+<td>Les rôles reconnus sont exactement <code>Team Leader</code> et <code>Data Cleansing</code>.</td>
+</tr>
+<tr>
+<td>RG-07</td>
+<td>L’administration des utilisateurs est accordée au Team Leader par permissions atomiques.</td>
+</tr>
+<tr>
+<td>RG-08</td>
+<td>La suppression d’un utilisateur est logique : <code>is_deleted</code> et <code>deleted_at</code> sont mis à jour.</td>
+</tr>
+<tr>
+<td>RG-09</td>
+<td>Un nom d’utilisateur, un e-mail et un matricule doivent rester uniques.</td>
+</tr>
+<tr>
+<td>RG-10</td>
+<td>La date métier de préparation est déterminée depuis MySQL puis convertie dans <code>Africa/Tunis</code>.</td>
+</tr>
+<tr>
+<td>RG-11</td>
+<td>La fenêtre mensuelle est fermée du 1er au 24 et ouverte du 25 au dernier jour réel du mois.</td>
+</tr>
+<tr>
+<td>RG-12</td>
+<td>Seul le mois immédiatement suivant la date métier peut être sélectionné ou généré.</td>
+</tr>
+<tr>
+<td>RG-13</td>
+<td>Un groupe mensuel vaut 1 (A) ou 2 (B), avec une seule sélection par utilisateur et mois.</td>
+</tr>
+<tr>
+<td>RG-14</td>
+<td>Un utilisateur ne peut modifier que sa propre sélection mensuelle.</td>
+</tr>
+<tr>
+<td>RG-15</td>
+<td>La sélection est verrouillée dès qu’un planning existe pour l’utilisateur et le mois.</td>
+</tr>
+<tr>
+<td>RG-16</td>
+<td>La génération est refusée lorsqu’aucune sélection mensuelle n’est disponible.</td>
+</tr>
+<tr>
+<td>RG-17</td>
+<td>La génération est refusée lorsqu’un planning du même utilisateur et du même mois existe déjà.</td>
+</tr>
+<tr>
+<td>RG-18</td>
+<td>Le groupe A reçoit les mercredis, les jeudis et les premier, troisième et éventuel cinquième vendredis.</td>
+</tr>
+<tr>
+<td>RG-19</td>
+<td>Le groupe B reçoit les lundis, les mardis et les deuxième et quatrième vendredis.</td>
+</tr>
+<tr>
+<td>RG-20</td>
+<td>Le générateur insère les dates calculées avec le statut <code>remote</code>, zéro heure réalisée et huit heures prévues.</td>
+</tr>
+<tr>
+<td>RG-21</td>
+<td>Une seule ligne de planning peut exister pour un utilisateur et une date.</td>
+</tr>
+<tr>
+<td>RG-22</td>
+<td>Un utilisateur sans droit de lecture globale ne reçoit que son propre périmètre dans les services de planning.</td>
+</tr>
+<tr>
+<td>RG-23</td>
+<td>Une demande de congé doit avoir une plage valide, un type autorisé et un texte respectant les limites de validation.</td>
+</tr>
+<tr>
+<td>RG-24</td>
+<td>Deux demandes du même utilisateur ne peuvent se chevaucher si l’une est <code>pending</code> ou <code>approved</code>.</td>
+</tr>
+<tr>
+<td>RG-25</td>
+<td>Le propriétaire peut annuler uniquement sa demande encore <code>pending</code>.</td>
+</tr>
+<tr>
+<td>RG-26</td>
+<td>Le Team Leader ne peut traiter que les demandes <code>pending</code> d’un autre utilisateur.</td>
+</tr>
+<tr>
+<td>RG-27</td>
+<td>Une session de travail démarre ou reprend seulement pour un planning personnel <code>remote</code> à la date serveur.</td>
+</tr>
+<tr>
+<td>RG-28</td>
+<td>La contrainte <code>active_slot</code> vise à maintenir une seule session active pour l’utilisateur, le planning et la date.</td>
+</tr>
+<tr>
+<td>RG-29</td>
+<td>Le navigateur envoie un heartbeat toutes les 60 secondes pendant l’activité.</td>
+</tr>
+<tr>
+<td>RG-30</td>
+<td>Une inactivité détectée côté navigateur après cinq minutes provoque une demande de pause.</td>
+</tr>
+<tr>
+<td>RG-31</td>
+<td>Le serveur accorde une grâce de 120 secondes autour du heartbeat et recherche les sessions obsolètes toutes les deux minutes.</td>
+</tr>
+<tr>
+<td>RG-32</td>
+<td>Les sessions possèdent les statuts <code>active</code>, <code>paused</code>, <code>ended</code> et <code>expired</code>.</td>
+</tr>
+<tr>
+<td>RG-33</td>
+<td>Les secondes actives sont cumulées lors des transitions et converties en heures réelles.</td>
+</tr>
+<tr>
+<td>RG-34</td>
+<td>Les heures réelles d’une journée sont plafonnées à huit heures ; les heures prévues restent séparées.</td>
+</tr>
+<tr>
+<td>RG-35</td>
+<td>Les exports CSV et XLSX sont réservés au rôle possédant les permissions correspondantes.</td>
+</tr>
+<tr>
+<td>RG-36</td>
+<td>Le journal présenté à l’interface est limité aux cent événements les plus récents.</td>
+</tr>
+</tbody></table></div>
+<h2 id="2-8-cas-d-utilisation-global">2.8 Cas d’utilisation global</h2>
+<p>Le cas d’utilisation global associe les fonctions personnelles aux deux rôles et les fonctions d’administration au Team Leader. Le fichier PlantUML correspondant représente les dépendances sans introduire d’acteur externe non observé.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@ — Cas d’utilisation global]</span></p>
+<p><strong>Figure 1 — Cas d’utilisation global de l’application.</strong></p>
+<h2 id="2-9-description-detaillee-des-cas-d-utilisation">2.9 Description détaillée des cas d’utilisation</h2>
+<h3 id="2-9-1-cu-01-s-authentifier">2.9.1 CU-01 — S’authentifier</h3>
+<ul>
+<li><strong>Acteur :</strong> utilisateur possédant un compte actif.</li>
+<li><strong>Objectif :</strong> ouvrir une session applicative.</li>
+<li><strong>Préconditions :</strong> e-mail au format valide, compte non supprimé, mot de passe connu.</li>
+<li><strong>Scénario nominal :</strong> l’utilisateur soumet le formulaire ; l’API cherche le compte par e-mail ; bcrypt compare le secret ; le serveur régénère ou renseigne la session avec un profil réduit ; l’interface redirige vers le changement du mot de passe ou le tableau de bord.</li>
+<li><strong>Alternatives :</strong> session déjà active ; indicateurs d’onboarding actifs.</li>
+<li><strong>Exceptions :</strong> e-mail mal formé, compte absent, mot de passe incorrect, limitation de requêtes, erreur interne.</li>
+<li><strong>Postcondition :</strong> session authentifiée ou absence de session.</li>
+</ul>
+<h3 id="2-9-2-cu-02-selectionner-le-groupe-mensuel">2.9.2 CU-02 — Sélectionner le groupe mensuel</h3>
+<ul>
+<li><strong>Acteur :</strong> Team Leader ou Data Cleansing pour son propre compte.</li>
+<li><strong>Objectif :</strong> enregistrer le groupe A ou B du prochain mois.</li>
+<li><strong>Préconditions :</strong> session valide, onboarding terminé, fenêtre ouverte, mois cible exact, planning absent.</li>
+<li><strong>Scénario nominal :</strong> l’interface lit la fenêtre ; l’utilisateur choisit A ou B ; le contrôleur transmet son identifiant au service ; le service verrouille les données nécessaires, vérifie la date et le planning, puis insère ou met à jour la sélection dans une transaction ; une action d’audit est créée.</li>
+<li><strong>Alternatives :</strong> modification d’une sélection existante avant génération.</li>
+<li><strong>Exceptions :</strong> fenêtre fermée, mois invalide, groupe invalide ou sélection verrouillée.</li>
+<li><strong>Postcondition :</strong> une seule sélection existe pour l’utilisateur et le mois.</li>
+</ul>
+<h3 id="2-9-3-cu-03-generer-le-planning">2.9.3 CU-03 — Générer le planning</h3>
+<ul>
+<li><strong>Acteur :</strong> utilisateur pour lui-même ; Team Leader pour une cible autorisée.</li>
+<li><strong>Objectif :</strong> créer les lignes Home Office du prochain mois.</li>
+<li><strong>Préconditions :</strong> fenêtre ouverte, mois cible, sélection présente et absence de planning mensuel.</li>
+<li><strong>Scénario nominal :</strong> le service ouvre une transaction ; reverrouille et revérifie la fenêtre ; charge la sélection ; refuse un planning existant ; calcule les dates selon le groupe ; insère le lot de lignes <code>remote</code> ; écrit l’audit ; valide la transaction.</li>
+<li><strong>Alternatives :</strong> génération pour un autre utilisateur par le Team Leader.</li>
+<li><strong>Exceptions :</strong> sélection absente, cible non autorisée, doublon, erreur SQL ou fenêtre fermée.</li>
+<li><strong>Postcondition :</strong> les jours distants calculés existent une seule fois.</li>
+</ul>
+<h3 id="2-9-4-cu-04-traiter-une-demande-de-conge">2.9.4 CU-04 — Traiter une demande de congé</h3>
+<ul>
+<li><strong>Acteur :</strong> Team Leader.</li>
+<li><strong>Objectif :</strong> approuver ou rejeter une demande en attente.</li>
+<li><strong>Préconditions :</strong> permission de gestion, demande existante, demande d’un autre utilisateur, statut <code>pending</code>.</li>
+<li><strong>Scénario nominal :</strong> le Team Leader choisit une décision et éventuellement un commentaire ; le service charge et verrouille la demande ; vérifie le propriétaire et le statut ; renseigne la décision, le réviseur et l’horodatage ; écrit l’audit ; valide la transaction.</li>
+<li><strong>Alternatives :</strong> approbation ou rejet.</li>
+<li><strong>Exceptions :</strong> auto-traitement, demande absente, demande déjà décidée ou données invalides.</li>
+<li><strong>Postcondition :</strong> statut terminal <code>approved</code> ou <code>rejected</code>.</li>
+</ul>
+<h3 id="2-9-5-cu-05-suivre-une-session-distante">2.9.5 CU-05 — Suivre une session distante</h3>
+<ul>
+<li><strong>Acteur :</strong> utilisateur propriétaire du planning.</li>
+<li><strong>Objectif :</strong> comptabiliser les périodes actives d’une journée distante.</li>
+<li><strong>Préconditions :</strong> ligne <code>remote</code> pour la date serveur et le compte connecté.</li>
+<li><strong>Scénario nominal :</strong> l’interface demande le démarrage automatique ; le service crée ou reprend la session ; le navigateur envoie des heartbeats ; une pause ou une fin cumule le temps ; le service met à jour <code>planning.work_hour</code> avec un plafond de huit heures.</li>
+<li><strong>Alternatives :</strong> reprise d’une session en pause ; expiration automatique en cas de heartbeat obsolète.</li>
+<li><strong>Exceptions :</strong> planning non éligible, session d’un autre utilisateur, session absente ou conflit d’unicité.</li>
+<li><strong>Postcondition :</strong> statut de session et heures réelles cohérents avec les périodes enregistrées.</li>
+</ul>
+<h2 id="2-10-architecture-globale">2.10 Architecture globale</h2>
+<p>L’architecture est monolithique et organisée par responsabilités. Le navigateur reçoit des pages et des assets depuis Express, puis appelle les endpoints <code>/api</code>. Le serveur enchaîne des middlewares transversaux, des routes, des contrôleurs et, pour plusieurs domaines, des services et modèles. Le pool <code>mysql2/promise</code> fournit l’accès à MySQL. Un magasin séparé, géré par <code>express-mysql-session</code>, persiste les sessions HTTP.</p>
+<p>Le schéma <code>route → contrôleur → service → modèle → MySQL</code> décrit correctement la génération, la sélection mensuelle, les congés et les sessions de travail. Il ne doit toutefois pas être présenté comme universel : l’authentification, les utilisateurs, le tableau de bord, l’export et les journaux contiennent des requêtes SQL directement dans les contrôleurs ou des utilitaires. L’architecture est donc « en couches inspirée de MVC, avec accès aux données hétérogène ».</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@ — Architecture globale]</span></p>
+<p><strong>Figure 2 — Flux global du navigateur vers MySQL.</strong></p>
+<h2 id="2-11-architecture-backend">2.11 Architecture backend</h2>
+<p><code>server.js</code> charge la configuration, instancie Express, active la confiance dans un proxy, applique Helmet et la CSP, Morgan, les limiteurs, les analyseurs de cookies et de corps, les fichiers statiques, la session MySQL, puis CSRF. Les routes de pages précèdent les groupes d’API. Une route 404 et un gestionnaire global terminent la chaîne. Après l’écoute, le nettoyage des sessions de travail obsolètes est lancé au démarrage puis à intervalle régulier.</p>
+<p>Les validations <code>express-validator</code> sont placées dans <code>validations/</code> et consolidées par <code>middlewares/validate.js</code>. Les erreurs attendues peuvent être portées par les classes de <code>utils/errors.js</code>; <code>utils/asyncHandler.js</code> facilite leur propagation. Plusieurs services utilisent une connexion dédiée au pool pour commencer, valider ou annuler une transaction, ce qui évite de répartir une opération atomique sur plusieurs connexions.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@ — Composants backend et frontend]</span></p>
+<p><strong>Figure 3 — Principaux composants du monolithe.</strong></p>
+<h2 id="2-12-organisation-frontend">2.12 Organisation frontend</h2>
+<p>Chaque page métier est un fichier HTML distinct. <code>layout.js</code> construit les éléments partagés, charge l’état de session et filtre la navigation à partir des permissions. <code>api.js</code> fournit un client commun pour les appels <code>fetch</code>, obtient le jeton CSRF à partir de l’API de session et normalise les erreurs. Les scripts propres aux pages assurent les formulaires, les filtres, les tableaux, les modales, les messages et les appels aux endpoints.</p>
+<p>La feuille <code>leoni.css</code> définit l’identité visuelle, les états, la grille, les tableaux et des adaptations aux largeurs 1199, 991 et 575 pixels. Elle contient aussi des styles <code>focus-visible</code> et respecte <code>prefers-reduced-motion</code>. Bootstrap 5.3.3, Font Awesome 6.5.2 et la police Inter sont chargés depuis des ressources CDN par les pages. Cette dépendance réseau doit être prise en compte pour un usage isolé.</p>
+<h2 id="2-13-modele-de-donnees">2.13 Modèle de données</h2>
+<p>Le schéma métier de premier niveau comprend six tables. Le magasin de sessions HTTP est créé et géré à l’exécution par la bibliothèque de session ; sa structure exacte ne fait pas partie du schéma métier de premier niveau décrit ici.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Table</th>
+<th>Finalité</th>
+<th>Clés et relations</th>
+<th>Contraintes remarquables</th>
+</tr></thead><tbody>
+<tr>
+<td><code>users</code></td>
+<td>Comptes, identité métier, rôle et onboarding</td>
+<td>PK <code>id</code></td>
+<td><code>username</code>, <code>email</code>, <code>matricule</code> uniques ; rôle énuméré ; suppression logique ; index groupe/rôle/suppression</td>
+</tr>
+<tr>
+<td><code>monthly_group_selections</code></td>
+<td>Groupe d’un utilisateur pour un mois</td>
+<td>PK <code>id</code>, FK <code>user_id → users</code> avec cascade</td>
+<td><code>month_key</code> au format année-mois ; groupe 1/2 ; unicité utilisateur/mois ; index mois et groupe</td>
+</tr>
+<tr>
+<td><code>planning</code></td>
+<td>Journées planifiées et heures</td>
+<td>PK <code>id</code>, FK <code>user_id → users</code> avec cascade</td>
+<td>unicité utilisateur/date ; statut <code>onsite</code>/<code>remote</code>; mois indexé ; heures prévues/réelles séparées</td>
+</tr>
+<tr>
+<td><code>work_sessions</code></td>
+<td>Segments de suivi des journées distantes</td>
+<td>PK <code>id</code>, FK utilisateur en cascade, FK planning avec mise à null</td>
+<td>statuts énumérés ; heartbeat ; secondes ; <code>active_slot</code> et unicité de la session active</td>
+</tr>
+<tr>
+<td><code>leave_requests</code></td>
+<td>Demandes et décisions de congé</td>
+<td>PK <code>id</code>, FK demandeur en cascade, FK réviseur avec mise à null</td>
+<td>type et statut énumérés ; dates ; index demandeur/statut/période</td>
+</tr>
+<tr>
+<td><code>audit_logs</code></td>
+<td>Trace horodatée des actions</td>
+<td>PK <code>id</code>, FK utilisateur avec mise à null</td>
+<td>action, détails, adresse IP, index date/action</td>
+</tr>
+</tbody></table></div>
+<p>Les migrations numérotées complètent le schéma avec les colonnes d’entreprise, les congés, le champ <code>horaire</code>, les sessions de travail, leur durcissement, la date de mise à jour du planning et les sélections mensuelles. Le code d’initialisation exécute aussi des opérations de création ou de migration au démarrage ; cette caractéristique est reprise comme limite opérationnelle dans le chapitre 3.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@ — Modèle relationnel]</span></p>
+<p><strong>Figure 4 — Relations des six tables métier.</strong></p>
+<h2 id="2-14-controle-d-acces">2.14 Contrôle d’accès</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Action ou module</th>
+<th>Team Leader</th>
+<th>Data Cleansing</th>
+<th>Contrôle principal</th>
+</tr></thead><tbody>
+<tr>
+<td>Tableau de bord</td>
+<td>Oui</td>
+<td>Oui</td>
+<td>Authentification et onboarding ; permission de menu</td>
+</tr>
+<tr>
+<td>Administration des utilisateurs</td>
+<td>Oui</td>
+<td>Non</td>
+<td>Permissions <code>users.*</code> sur pages et API</td>
+</tr>
+<tr>
+<td>Lecture de son planning</td>
+<td>Oui</td>
+<td>Oui</td>
+<td>Permission et périmètre de service</td>
+</tr>
+<tr>
+<td>Lecture globale du planning</td>
+<td>Oui</td>
+<td>Non</td>
+<td>Permission disponible et filtrage du service</td>
+</tr>
+<tr>
+<td>Génération pour soi</td>
+<td>Oui</td>
+<td>Oui</td>
+<td><code>planning.generate.own</code></td>
+</tr>
+<tr>
+<td>Génération pour autrui</td>
+<td>Oui</td>
+<td>Non</td>
+<td><code>planning.generate.all</code> vérifiée dans le contrôleur/service</td>
+</tr>
+<tr>
+<td>Sélection mensuelle personnelle</td>
+<td>Oui</td>
+<td>Oui</td>
+<td>Permissions lecture/écriture propre</td>
+</tr>
+<tr>
+<td>Lecture globale des sélections</td>
+<td>Oui</td>
+<td>Non</td>
+<td><code>monthly_group_selection.read.all</code></td>
+</tr>
+<tr>
+<td>Congés personnels</td>
+<td>Oui</td>
+<td>Oui</td>
+<td><code>leave_requests.read.own</code></td>
+</tr>
+<tr>
+<td>Gestion des congés</td>
+<td>Oui</td>
+<td>Non</td>
+<td><code>leave_requests.manage</code> et règle anti-auto-traitement</td>
+</tr>
+<tr>
+<td>Synthèse des sessions</td>
+<td>Oui</td>
+<td>Non</td>
+<td><code>work_sessions.read.summary</code></td>
+</tr>
+<tr>
+<td>Export CSV/XLSX</td>
+<td>Oui</td>
+<td>Non</td>
+<td><code>export.csv</code> et <code>export.xlsx</code></td>
+</tr>
+<tr>
+<td>Lecture de l’audit</td>
+<td>Oui</td>
+<td>Non</td>
+<td><code>audit.read</code></td>
+</tr>
+<tr>
+<td>Changement personnel du mot de passe</td>
+<td>Oui</td>
+<td>Oui</td>
+<td>Authentification uniquement</td>
+</tr>
+</tbody></table></div>
+<p>Le menu n’est qu’une aide d’interface. La protection effective repose sur les middlewares et les contrôles métier. Trois endpoints de lecture du planning (<code>/calendar</code>, <code>/</code>, <code>/all</code> et la route utilisateur selon leur ordre) n’emploient pas tous une permission explicite dans le fichier de route ; le périmètre est ensuite restreint par la logique du contrôleur/service. Cette dissociation fonctionne comme défense fonctionnelle, mais rend la politique moins immédiatement lisible.</p>
+<h2 id="2-15-conception-de-la-securite">2.15 Conception de la sécurité</h2>
+<p>La conception combine plusieurs couches. L’authentification recherche le compte par e-mail, exclut les comptes supprimés et compare un hash bcrypt. La session stocke une représentation limitée du compte et le cookie est configuré <code>HttpOnly</code>, <code>SameSite=Lax</code>, avec l’attribut <code>Secure</code> activé en environnement de production et une durée maximale de huit heures.</p>
+<p>Les requêtes qui modifient l’état passent par la protection CSRF globale, après initialisation de la session. Helmet définit des en-têtes de sécurité et une CSP explicite qui autorise les ressources nécessaires aux pages. Un limiteur général couvre l’API et un limiteur plus strict cible la connexion. Les entrées sont validées côté serveur. Les requêtes SQL de premier niveau inspectées utilisent des paramètres pour les valeurs ; les clauses dynamiques observées sont assemblées à partir de fragments contrôlés par le code.</p>
+<p>Les permissions atomiques évitent de disperser des comparaisons de libellés de rôle, tandis que les services vérifient la propriété des plannings, demandes et sessions. Les opérations principales alimentent <code>audit_logs</code>. Le gestionnaire global masque les détails internes des erreurs inattendues. Ces constats décrivent des mécanismes présents ; ils ne constituent ni un test d’intrusion ni une certification de sécurité.</p>
+<p>Deux réserves ressortent directement du code. Les messages d’échec de connexion distinguent l’absence de compte d’un mot de passe erroné, ce qui peut faciliter l’énumération d’adresses. Le démarrage de la couche de données comporte un chemin d’initialisation et d’amorçage codé dans l’application ; aucun identifiant n’est reproduit ici, mais ce mécanisme gagnerait à être externalisé et contrôlé par une procédure de migration dédiée.</p>
+<h2 id="2-16-conclusion">2.16 Conclusion</h2>
+<p>Le système réalisé couvre un cycle complet autour du planning Home Office : identité, groupe mensuel, génération, consultation, activités associées et traçabilité. Les rôles et les règles sont suffisamment explicites dans le code pour construire un modèle fonctionnel détaillé. L’architecture apporte des séparations utiles et des transactions sur les écritures sensibles, tout en conservant une hétérogénéité d’accès aux données. Le chapitre suivant examine concrètement la mise en œuvre de chaque composant et de chaque interface.</p>
+<div class="page-break"></div>
+<h1 id="chapitre-3-realisation-de-l-application">Chapitre 3 — Réalisation de l’application</h1>
+<h2 id="3-1-introduction">3.1 Introduction</h2>
+<p>Ce chapitre décrit l’implémentation actuelle, depuis le démarrage du serveur jusqu’aux interfaces. Pour chaque module, il met en relation la page, l’API, la couche métier et les données. Il précise également les erreurs contrôlées, les événements d’audit et les limites que le code permet d’établir.</p>
+<h2 id="3-2-environnement-technique">3.2 Environnement technique</h2>
+<p>Le projet applicatif se trouve dans <code>leoni-planing/</code> et déclare le nom <code>leoni-planing</code>, la version applicative 1.0.0 et le mode de modules CommonJS. La version minimale de Node.js n’est pas fixée par un champ <code>engines</code>. L’exécution documentaire des tests a utilisé Node.js v24.16.0 et npm 11.13.0 ; ces versions décrivent l’environnement du test, pas une contrainte officielle du projet.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Technologie</th>
+<th>Version exacte détectée</th>
+<th>Rôle réel</th>
+<th>Preuve</th>
+</tr></thead><tbody>
+<tr>
+<td>Express</td>
+<td>5.2.1</td>
+<td>Serveur HTTP, pages, API et middlewares</td>
+<td>verrou de dépendances</td>
+</tr>
+<tr>
+<td>mysql2</td>
+<td>3.22.5</td>
+<td>Pool MySQL, promesses, transactions et requêtes préparées</td>
+<td>verrou de dépendances, <code>config/db.js</code></td>
+</tr>
+<tr>
+<td>bcrypt</td>
+<td>6.0.0</td>
+<td>Hashage et comparaison des mots de passe</td>
+<td>verrou, <code>authController.js</code></td>
+</tr>
+<tr>
+<td>express-session</td>
+<td>1.19.0</td>
+<td>Session HTTP</td>
+<td>verrou, <code>server.js</code></td>
+</tr>
+<tr>
+<td>express-mysql-session</td>
+<td>3.0.3</td>
+<td>Persistance MySQL des sessions</td>
+<td>verrou, <code>server.js</code></td>
+</tr>
+<tr>
+<td>cookie-parser</td>
+<td>1.4.7</td>
+<td>Lecture des cookies</td>
+<td>verrou, <code>server.js</code></td>
+</tr>
+<tr>
+<td>csurf</td>
+<td>1.11.0</td>
+<td>Protection CSRF</td>
+<td>verrou, <code>server.js</code></td>
+</tr>
+<tr>
+<td>express-rate-limit</td>
+<td>8.5.2</td>
+<td>Limitation globale de l’API et de la connexion</td>
+<td>verrou, <code>server.js</code></td>
+</tr>
+<tr>
+<td>express-validator</td>
+<td>7.3.2</td>
+<td>Validation et normalisation des entrées</td>
+<td>verrou, <code>validations/</code></td>
+</tr>
+<tr>
+<td>Helmet</td>
+<td>8.2.0</td>
+<td>En-têtes HTTP et CSP</td>
+<td>verrou, <code>server.js</code></td>
+</tr>
+<tr>
+<td>Morgan</td>
+<td>1.11.0</td>
+<td>Journal HTTP</td>
+<td>verrou, <code>server.js</code></td>
+</tr>
+<tr>
+<td>ExcelJS</td>
+<td>4.4.0</td>
+<td>Construction des classeurs XLSX</td>
+<td>verrou, <code>exportController.js</code></td>
+</tr>
+<tr>
+<td>dotenv</td>
+<td>17.4.2</td>
+<td>Chargement de la configuration d’environnement</td>
+<td>verrou, fichiers de configuration</td>
+</tr>
+<tr>
+<td>nodemon</td>
+<td>3.1.14</td>
+<td>Dépendance de développement déclarée</td>
+<td>verrou de dépendances</td>
+</tr>
+<tr>
+<td>Bootstrap</td>
+<td>5.3.3</td>
+<td>Composants et mise en page frontend</td>
+<td>balises CDN des pages HTML</td>
+</tr>
+<tr>
+<td>Font Awesome</td>
+<td>6.5.2</td>
+<td>Icônes</td>
+<td>balises CDN des pages HTML</td>
+</tr>
+<tr>
+<td>HTML/CSS/JavaScript</td>
+<td>Standard navigateur</td>
+<td>Pages, styles, interactions et appels API</td>
+<td><code>views/</code></td>
+</tr>
+</tbody></table></div>
+<p>Les numéros ci-dessus proviennent du fichier de verrouillage, qui résout les plages déclarées dans <code>package.json</code>. Le moteur MySQL exact et sa version d’exécution ne sont pas déterminables sans connexion à une instance ; ils ne sont donc pas inventés.</p>
+<h2 id="3-3-choix-technologiques">3.3 Choix technologiques</h2>
+<p>Express réunit le service des pages et les endpoints JSON dans un même processus, ce qui correspond au caractère monolithique de l’application. MySQL offre les contraintes relationnelles, les transactions, les index et les verrous nécessaires aux sélections, aux plannings, aux congés et aux sessions. <code>mysql2/promise</code> permet d’écrire ces flux avec <code>async/await</code>.</p>
+<p>L’interface sans framework JavaScript applicatif réduit la chaîne de construction : les fichiers HTML peuvent être servis directement et chaque page charge son script. Bootstrap fournit les composants et la grille, tandis que la feuille <code>leoni.css</code> porte les adaptations visuelles spécifiques. ExcelJS répond au besoin de générer un classeur structuré ; l’export CSV est construit par le contrôleur.</p>
+<p>Les bibliothèques de sécurité se répartissent les responsabilités : bcrypt pour les secrets, express-session pour le cycle de session, le magasin MySQL pour la persistance, Helmet pour les en-têtes, csurf pour le jeton anti-CSRF, express-rate-limit pour le débit et express-validator pour les données reçues. Le code combine ces protections au lieu de les traiter comme substituables.</p>
+<h2 id="3-4-organisation-des-fichiers">3.4 Organisation des fichiers</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Répertoire ou fichier</th>
+<th>Responsabilité observée</th>
+</tr></thead><tbody>
+<tr>
+<td><code>server.js</code></td>
+<td>Composition Express, montage des routes, erreurs et nettoyage périodique</td>
+</tr>
+<tr>
+<td><code>config/</code></td>
+<td>Constantes, permissions, menu, pool et initialisation des données</td>
+</tr>
+<tr>
+<td><code>routes/</code></td>
+<td>Définition des pages et endpoints, middlewares d’accès et validations</td>
+</tr>
+<tr>
+<td><code>controllers/</code></td>
+<td>Adaptation HTTP, orchestration et certaines requêtes directes</td>
+</tr>
+<tr>
+<td><code>services/</code></td>
+<td>Règles métier, transactions, verrous et orchestration de modèles</td>
+</tr>
+<tr>
+<td><code>models/</code></td>
+<td>Requêtes de données pour les domaines structurés</td>
+</tr>
+<tr>
+<td><code>middlewares/</code></td>
+<td>Authentification, onboarding, permission et validation</td>
+</tr>
+<tr>
+<td><code>validations/</code></td>
+<td>Chaînes express-validator par module</td>
+</tr>
+<tr>
+<td><code>utils/</code></td>
+<td>Erreurs, journalisation, async handler, fonctions communes et fenêtre</td>
+</tr>
+<tr>
+<td><code>views/</code></td>
+<td>Pages HTML et erreurs 403/404</td>
+</tr>
+<tr>
+<td><code>views/assets/</code></td>
+<td>CSS, scripts navigateur, favicon</td>
+</tr>
+<tr>
+<td><code>sql/schema.sql</code></td>
+<td>Schéma consolidé des tables métier</td>
+</tr>
+<tr>
+<td><code>sql/migrations/</code></td>
+<td>Sept migrations numérotées</td>
+</tr>
+<tr>
+<td><code>tests/</code></td>
+<td>Trois fichiers de tests Node natifs</td>
+</tr>
+</tbody></table></div>
+<p>Les sources historiques externes au code, les secrets d’environnement, les dépendances installées, les métadonnées et les éléments de gestion de versions sont exclus du périmètre documentaire. La structure réellement inspectée correspond aux répertoires ci-dessus.</p>
+<h2 id="3-5-configuration-du-serveur-express">3.5 Configuration du serveur Express</h2>
+<p>Le serveur active <code>trust proxy</code> avec la valeur 1, utile lorsque l’application se trouve derrière un proxy unique. L’ordre des middlewares est significatif :</p>
+<ol>
+<li>Helmet et la politique CSP ;</li>
+<li>journalisation HTTP Morgan ;</li>
+<li>limitation générale des appels <code>/api</code> et limitation de la connexion ;</li>
+<li>lecture des cookies, des formulaires et du JSON ;</li>
+<li>service des assets statiques ;</li>
+<li>session Express persistée dans MySQL ;</li>
+<li>protection CSRF ;</li>
+<li>routes de pages ;</li>
+<li>routes API d’authentification, utilisateurs, planning, sélection mensuelle, tableau de bord, export, audit, congés et sessions de travail ;</li>
+<li>réponse 404 ;</li>
+<li>gestionnaire global des erreurs.</li>
+</ol>
+<p>Le cookie de session se nomme <code>leoni_session</code>, dure huit heures, est inaccessible au JavaScript grâce à <code>HttpOnly</code>, utilise <code>SameSite=Lax</code> et devient <code>Secure</code> lorsque l’environnement est la production. L’application n’est pas démarrée dans le cadre de ce rapport, de sorte que l’efficacité dynamique de ces réglages reste à valider sur un environnement d’essai.</p>
+<h2 id="3-6-connexion-et-acces-a-mysql">3.6 Connexion et accès à MySQL</h2>
+<p>La configuration de base construit un pool <code>mysql2/promise</code> avec un maximum de dix connexions. Les paramètres proviennent de variables d’environnement dont seules les désignations génériques sont documentées dans le guide d’installation ; aucune valeur n’est reproduite. Le pool est partagé pour les lectures simples. Les services qui exigent une transaction demandent une connexion dédiée, appellent <code>beginTransaction</code>, puis <code>commit</code> ou <code>rollback</code> dans un bloc protégé.</p>
+<p>Le code d’initialisation est exécuté lors du chargement de la configuration. Il peut créer ou faire évoluer le schéma et comporte une étape d’amorçage d’un compte initial. Cette automatisation facilite une première installation, mais couple le démarrage HTTP à des mutations de schéma et à une logique de bootstrap. Pour un environnement gouverné, une procédure de migration explicite, versionnée et exécutée séparément offrirait un meilleur contrôle. Aucun identifiant ou secret d’amorçage n’est reproduit dans cette documentation.</p>
+<p>Le paramètre <code>multipleStatements</code> est activé pour l’initialisation. Les requêtes métier de premier niveau inspectées utilisent des paramètres pour les valeurs. L’activation reste néanmoins une capacité sensible : toute future requête non maîtrisée dans ce contexte devrait être revue avec attention.</p>
+<h2 id="3-7-gestion-des-sessions">3.7 Gestion des sessions</h2>
+<p><code>express-session</code> conserve l’état d’authentification et délègue la persistance à <code>express-mysql-session</code>. La table technique correspondante est gérée à l’exécution par la bibliothèque ; elle est distincte des six tables métier du schéma consolidé. La session applicative contient un objet utilisateur réduit, comprenant les attributs nécessaires à l’identité, au rôle et à l’onboarding, ainsi que les permissions calculées lors de la lecture de session.</p>
+<p>Le middleware <code>auth</code> refuse les requêtes sans utilisateur de session. <code>requireOnboardingComplete</code> bloque les pages et API métiers tant que le mot de passe doit être remplacé. <code>requirePermission</code> compare la permission demandée à la liste accordée au rôle. La déconnexion détruit la session et efface le cookie correspondant.</p>
+<p>La durée maximale du cookie est de huit heures. Le code ne met pas en évidence une rotation périodique indépendante du cookie ni un écran de gestion des sessions multiples. Ces absences sont des constats de périmètre, non une preuve d’exploitation.</p>
+<h2 id="3-8-authentification">3.8 Authentification</h2>
+<p>La page <code>/login</code> contient un champ de type e-mail et un champ mot de passe. Le script envoie <code>{email, password}</code> à <code>POST /api/auth/login</code>. Le validateur normalise l’e-mail et contrôle les données. Le contrôleur recherche le compte actif par e-mail, compare le mot de passe avec bcrypt, place le profil réduit en session et inscrit l’action de connexion dans le journal.</p>
+<p><code>GET /api/auth/session</code> renseigne le frontend sur l’utilisateur courant, son onboarding et ses permissions. <code>POST /api/auth/logout</code> ferme la session. Un limiteur dédié réduit le nombre de tentatives sur l’endpoint de connexion.</p>
+<p>Les messages de refus distinguent actuellement le compte absent du mot de passe incorrect. Cette précision facilite le diagnostic pour l’utilisateur mais peut révéler si une adresse est enregistrée. Une formulation uniforme est une perspective de durcissement. Aucun mécanisme de réinitialisation administrative du mot de passe par le Team Leader n’est exposé dans les routes actuelles ; le flux confirmé est le changement personnel avec l’ancien mot de passe.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : interface de connexion avec champs vides et aucune donnée personnelle]</span></p>
+<p><strong>Figure 16 — Authentification par e-mail.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 5 — Séquence d’authentification.</strong></p>
+<h2 id="3-9-changement-obligatoire-du-mot-de-passe">3.9 Changement obligatoire du mot de passe</h2>
+<p>Deux drapeaux de <code>users</code>, <code>first_login</code> et <code>must_change_password</code>, déclenchent le blocage d’onboarding. Lorsqu’ils sont actifs, la route de connexion ou les middlewares orientent l’utilisateur vers <code>/change-password?reason=password-required</code>. Le formulaire demande l’ancien mot de passe, le nouveau et sa confirmation. La validation impose une longueur minimale de huit caractères et la cohérence des données ; le contrôleur vérifie l’ancien secret, produit un nouveau hash bcrypt, désactive les drapeaux et journalise <code>PASSWORD_CHANGED</code>.</p>
+<p>La route reste accessible à tout utilisateur authentifié afin de permettre aussi un changement volontaire. L’obligation repose simultanément sur les indicateurs persistés, la session et le middleware de pages/API.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : page de changement obligatoire avec tous les champs de mot de passe vides]</span></p>
+<p><strong>Figure 17 — Changement obligatoire du mot de passe.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 6 — Séquence de renouvellement du mot de passe.</strong></p>
+<h2 id="3-10-gestion-des-roles-et-permissions">3.10 Gestion des rôles et permissions</h2>
+<p>Les constantes définissent deux rôles immuables et le fichier de permissions associe à chacun une liste d’actions atomiques. Le Team Leader reçoit vingt permissions couvrant les statistiques, les utilisateurs, les lectures et générations globales, les sélections mensuelles, les synthèses, les congés, les exports, l’audit et les paramètres. Data Cleansing reçoit six permissions : tableau de bord, lecture et génération de son planning, lecture et écriture de sa sélection, et lecture de ses congés.</p>
+<p><code>requirePermission</code> protège les routes déclarées. Le frontend reçoit les permissions depuis la session et filtre les éléments de <code>SIDEBAR_ITEMS</code>. Comme ce filtrage client n’est pas une barrière de sécurité, les pages sensibles répètent les contrôles côté serveur. Les services appliquent en plus des règles de propriété, notamment pour le planning, les congés et les sessions.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : page 403 obtenue avec un compte d’essai sans permission, sans URL sensible]</span></p>
+<p><strong>Figure 31 — Refus d’un accès non autorisé.</strong></p>
+<h2 id="3-11-gestion-des-utilisateurs">3.11 Gestion des utilisateurs</h2>
+<p>La page <code>/users-page</code> et les endpoints <code>/api/users</code> sont réservés au Team Leader. Le module liste les comptes actifs, ouvre une modale de création ou de modification et propose une suppression. Les validateurs vérifient l’identifiant de route, les champs textuels, l’e-mail, le rôle et le mot de passe requis à la création. Le contrôleur utilise des requêtes paramétrées, génère un hash bcrypt et renseigne les indicateurs d’onboarding pour le nouveau compte.</p>
+<p>La suppression est logique : le compte demeure en base mais porte <code>is_deleted = 1</code> et une date <code>deleted_at</code>. Les lectures courantes excluent ces lignes. Ce choix conserve les relations et les traces d’audit. Les actions de création, modification et suppression sont journalisées.</p>
+<p>L’interface expose des champs d’identité et d’organisation tels que nom, prénom, matricule, département, poste ou statut selon les colonnes et le formulaire. Les contraintes uniques sur le nom d’utilisateur, l’e-mail et le matricule complètent les contrôles applicatifs. Aucun mécanisme de pagination n’est visible : la liste entière correspondant à la requête est chargée.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : page de gestion des utilisateurs avec identités, e-mails et matricules masqués]</span></p>
+<p><strong>Figure 20 — Répertoire des utilisateurs.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : modale de création vide, sans mot de passe saisi]</span></p>
+<p><strong>Figure 21 — Formulaire de création d’un utilisateur.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 7 — Séquence de création ou de mise à jour d’un utilisateur.</strong></p>
+<h2 id="3-12-selection-mensuelle-du-groupe-home-office">3.12 Sélection mensuelle du groupe Home Office</h2>
+<p>La sélection mensuelle remplace une affectation fixe pour la génération. <code>monthly_group_selections</code> relie un utilisateur, une clé <code>YYYY-MM</code> et un groupe 1 ou 2. La contrainte unique utilisateur/mois rend le choix univoque. <code>GET /api/monthly-group-selections/mine</code> lit le choix personnel ; <code>PUT /mine</code> l’enregistre ; <code>GET /</code> fournit au Team Leader l’état d’un mois.</p>
+<p>Le service utilise une transaction. Il obtient la date métier depuis MySQL, vérifie que la fenêtre est ouverte et que le mois reçu est exactement le mois suivant. Il recherche un planning existant et refuse la modification s’il y en a un. En l’absence de verrou, il insère ou met à jour la sélection, puis distingue dans l’audit une sélection initiale d’un changement.</p>
+<p>La vue de planning peut afficher la sélection d’un compte cible au Team Leader, mais l’endpoint d’écriture reste volontairement limité au propre compte de l’utilisateur connecté. Le champ historique <code>users.group_id</code> subsiste pour d’autres usages ; le générateur courant exige la sélection mensuelle et n’en déduit pas automatiquement un groupe ancien.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : zone de sélection du groupe pour le mois autorisé, identité de tiers masquée]</span></p>
+<p><strong>Figure 22 — Sélection mensuelle du groupe Home Office.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 8 — Séquence de sélection du groupe.</strong></p>
+<h2 id="3-13-fenetre-de-generation">3.13 Fenêtre de génération</h2>
+<p>La fenêtre est un mécanisme partagé entre la sélection et la génération. Le code métier ne s’appuie pas uniquement sur la date du navigateur. Il interroge MySQL pour une heure UTC, la convertit dans <code>Africa/Tunis</code>, construit le mois suivant et calcule le dernier jour réel du mois courant. L’ouverture commence le 25 inclus et se prolonge jusqu’à ce dernier jour inclus.</p>
+<p>Le service rejette les mois passés, le mois courant et les mois trop éloignés. Il traite naturellement les mois de 28, 29, 30 ou 31 jours et le passage de décembre à janvier. Une première lecture fournit l’état à l’interface ; les services d’écriture répètent la vérification dans leur transaction, ce qui évite de se fier à une information devenue obsolète entre l’affichage et la soumission.</p>
+<p>Le tableau de bord calcule également des états visuels dans le navigateur. Ceux-ci sont informatifs ; la décision d’autoriser l’écriture appartient au backend. Une divergence d’horloge entre navigateur et serveur pourrait donc modifier l’affichage sans contourner la garde serveur.</p>
+<h2 id="3-14-algorithme-de-generation-du-planning">3.14 Algorithme de génération du planning</h2>
+<p>Le service commence par identifier l’utilisateur cible et vérifier qu’un utilisateur ordinaire ne génère pas pour autrui. Dans une transaction, il contrôle la fenêtre, verrouille les données utiles, charge la sélection exacte du mois et refuse tout planning déjà présent. Il parcourt ensuite chaque jour calendaire du mois cible.</p>
+<p>Pour le <strong>groupe A</strong>, un jour est retenu s’il s’agit d’un mercredi, d’un jeudi ou d’un vendredi dont le rang dans le mois est impair : premier, troisième et, lorsqu’il existe, cinquième. Pour le <strong>groupe B</strong>, les lundis et mardis sont retenus, ainsi que les deuxième et quatrième vendredis. Le rang d’un vendredi est obtenu à partir du jour du mois. Le lot final est inséré avec le statut <code>remote</code>, <code>work_hour = 0</code> et <code>planned_work_hour = 8</code>.</p>
+<p>Pseudo-code fidèle au comportement :</p>
+<pre data-language="text"><code>vérifier acteur, cible, fenêtre et mois suivant
+ouvrir une transaction
+revalider la fenêtre avec la date MySQL en fuseau Tunis
+charger et verrouiller la sélection utilisateur/mois
+refuser si aucune sélection ou si un planning existe
+pour chaque date du mois cible :
+    si groupe A et (mercredi ou jeudi ou vendredi impair) : retenir
+    si groupe B et (lundi ou mardi ou vendredi pair) : retenir
+insérer en lot les dates retenues comme journées distantes
+journaliser la génération
+valider la transaction ; sinon l’annuler</code></pre>
+<p>La table autorise aussi le statut <code>onsite</code>, mais l’algorithme courant ne crée que les jours distants calculés ; il ne matérialise pas toutes les autres dates comme <code>onsite</code>. Le champ <code>horaire</code> n’est pas renseigné par ce flux.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : zone de génération affichant fenêtre, mois cible et groupe, avec identité masquée]</span></p>
+<p><strong>Figure 23 — Génération du planning mensuel.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 9 — Séquence transactionnelle de génération.</strong></p>
+<h2 id="3-15-consultation-du-planning">3.15 Consultation du planning</h2>
+<p>Les endpoints de lecture prennent en charge la consultation filtrée, la vue globale, la vue d’un utilisateur et les données du calendrier. Les paramètres de mois, groupe ou utilisateur sont contrôlés avant d’atteindre les requêtes. Le service établit le périmètre : un utilisateur sans <code>planning.read.all</code> reste limité à son propre identifiant, même si une route de lecture ne déclare pas explicitement une permission fine.</p>
+<p>Les lignes retournent les dates distantes et les colonnes utiles, notamment le statut, les heures réalisées, les heures prévues et le champ <code>horaire</code>. La page de planning fournit des filtres, une cible lorsque le rôle le permet, la sélection mensuelle, le bouton de génération et la table des résultats. Le champ <code>horaire</code> est affiché comme une valeur absente lorsqu’il est nul ; aucun calcul ou flux d’écriture courant n’a été trouvé pour le renseigner.</p>
+<p>La contrainte unique <code>user_id/date</code> empêche deux lignes pour la même personne et la même journée. L’unicité mensuelle de génération est renforcée par la vérification du service avant l’insertion.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : tableau de planning filtré avec identités et données internes masquées]</span></p>
+<p><strong>Figure 24 — Consultation du planning Home Office.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 10 — Séquence de consultation du planning.</strong></p>
+<h2 id="3-16-calendrier">3.16 Calendrier</h2>
+<p>La page <code>/calendar-page</code> exige la permission de lecture personnelle du planning. Son script demande les calendriers à l’API, regroupe les résultats par utilisateur et par mois, puis construit une représentation mensuelle. Le Team Leader peut recevoir un périmètre plus large selon les permissions et filtres appliqués par le backend ; Data Cleansing reste centré sur ses données.</p>
+<p>Le calendrier est une projection des lignes persistées, non un second moteur de génération. Il ne crée ni ne modifie les dates. La cohérence dépend donc des mêmes données que la table de planning. L’interface doit être validée avec des mois courts, longs et commençant à différents jours de la semaine, car aucun test navigateur automatisé n’est présent.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : calendrier mensuel avec identité masquée]</span></p>
+<p><strong>Figure 26 — Visualisation calendaire des jours distants.</strong></p>
+<h2 id="3-17-tableau-de-bord">3.17 Tableau de bord</h2>
+<p><code>GET /api/dashboard/stats</code> est protégé par l’authentification et la fin de l’onboarding. Le contrôleur effectue plusieurs agrégations sur les utilisateurs et le planning afin de fournir des volumes, des groupes, des statuts ou des indicateurs de validation utilisés par l’interface. La page construit des cartes, des taux et, pour le Team Leader, un tableau de suivi.</p>
+<p>Le navigateur déduit aussi le prochain mois à partir de son horloge et affiche des bannières de statut ou des toasts. Ces messages sont des éléments d’interface éphémères : aucune table ni service de notifications persistantes, aucun envoi d’e-mail et aucune intégration de messagerie n’apparaissent dans le code. La décision d’écriture du planning reste contrôlée par la date serveur.</p>
+<p>Une réserve d’autorisation est observable : la route de statistiques n’exige pas <code>dashboard.statistics</code>, alors que cette permission n’est accordée qu’au Team Leader. Toute personne authentifiée ayant terminé l’onboarding atteint le contrôleur. Selon les agrégats renvoyés, cela rend des statistiques globales accessibles au profil Data Cleansing. Cette portée devrait être validée et, si nécessaire, alignée sur la permission déclarée.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : tableau de bord Team Leader avec chiffres, noms et matricules internes masqués]</span></p>
+<p><strong>Figure 18 — Tableau de bord du Team Leader.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : tableau de bord Data Cleansing avec données personnelles masquées]</span></p>
+<p><strong>Figure 19 — Tableau de bord Data Cleansing.</strong></p>
+<h2 id="3-18-export-csv-et-xlsx">3.18 Export CSV et XLSX</h2>
+<p>Les routes <code>/api/export/csv</code> et <code>/api/export/xlsx</code> exigent respectivement <code>export.csv</code> et <code>export.xlsx</code>, deux permissions du Team Leader. Le contrôleur lit les filtres de groupe, d’utilisateur et de mois, construit des conditions SQL à partir de fragments contrôlés et passe les valeurs comme paramètres. Les colonnes exportées portent sur l’identifiant, l’utilisateur, le matricule, le nom, la date distante et les heures.</p>
+<p>Pour le CSV, le serveur construit le contenu textuel et définit les en-têtes de téléchargement. Pour XLSX, ExcelJS crée un classeur, une feuille, les colonnes et les lignes, puis écrit le flux HTTP. Les deux opérations produisent une action d’audit indiquant le type d’export et les filtres utiles sans que le rapport reproduise de données personnelles.</p>
+<p>L’export porte sur l’ensemble du résultat filtré ; aucun mécanisme de pagination ou de génération en tâche de fond n’est visible. Sur un volume important, la mémoire et le temps de réponse devraient donc être mesurés.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : page d’export avec filtres, sans identité réelle]</span></p>
+<p><strong>Figure 29 — Configuration d’un export CSV ou XLSX.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 14 — Séquence d’export.</strong></p>
+<h2 id="3-19-journal-d-audit">3.19 Journal d’audit</h2>
+<p><code>audit_logs</code> contient l’utilisateur éventuel, le nom de l’action, un détail textuel, l’adresse IP et la date de création. <code>utils/appLogger.js</code> centralise l’insertion. Les constantes couvrent notamment la connexion, la déconnexion, le mot de passe, les comptes, la génération, les congés, les exports, les sessions de travail et les sélections mensuelles.</p>
+<p>La route de lecture est réservée à <code>audit.read</code>. Le contrôleur joint les informations utilisateur et renvoie les cent événements les plus récents, limite fixée par <code>AUDIT_LOG_LIMIT</code>. La page affiche la date, l’acteur, l’action et le détail ; l’adresse IP enregistrée n’est pas présentée dans le tableau actuel.</p>
+<p>Le journal constitue une trace applicative et ne doit pas être assimilé à une preuve inviolable. Le schéma ne montre ni signature, ni archivage immuable, ni politique de rétention configurable. Les détails peuvent contenir des identifiants métier ; les captures et exports documentaires doivent les masquer.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : page d’audit avec utilisateurs et détails sensibles masqués]</span></p>
+<p><strong>Figure 30 — Consultation des événements d’audit.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 15 — Séquence de lecture du journal.</strong></p>
+<h2 id="3-20-gestion-des-conges">3.20 Gestion des congés</h2>
+<p>Le module reconnaît les types <code>annual</code>, <code>sick</code>, <code>exceptional</code>, <code>unpaid</code> et <code>other</code>, et les statuts <code>pending</code>, <code>approved</code>, <code>rejected</code>, <code>cancelled</code>. Chaque demande contient une date de début, une date de fin, un motif, puis éventuellement un commentaire de décision, un réviseur et une date de décision.</p>
+<p>L’utilisateur consulte ses demandes par <code>GET /mine</code>, crée par <code>POST /</code> et annule une demande encore en attente par <code>PATCH /:id/cancel</code>. Les validations contrôlent le type, le format et l’ordre des dates ainsi qu’une limite de 500 caractères pour les textes concernés. Dans une transaction, le service refuse le chevauchement avec une demande en attente ou approuvée du même utilisateur.</p>
+<p>Le Team Leader lit toutes les demandes puis appelle les endpoints d’approbation ou de rejet. Le service verrouille la ligne, vérifie <code>pending</code> et refuse une décision sur sa propre demande. Il enregistre le réviseur, le commentaire et la décision, puis écrit l’audit. Une demande approuvée ne modifie pas automatiquement le planning et n’interrompt pas une session de travail ; les modules restent séparés dans le code actuel.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : formulaire et historique personnel de congés, motifs et dates sensibles masqués]</span></p>
+<p><strong>Figure 27 — Création et suivi d’une demande de congé.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : file de traitement du Team Leader, données personnelles masquées]</span></p>
+<p><strong>Figure 28 — Traitement des demandes de congé.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 11 — Séquence de création d’une demande de congé.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 12 — Séquence d’approbation ou de rejet.</strong></p>
+<h2 id="3-21-suivi-du-travail-a-distance">3.21 Suivi du travail à distance</h2>
+<p>Le suivi est lié à une ligne de planning <code>remote</code> appartenant au compte connecté et correspondant à la date du serveur. L’endpoint <code>auto-start</code> cherche d’abord une session éligible. Il peut reprendre une session en pause ou créer une nouvelle session active. La contrainte unique construite autour de <code>active_slot</code> protège l’existence d’une seule session active pour le triplet utilisateur, planning et date ; le service traite aussi un conflit concurrent en rechargeant la session existante.</p>
+<p>Pendant l’activité, le navigateur appelle <code>heartbeat</code> toutes les 60 secondes. Il surveille seulement l’activité de la page pour déterminer une inactivité de cinq minutes et demander une pause ; le code n’enregistre ni écran, ni frappe, ni webcam, ni contenu d’activité. L’interface précise le caractère non intrusif du compteur. Le serveur utilise une grâce de 120 secondes pour évaluer le heartbeat.</p>
+<p>Une pause, une fin ou une expiration cumule la durée depuis le dernier point actif dans <code>active_seconds</code>. Le service agrège ensuite les secondes de la journée, les convertit en heures et met à jour <code>planning.work_hour</code> sans dépasser 28 800 secondes, soit huit heures. <code>planned_work_hour</code> demeure indépendant et vaut huit lors de la génération. Les statuts distinguent <code>active</code>, <code>paused</code>, <code>ended</code> et <code>expired</code>.</p>
+<p>Un nettoyage des sessions obsolètes est lancé au démarrage du serveur puis toutes les deux minutes. Les opérations significatives — démarrage, reprise, pause, fin, expiration et mise à jour des heures — sont auditables. L’endpoint de synthèse est réservé au Team Leader. Son filtre de groupe s’appuie encore sur <code>users.group_id</code>, alors que la génération actuelle repose sur <code>monthly_group_selections</code>; cette différence peut produire un périmètre de synthèse qui ne reflète pas un choix mensuel récent.</p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : compteur et état d’une session distante de test, sans identité]</span></p>
+<p><strong>Figure 25 — État visible d’une session de travail.</strong></p>
+<p><span class="placeholder">[CAPTURE À INSÉRER : rendu du diagramme @@TOKEN0@@]</span></p>
+<p><strong>Figure 13 — Cycle d’une session de travail distant.</strong></p>
+<h2 id="3-22-gestion-des-validations">3.22 Gestion des validations</h2>
+<p>Les validateurs sont regroupés par domaine : authentification, utilisateurs, planning, sélection mensuelle, congés et sessions. Ils contrôlent notamment les e-mails, longueurs, identifiants entiers, rôles, groupes, clés de mois, dates ISO, types et statuts implicites. <code>middlewares/validate.js</code> rassemble les erreurs et empêche l’entrée dans le contrôleur en cas d’échec.</p>
+<p>Ces contrôles applicatifs complètent les contraintes SQL. Par exemple, le groupe est contrôlé dans l’API et par la table ; l’unicité est vérifiée métier puis imposée par un index ; les statuts sont limités par des énumérations. Cette redondance fournit des messages contrôlés tout en conservant une barrière au niveau des données.</p>
+<p>Les formulaires appliquent également des attributs HTML et des contrôles JavaScript pour l’expérience utilisateur. Ils ne remplacent pas la validation serveur, puisque les endpoints peuvent être appelés sans l’interface.</p>
+<h2 id="3-23-gestion-des-erreurs">3.23 Gestion des erreurs</h2>
+<p><code>utils/errors.js</code> définit des erreurs applicatives portant un statut HTTP et un caractère opérationnel. <code>asyncHandler</code> enveloppe plusieurs contrôleurs pour transmettre les rejets à Express. Le gestionnaire global de <code>server.js</code> renvoie les erreurs opérationnelles de manière concise et masque les détails ou traces internes pour une erreur inattendue.</p>
+<p>Les services annulent leurs transactions dans un bloc <code>catch</code>, puis libèrent la connexion dans <code>finally</code>. Les contrôleurs traduisent aussi certains résultats en réponses 400, 401, 403, 404 ou 409. Le frontend commun intercepte les réponses non réussies, gère la perte de session et présente des messages ou toasts.</p>
+<p>Le style n’est pas entièrement uniforme : certains contrôleurs envoient directement des statuts tandis que d’autres lèvent des classes d’erreur. Cette hétérogénéité n’empêche pas le fonctionnement, mais elle augmente le nombre de conventions qu’un mainteneur doit connaître.</p>
+<h2 id="3-24-securite">3.24 Sécurité</h2>
+<p>Les protections observées sont complémentaires :</p>
+<ul>
+<li>hashage bcrypt avec dix tours et vérification de l’ancien mot de passe ;</li>
+<li>session serveur persistée dans MySQL et cookie <code>HttpOnly</code>/<code>SameSite=Lax</code> ;</li>
+<li>activation conditionnelle de <code>Secure</code> en production ;</li>
+<li>protection CSRF placée après la session ;</li>
+<li>Helmet et CSP limitant les origines de scripts, styles, polices et connexions ;</li>
+<li>limiteur général de l’API et limiteur de connexion ;</li>
+<li>validations serveur et contraintes SQL ;</li>
+<li>requêtes paramétrées pour les valeurs observées ;</li>
+<li>permissions de rôle, onboarding et contrôles de propriété ;</li>
+<li>suppression logique des comptes ;</li>
+<li>audit d’actions majeures ;</li>
+<li>masquage des erreurs internes inattendues.</li>
+</ul>
+<p>Les limites de sécurité directement visibles sont également documentées : messages de connexion différenciés, amorçage couplé au démarrage, absence de flux administratif de réinitialisation, dépendance à une configuration correcte du secret de session et du mode production, absence de test automatisé des contrôles HTTP, et accès aux statistiques du tableau de bord sans permission <code>dashboard.statistics</code> explicite. Le rapport ne qualifie donc pas l’application de « parfaitement sécurisée » ; il décrit une défense en profondeur partielle dont le comportement doit être testé en environnement contrôlé.</p>
+<h2 id="3-25-presentation-des-interfaces">3.25 Présentation des interfaces</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Interface</th>
+<th>Rôle autorisé</th>
+<th>Composants et actions</th>
+<th>Données et validations</th>
+<th>Capture</th>
+</tr></thead><tbody>
+<tr>
+<td>Connexion</td>
+<td>Visiteur</td>
+<td>E-mail, mot de passe, soumission</td>
+<td>E-mail valide, secret masqué, limitation serveur</td>
+<td>Figure 16</td>
+</tr>
+<tr>
+<td>Changement du mot de passe</td>
+<td>Authentifié</td>
+<td>Ancien secret, nouveau, confirmation</td>
+<td>Longueur minimale et ancien secret correct</td>
+<td>Figure 17</td>
+</tr>
+<tr>
+<td>Tableau de bord</td>
+<td>Tous après onboarding</td>
+<td>Cartes, taux, bannière, tableau selon rôle</td>
+<td>Agrégats API ; états calculés par le client</td>
+<td>Figures 18–19</td>
+</tr>
+<tr>
+<td>Utilisateurs</td>
+<td>Team Leader</td>
+<td>Tableau, recherche, modales, suppression</td>
+<td>Identités, rôle, unicités et validation serveur</td>
+<td>Figures 20–21</td>
+</tr>
+<tr>
+<td>Planning et sélection</td>
+<td>Tous selon périmètre</td>
+<td>Fenêtre, groupe, génération, filtres, lignes</td>
+<td>Mois, cible, propriété et règles métier</td>
+<td>Figures 22–24</td>
+</tr>
+<tr>
+<td>Session de travail</td>
+<td>Propriétaire éligible</td>
+<td>État, compteur, fin, message de confidentialité</td>
+<td>Date serveur et planning distant personnel</td>
+<td>Figure 25</td>
+</tr>
+<tr>
+<td>Calendrier</td>
+<td>Tous selon périmètre</td>
+<td>Navigation mensuelle et cellules</td>
+<td>Projection des jours persistés</td>
+<td>Figure 26</td>
+</tr>
+<tr>
+<td>Congés</td>
+<td>Tous pour soi, TL pour gestion</td>
+<td>Formulaire, historique, décisions</td>
+<td>Dates, type, chevauchement, statut</td>
+<td>Figures 27–28</td>
+</tr>
+<tr>
+<td>Export</td>
+<td>Team Leader</td>
+<td>Filtres et boutons CSV/XLSX</td>
+<td>Filtres appliqués côté serveur</td>
+<td>Figure 29</td>
+</tr>
+<tr>
+<td>Audit</td>
+<td>Team Leader</td>
+<td>Tableau des derniers événements</td>
+<td>Limite de 100, données sensibles à masquer</td>
+<td>Figure 30</td>
+</tr>
+<tr>
+<td>Accès interdit</td>
+<td>Utilisateur sans permission</td>
+<td>Message 403</td>
+<td>Aucun changement de données</td>
+<td>Figure 31</td>
+</tr>
+</tbody></table></div>
+<p>Toutes les captures sont à réaliser sur une instance d’essai autorisée. Les identités, e-mails, matricules, motifs, commentaires et détails d’audit doivent être recouverts par des masques opaques. Si l’état nécessaire n’existe pas sans modifier la base, le placeholder est conservé.</p>
+<h2 id="3-26-difficultes-techniques-observables-et-solutions-implementees">3.26 Difficultés techniques observables et solutions implémentées</h2>
+<p>La première difficulté observable est la <strong>frontière temporelle mensuelle</strong>. Un simple contrôle du numéro de jour dans le navigateur serait fragile face au fuseau, aux fins de mois et aux requêtes concurrentes. La solution isole le calcul, utilise une date MySQL convertie dans <code>Africa/Tunis</code>, calcule le dernier jour réel et répète la garde dans les transactions. Les tests couvrent février, l’année bissextile et le passage d’année.</p>
+<p>La deuxième difficulté est la <strong>cohérence entre sélection et génération</strong>. La table impose une sélection unique par mois ; le service verrouille, refuse une modification après création du planning et exige la sélection exacte lors de la génération. Le planning est inséré en lot et protégé par une unicité utilisateur/date.</p>
+<p>La troisième difficulté est la <strong>concurrence sur les sessions actives</strong>. Le service cherche une session existante, expire les états obsolètes, utilise une contrainte d’unicité autour de <code>active_slot</code> et récupère l’enregistrement concurrent en cas de collision. Les transitions cumulent les secondes avant de modifier le statut.</p>
+<p>La quatrième difficulté est la <strong>séparation du prévu et du réalisé</strong>. Les migrations distinguent <code>planned_work_hour</code> de <code>work_hour</code>; le générateur initialise respectivement huit et zéro, puis le service de session agrège le temps réel et applique le plafond journalier.</p>
+<p>La cinquième difficulté est le <strong>contrôle d’accès multi-rôle</strong>. Les permissions atomiques, les middlewares, le menu filtré et les contrôles de propriété apportent plusieurs niveaux. La cohérence gagnerait encore à être renforcée par l’emploi explicite de permissions sur toutes les routes de lecture.</p>
+<h2 id="3-27-limites-actuelles-du-systeme">3.27 Limites actuelles du système</h2>
+<p>Les limites suivantes proviennent uniquement du code actuel :</p>
+<ol>
+<li><strong>Couverture automatisée restreinte.</strong> Trois fichiers testent surtout la fenêtre, la sélection et la génération ; aucun test automatisé dédié n’a été trouvé pour l’authentification, les utilisateurs, les congés, les sessions, l’export, l’audit, les interfaces ou une base MySQL réelle.</li>
+<li><strong>Script de test non raccordé.</strong> <code>npm test</code> est encore un placeholder qui termine en erreur, alors que <code>node --test tests/*.test.js</code> exécute la suite existante.</li>
+<li><strong>Version Node non contrainte.</strong> <code>package.json</code> ne déclare pas <code>engines</code>, ce qui laisse la compatibilité d’exécution à documenter.</li>
+<li><strong>Architecture de données hétérogène.</strong> Certains domaines utilisent service et modèle, d’autres interrogent le pool depuis le contrôleur.</li>
+<li><strong>Mutations au démarrage.</strong> Le chargement de la base peut créer ou modifier le schéma et amorcer un compte ; les migrations ne sont pas séparées du démarrage applicatif.</li>
+<li><strong>Champ <code>horaire</code> peu exploité.</strong> La colonne existe et l’interface affiche une valeur absente, mais aucun calcul ou enregistrement métier courant n’a été identifié.</li>
+<li><strong>Statistiques globales insuffisamment cloisonnées.</strong> <code>/api/dashboard/stats</code> n’emploie pas la permission <code>dashboard.statistics</code> pourtant déclarée.</li>
+<li><strong>Permissions de lecture du planning peu explicites.</strong> Plusieurs routes dépendent du filtrage du contrôleur/service au lieu d’annoncer la permission dans le routeur.</li>
+<li><strong>Référence de groupe duale.</strong> La génération utilise le choix mensuel, tandis que la synthèse des sessions filtre encore sur <code>users.group_id</code>.</li>
+<li><strong>Notifications éphémères.</strong> Les bannières et toasts sont calculés dans le navigateur ; aucun centre persistant ou canal externe n’est présent.</li>
+<li><strong>Horloge client pour certains affichages.</strong> Le tableau de bord déduit le mois cible depuis le navigateur, alors que le backend utilise une date MySQL en fuseau Tunis.</li>
+<li><strong>Congés non intégrés au planning.</strong> Une approbation ne modifie pas automatiquement les lignes du planning ou les sessions.</li>
+<li><strong>Absence de pagination visible.</strong> Les utilisateurs, plannings, demandes et journaux sont chargés selon des limites fixes ou l’ensemble filtré, sans navigation paginée généralisée.</li>
+<li><strong>Export synchrone.</strong> CSV et XLSX sont produits dans la requête HTTP, sans file de tâches ni traitement par lots.</li>
+<li><strong>Dépendance aux CDN.</strong> Bootstrap, les icônes et la police exigent un accès aux ressources distantes pour un rendu complet.</li>
+<li><strong>Libellés linguistiques mixtes.</strong> L’interface combine des termes français et anglais, ce qui réduit l’homogénéité éditoriale.</li>
+<li><strong>Aucune documentation API intégrée.</strong> Aucun schéma OpenAPI ou portail d’API n’est visible.</li>
+<li><strong>Aucun pipeline de déploiement ou supervision visible.</strong> La source ne montre ni intégration continue, ni conteneurisation, ni métriques applicatives dédiées.</li>
+<li><strong>Flux de mot de passe limité.</strong> Le projet expose le changement personnel, sans endpoint dédié de réinitialisation administrative ou de récupération.</li>
+<li><strong>Messages de connexion différenciés.</strong> Ils peuvent révéler si un e-mail existe.</li>
+</ol>
+<p>Ces éléments n’annulent pas les fonctions confirmées. Ils définissent le périmètre actuel et orientent des travaux futurs vérifiables.</p>
+<h2 id="3-28-conclusion">3.28 Conclusion</h2>
+<p>La réalisation associe un serveur Express, un schéma relationnel, des règles transactionnelles et un frontend directement servi. Les modules centraux sont opérationnellement reliés par l’utilisateur, le mois et le planning. Le traitement de la fenêtre et des sessions montre une attention particulière aux dates et à la concurrence. La sécurité repose sur plusieurs mécanismes, avec des points de consolidation clairement identifiables. Le prochain chapitre évalue les preuves d’exécution disponibles et formalise les essais manuels restant nécessaires.</p>
+<div class="page-break"></div>
+<h1 id="chapitre-4-tests-et-validation">Chapitre 4 — Tests et validation</h1>
+<h2 id="4-1-introduction">4.1 Introduction</h2>
+<p>La validation distingue trois niveaux de preuve. Le premier est l’exécution réelle de la suite automatisée. Le deuxième est la vérification syntaxique de tous les fichiers JavaScript applicatifs, qui ne valide que leur analyse par Node.js. Le troisième est l’inspection statique du code, utile pour confirmer l’existence d’un mécanisme mais insuffisante pour conclure à son fonctionnement complet en situation. Les parcours nécessitant un serveur, un navigateur ou une base d’essai restent explicitement « À valider ».</p>
+<h2 id="4-2-strategie-de-validation">4.2 Stratégie de validation</h2>
+<p>La commande prescrite a été exécutée depuis <code>leoni-planing/</code> sans démarrer le serveur et sans se connecter à une base réelle. Les tests natifs remplacent les dépendances de données lorsque nécessaire. Une commande <code>node --check</code> a ensuite analysé chaque fichier JavaScript de premier niveau applicatif, hors dépendances.</p>
+<p>Pour les modules non automatisés, un catalogue de tests manuels est préparé. Il spécifie les préconditions, les étapes et le résultat attendu, mais conserve « Non exécuté » tant qu’aucun essai contrôlé n’a été réalisé. Cette séparation évite de confondre une route lisible avec un parcours fonctionnel validé.</p>
+<h2 id="4-3-tests-automatises-existants">4.3 Tests automatisés existants</h2>
+<p>Trois fichiers sont présents :</p>
+<ol>
+<li><code>planningGenerationWindow.test.js</code> teste la construction et la validation de la fenêtre temporelle ;</li>
+<li><code>monthlyGroupSelectionWindowGuard.test.js</code> teste les gardes entourant l’enregistrement de la sélection mensuelle ;</li>
+<li><code>planningServiceGenerationGuard.test.js</code> teste les refus du service et la génération des groupes A et B avec des doubles de données.</li>
+</ol>
+<p>Les scénarios couvrent la fermeture avant le 25, l’ouverture à partir du 25, les mois de longueur différente, février, l’année bissextile, le passage décembre-janvier, le fuseau Tunis, le mois suivant, l’absence de sélection, le planning existant et les deux groupes.</p>
+<h2 id="4-4-resultats-reels">4.4 Résultats réels</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Élément</th>
+<th>Résultat observé</th>
+</tr></thead><tbody>
+<tr>
+<td>Date</td>
+<td>15 juillet 2026</td>
+</tr>
+<tr>
+<td>Commande</td>
+<td><code>node --test tests/*.test.js</code></td>
+</tr>
+<tr>
+<td>Node.js de l’environnement</td>
+<td>v24.16.0</td>
+</tr>
+<tr>
+<td>npm détecté</td>
+<td>11.13.0</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td>19</td>
+</tr>
+<tr>
+<td>Succès</td>
+<td>19</td>
+</tr>
+<tr>
+<td>Échecs</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Annulés</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Ignorés</td>
+<td>0</td>
+</tr>
+<tr>
+<td>TODO</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Durée rapportée</td>
+<td>116,323958 ms</td>
+</tr>
+<tr>
+<td>Code de sortie</td>
+<td>0</td>
+</tr>
+</tbody></table></div>
+<p>La vérification syntaxique complémentaire a également réussi pour tous les fichiers JavaScript applicatifs contrôlés. Elle ne démontre ni l’accès à MySQL, ni le rendu des pages, ni l’efficacité des mécanismes de sécurité.</p>
+<h2 id="4-5-validation-de-l-authentification">4.5 Validation de l’authentification</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-01</td>
+<td>Connexion valide</td>
+<td>Compte d’essai actif</td>
+<td>Saisir e-mail et mot de passe valides</td>
+<td>Session créée et redirection correcte</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-02</td>
+<td>Mot de passe erroné</td>
+<td>Compte d’essai actif</td>
+<td>Soumettre un secret incorrect</td>
+<td>Refus 401, aucune session</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-03</td>
+<td>Compte supprimé</td>
+<td>Compte d’essai désactivé</td>
+<td>Tenter la connexion</td>
+<td>Accès refusé</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-04</td>
+<td>Limitation</td>
+<td>Environnement d’essai isolé</td>
+<td>Répéter des tentatives contrôlées</td>
+<td>Réponse de limitation après seuil</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-05</td>
+<td>Déconnexion</td>
+<td>Session active</td>
+<td>Utiliser la déconnexion puis rappeler une page privée</td>
+<td>Session détruite et redirection connexion</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<p>L’existence de ces contrôles est confirmée par inspection, mais aucun test d’intégration d’authentification n’est présent dans la suite exécutée.</p>
+<h2 id="4-6-validation-des-autorisations">4.6 Validation des autorisations</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-06</td>
+<td>Page utilisateurs</td>
+<td>Session Data Cleansing</td>
+<td>Ouvrir <code>/users-page</code></td>
+<td>Réponse 403</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-07</td>
+<td>API utilisateurs</td>
+<td>Session Data Cleansing et jeton CSRF</td>
+<td>Appeler <code>POST /api/users</code></td>
+<td>Réponse 403, aucune écriture</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-08</td>
+<td>Export</td>
+<td>Session Data Cleansing</td>
+<td>Appeler un endpoint d’export</td>
+<td>Réponse 403</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-09</td>
+<td>Planning d’autrui</td>
+<td>Session Data Cleansing</td>
+<td>Demander l’identifiant d’un autre compte</td>
+<td>Données d’autrui non renvoyées</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-10</td>
+<td>Tableau de bord</td>
+<td>Deux rôles de test</td>
+<td>Comparer les statistiques reçues</td>
+<td>Périmètre conforme à la décision métier</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<p>Le dernier test est particulièrement important, car la permission <code>dashboard.statistics</code> est déclarée mais absente de la route <code>/stats</code>.</p>
+<h2 id="4-7-validation-des-utilisateurs">4.7 Validation des utilisateurs</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-11</td>
+<td>Création</td>
+<td>Team Leader et données d’essai uniques</td>
+<td>Soumettre le formulaire</td>
+<td>Compte créé, mot de passe hashé, onboarding actif, audit</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-12</td>
+<td>Unicité</td>
+<td>Donnée d’essai déjà utilisée</td>
+<td>Recréer le même e-mail ou matricule</td>
+<td>Refus contrôlé, aucune duplication</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-13</td>
+<td>Mise à jour</td>
+<td>Compte d’essai existant</td>
+<td>Modifier un champ autorisé</td>
+<td>Donnée persistée et audit</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-14</td>
+<td>Suppression logique</td>
+<td>Compte d’essai sans session utile</td>
+<td>Supprimer puis relire</td>
+<td><code>is_deleted</code> actif, compte exclu des listes et de la connexion</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-8-validation-de-la-selection-mensuelle">4.8 Validation de la sélection mensuelle</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Scénario automatisé</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TA-09</td>
+<td>Enregistrement hors fenêtre</td>
+<td>Écriture refusée et transaction annulée</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-10</td>
+<td>Mois différent du mois suivant</td>
+<td>Requête refusée</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-11</td>
+<td>Sélection A/B valide</td>
+<td>Enregistrement simulé, commit et audit confirmés</td>
+<td>Réussi</td>
+</tr>
+</tbody></table></div>
+<p>La suite couvre les gardes du service avec des substituts. Un essai MySQL doit encore confirmer l’index unique, le verrou et l’upsert dans l’environnement cible.</p>
+<h2 id="4-9-validation-de-la-generation-du-planning">4.9 Validation de la génération du planning</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Scénario automatisé</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TA-01</td>
+<td>Fenêtre fermée du 1er au 24</td>
+<td>Comportement attendu confirmé</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-02</td>
+<td>Fenêtre ouverte du 25 à la fin du mois</td>
+<td>Bornes inclusives confirmées</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-03</td>
+<td>Mois de 30 et 31 jours</td>
+<td>Fin réelle utilisée</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-04</td>
+<td>Février non bissextile</td>
+<td>Fin au 28 confirmée</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-05</td>
+<td>Février bissextile</td>
+<td>Fin au 29 confirmée</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-06</td>
+<td>Passage décembre-janvier</td>
+<td>Mois et année suivants confirmés</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-07</td>
+<td>Fuseau <code>Africa/Tunis</code></td>
+<td>Date métier confirmée</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-08</td>
+<td>Mois cible</td>
+<td>Seul le mois suivant accepté</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-12</td>
+<td>Génération hors fenêtre</td>
+<td>Aucun lot inséré</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-13</td>
+<td>Sélection d’un ancien mois</td>
+<td>Sélection non réutilisée</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-14</td>
+<td>Sélection absente</td>
+<td>Génération refusée</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-15</td>
+<td>Planning existant</td>
+<td>Doublon refusé</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-16</td>
+<td>Groupe A</td>
+<td>Dates générées conformes dans le mois</td>
+<td>Réussi</td>
+</tr>
+<tr>
+<td>TA-17</td>
+<td>Groupe B</td>
+<td>Dates générées conformes dans le mois</td>
+<td>Réussi</td>
+</tr>
+</tbody></table></div>
+<p>Les tests paramétrés expliquent que le test runner compte 19 tests alors que le tableau consolide 17 familles de scénarios sur les deux modules. Le total du runner est la mesure officielle.</p>
+<h2 id="4-10-validation-du-calendrier">4.10 Validation du calendrier</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-15</td>
+<td>Mois complet</td>
+<td>Planning d’essai existant</td>
+<td>Ouvrir le calendrier et naviguer</td>
+<td>Jours placés aux dates correctes</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-16</td>
+<td>Périmètre</td>
+<td>Sessions TL et Data Cleansing</td>
+<td>Comparer les utilisateurs visibles</td>
+<td>Chacun voit uniquement le périmètre autorisé</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-17</td>
+<td>Responsive</td>
+<td>Navigateur aux trois largeurs de rupture</td>
+<td>Redimensionner et naviguer</td>
+<td>Aucun chevauchement ou contenu inaccessible</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-11-validation-des-conges">4.11 Validation des congés</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-18</td>
+<td>Création</td>
+<td>Utilisateur et dates d’essai libres</td>
+<td>Créer une demande valide</td>
+<td>Statut <code>pending</code> et audit</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-19</td>
+<td>Chevauchement</td>
+<td>Demande pending/approved existante</td>
+<td>Soumettre une plage recouvrante</td>
+<td>Refus contrôlé</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-20</td>
+<td>Annulation</td>
+<td>Demande personnelle pending</td>
+<td>Annuler</td>
+<td>Statut <code>cancelled</code></td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-21</td>
+<td>Approbation</td>
+<td>TL et demande d’autrui pending</td>
+<td>Approuver</td>
+<td>Statut, réviseur et date renseignés</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-22</td>
+<td>Auto-traitement</td>
+<td>Demande du TL connecté</td>
+<td>Approuver ou rejeter</td>
+<td>Refus</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-23</td>
+<td>Décision répétée</td>
+<td>Demande déjà traitée</td>
+<td>Tenter une seconde décision</td>
+<td>Refus sans modification</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-12-validation-des-sessions-de-travail">4.12 Validation des sessions de travail</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-24</td>
+<td>Démarrage</td>
+<td>Planning distant personnel à la date serveur</td>
+<td>Appeler auto-start</td>
+<td>Session active créée ou reprise</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-25</td>
+<td>Date non éligible</td>
+<td>Aucun planning distant du jour</td>
+<td>Appeler auto-start</td>
+<td>Refus, aucune session</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-26</td>
+<td>Heartbeat</td>
+<td>Session active</td>
+<td>Laisser le navigateur actif</td>
+<td>Heartbeat actualisé toutes les 60 s</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-27</td>
+<td>Pause d’inactivité</td>
+<td>Session active et aucune activité pendant cinq minutes</td>
+<td>Attendre dans l’environnement d’essai</td>
+<td>Session mise en pause</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-28</td>
+<td>Propriété</td>
+<td>Session appartenant à un autre compte</td>
+<td>Tenter pause ou fin</td>
+<td>Refus</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-29</td>
+<td>Expiration</td>
+<td>Session active avec heartbeat obsolète</td>
+<td>Exécuter le nettoyage</td>
+<td>Statut <code>expired</code>, temps cumulé</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-30</td>
+<td>Plafond</td>
+<td>Plusieurs périodes totalisant plus de huit heures</td>
+<td>Terminer les périodes</td>
+<td><code>work_hour</code> ne dépasse pas 8</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-31</td>
+<td>Concurrence</td>
+<td>Deux demandes de démarrage simultanées</td>
+<td>Appeler en parallèle</td>
+<td>Une seule session active</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-13-validation-des-exports">4.13 Validation des exports</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-32</td>
+<td>CSV</td>
+<td>TL et données d’essai</td>
+<td>Exporter avec filtres</td>
+<td>Fichier lisible, colonnes et lignes conformes, audit</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-33</td>
+<td>XLSX</td>
+<td>TL et données d’essai</td>
+<td>Exporter avec filtres</td>
+<td>Classeur ouvrable, types et en-têtes conformes, audit</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-34</td>
+<td>Filtre</td>
+<td>Plusieurs mois/groupes/utilisateurs d’essai</td>
+<td>Comparer les exports</td>
+<td>Uniquement les lignes filtrées</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-35</td>
+<td>Accès interdit</td>
+<td>Data Cleansing</td>
+<td>Appeler les endpoints</td>
+<td>Réponse 403</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-14-validation-de-l-audit">4.14 Validation de l’audit</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-36</td>
+<td>Écriture</td>
+<td>Réaliser chaque action majeure avec des comptes d’essai</td>
+<td>Lire la table ou la page</td>
+<td>Action, acteur, détail et date cohérents</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-37</td>
+<td>Limite</td>
+<td>Plus de cent événements d’essai autorisés</td>
+<td>Ouvrir la page</td>
+<td>Les cent plus récents seulement</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-38</td>
+<td>Autorisation</td>
+<td>Data Cleansing</td>
+<td>Ouvrir <code>/logs-page</code> et <code>/api/logs</code></td>
+<td>Réponse 403</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-39</td>
+<td>Données affichées</td>
+<td>Team Leader</td>
+<td>Comparer table et page</td>
+<td>Adresse IP non affichée ; détails correctement rendus</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-15-validation-de-la-base-de-donnees">4.15 Validation de la base de données</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-40</td>
+<td>Installation</td>
+<td>Instance MySQL d’essai vide et sauvegardable</td>
+<td>Exécuter la procédure autorisée</td>
+<td>Six tables métier et table technique de session disponibles</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-41</td>
+<td>Contraintes</td>
+<td>Données d’essai</td>
+<td>Tenter les doublons interdits</td>
+<td>Rejet par les index uniques</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-42</td>
+<td>Relations</td>
+<td>Données d’essai liées</td>
+<td>Supprimer/désactiver selon le flux prévu</td>
+<td>Effets FK conformes et comptes logiquement conservés</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-43</td>
+<td>Transactions</td>
+<td>Provoquer une erreur contrôlée en environnement jetable</td>
+<td>Vérifier l’état final</td>
+<td>Aucune écriture partielle</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-44</td>
+<td>Index</td>
+<td>Volume représentatif anonymisé</td>
+<td>Examiner les plans des requêtes critiques</td>
+<td>Index utilisés de manière adaptée</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<p>Aucune connexion MySQL n’a été ouverte pour cette mission documentaire. Le schéma et les migrations ont été inspectés statiquement.</p>
+<h2 id="4-16-validation-des-interfaces">4.16 Validation des interfaces</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>Module</th>
+<th>Préconditions</th>
+<th>Étapes</th>
+<th>Résultat attendu</th>
+<th>Résultat observé</th>
+<th>Statut</th>
+</tr></thead><tbody>
+<tr>
+<td>TM-45</td>
+<td>Navigation</td>
+<td>Comptes d’essai des deux rôles</td>
+<td>Parcourir le menu</td>
+<td>Éléments conformes aux permissions</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-46</td>
+<td>CSRF frontend</td>
+<td>Session active</td>
+<td>Soumettre chaque formulaire</td>
+<td>Jeton inclus et écriture acceptée/refusée correctement</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-47</td>
+<td>Erreurs</td>
+<td>Simuler des réponses 400/401/403/409/500 sans donnée réelle</td>
+<td>Observer l’interface</td>
+<td>Message compréhensible, aucune donnée interne révélée</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-48</td>
+<td>Responsive</td>
+<td>Largeurs bureau, tablette et mobile</td>
+<td>Parcourir toutes les pages</td>
+<td>Navigation et actions utilisables</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-49</td>
+<td>Clavier</td>
+<td>Navigateur moderne</td>
+<td>Naviguer sans souris</td>
+<td>Focus visible et commandes accessibles</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+<tr>
+<td>TM-50</td>
+<td>Mouvement réduit</td>
+<td>Préférence système activée</td>
+<td>Charger et utiliser l’application</td>
+<td>Animations réduites conformément au CSS</td>
+<td>Non exécuté</td>
+<td>À valider</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-17-couverture-et-limites-des-tests">4.17 Couverture et limites des tests</h2>
+<p>La couverture exécutée est forte sur un noyau précis : calendrier de la fenêtre, mois cible, sélection et gardes de génération. Elle vérifie des cas limites importants sans base réelle. Elle ne mesure toutefois ni un pourcentage de lignes, ni les branches de l’ensemble du projet. Aucun outil de couverture n’est configuré.</p>
+<p>Les modules d’identité, de contrôle d’accès, de données administratives, de congé, de session, d’export et d’audit reposent uniquement sur l’inspection dans cette mission. Les contrôles CSRF, CSP, cookies et limiteurs exigent un serveur. Les contraintes et transactions exigent une instance MySQL isolée. Le rendu et l’accessibilité exigent des essais navigateur. Ces validations ne doivent pas être déclarées réussies tant que les lignes TM-01 à TM-50 restent non exécutées.</p>
+<h2 id="4-18-bilan-des-resultats">4.18 Bilan des résultats</h2>
+<p>Le bilan vérifié est double : <strong>19 tests automatisés sur 19 ont réussi</strong>, et <strong>tous les fichiers JavaScript applicatifs contrôlés passent l’analyse syntaxique de Node.js</strong>. Ce résultat confirme le périmètre explicitement testé et l’absence d’erreur de syntaxe détectée dans les sources JavaScript.</p>
+<p>Il ne permet pas d’affirmer que l’ensemble des parcours est validé en exécution. Les 50 scénarios manuels proposés constituent un plan de recette reproductible à mener sur une base d’essai autorisée, avec des comptes et données non sensibles.</p>
+<h2 id="4-19-conclusion">4.19 Conclusion</h2>
+<p>La suite existante apporte une preuve fiable pour les règles temporelles et de génération. La stratégie de validation recommandée prolonge cette base par des tests d’intégration et d’interface, sans confondre leur préparation avec leur résultat. Cette transparence rend le bilan exploitable : les acquis sont mesurés et les zones non exécutées sont identifiées sans ambiguïté.</p>
+<div class="page-break"></div>
+<h1 id="conclusion-generale">Conclusion générale</h1>
+<p>Le projet documenté répond à une problématique de centralisation du planning Home Office et de plusieurs opérations associées. L’application réunit dans une même interface l’identité des utilisateurs, la sélection mensuelle d’un groupe, la génération contrôlée du prochain mois, la consultation tabulaire et calendaire, les congés, les sessions de travail à distance, les exports et l’audit. Deux rôles structurent les accès : le Team Leader dispose d’un périmètre d’administration et de supervision, tandis que Data Cleansing travaille principalement sur ses propres données.</p>
+<p>La réalisation repose sur un monolithe Node.js/Express connecté à MySQL. Les couches routes, contrôleurs, services et modèles sont particulièrement visibles dans les domaines transactionnels, même si plusieurs contrôleurs accèdent directement à la base. Le frontend reste volontairement direct, avec des pages HTML, une feuille CSS partagée, Bootstrap et des scripts JavaScript natifs. Le client API commun relie ces pages aux endpoints JSON.</p>
+<p>Le mécanisme de planning constitue le noyau technique. Une horloge de référence issue de MySQL et convertie dans le fuseau <code>Africa/Tunis</code> ouvre la préparation du 25 au dernier jour réel du mois. Le système n’accepte que le mois suivant, exige une sélection mensuelle et refuse la duplication. Le groupe A produit les mercredis, jeudis et vendredis impairs ; le groupe B produit les lundis, mardis et vendredis pairs. Transactions, verrous et contraintes uniques protègent ce flux.</p>
+<p>Le suivi du travail distant complète le planning sans mécanisme intrusif. Il démarre ou reprend une session liée à une journée distante personnelle, reçoit un heartbeat, gère pause, fin et expiration, cumule les secondes actives puis plafonne les heures réalisées à huit. Les heures prévues et réalisées demeurent séparées. Le module de congés apporte son propre cycle de statuts et empêche le chevauchement actif ainsi que l’auto-traitement d’une demande par le Team Leader.</p>
+<p>La sécurité observable combine bcrypt, sessions MySQL, attributs de cookie, CSRF, Helmet et CSP, limitation de requêtes, validation des entrées, requêtes paramétrées, permissions et audit. Elle doit être comprise comme un ensemble de contrôles implémentés, non comme une garantie absolue. Les réserves identifiées — autorisation des statistiques, messages d’authentification différenciés, bootstrap au démarrage et couverture de tests partielle — fournissent des axes précis de consolidation.</p>
+<p>La suite automatisée a été réellement exécutée : les 19 tests ont tous réussi. Elle confirme la fenêtre temporelle, le mois cible, la sélection et les gardes de génération. Le reste du système a été inspecté mais n’a pas été exécuté dans cette mission documentaire. Le rapport propose donc cinquante tests manuels sans leur attribuer un résultat fictif.</p>
+<p>Les compétences et contributions personnelles doivent enfin être exprimées par l’étudiant : <span class="placeholder">[INFORMATION À COMPLÉTER : compétences techniques et professionnelles effectivement acquises, responsabilités assumées et retour d’expérience]</span>. L’état de déploiement doit également être confirmé : <span class="placeholder">[INFORMATION À COMPLÉTER : environnement réel et niveau de validation de l’application]</span>.</p>
+<p>En synthèse, le code révèle une application fonctionnellement riche, structurée autour de règles mensuelles explicites et de contrôles multi-couches. La documentation produite fournit une base académique et technique vérifiable, ainsi qu’un plan clair pour terminer la validation et préparer la soutenance.</p>
+<div class="page-break"></div>
+<h1 id="perspectives">Perspectives</h1>
+<p>Les perspectives ci-dessous sont des travaux futurs dérivés des limites visibles. Elles ne sont pas présentées comme des fonctions existantes.</p>
+<h2 id="p-01-elargir-la-couverture-automatisee">P-01 — Élargir la couverture automatisée</h2>
+<p>Ajouter des tests unitaires et d’intégration pour l’authentification, les autorisations, les utilisateurs, les congés, les sessions de travail, les exports et l’audit. Une base MySQL éphémère permettrait de vérifier réellement les contraintes, verrous et annulations. Des tests navigateur couvriraient le menu, les formulaires, les erreurs et les largeurs responsives.</p>
+<h2 id="p-02-raccorder-la-commande-de-test-standard">P-02 — Raccorder la commande de test standard</h2>
+<p>Remplacer le placeholder du script <code>npm test</code> par la commande de la suite et introduire un rapport de couverture. Cette évolution réduirait le risque qu’un opérateur conclue à tort que les tests n’existent pas.</p>
+<h2 id="p-03-uniformiser-l-architecture-des-donnees">P-03 — Uniformiser l’architecture des données</h2>
+<p>Déplacer progressivement les requêtes directes des contrôleurs vers des services et des modèles cohérents. Les contrôleurs resteraient centrés sur HTTP, les services sur les règles et les modèles sur SQL. Cette homogénéisation faciliterait l’injection de doubles et les tests.</p>
+<h2 id="p-04-separer-migrations-et-demarrage">P-04 — Séparer migrations et démarrage</h2>
+<p>Créer une commande de migration explicite, réexécutable et contrôlée, puis retirer les mutations de schéma et l’amorçage du chemin de démarrage ordinaire. Les secrets ou identifiants initiaux devraient provenir d’un mécanisme d’administration sécurisé, jamais d’une valeur codée.</p>
+<h2 id="p-05-aligner-toutes-les-autorisations">P-05 — Aligner toutes les autorisations</h2>
+<p>Appliquer <code>dashboard.statistics</code> aux statistiques destinées au Team Leader et déclarer explicitement les permissions de lecture sur chaque route de planning. Des tests de matrice par rôle devraient empêcher une régression du périmètre.</p>
+<h2 id="p-06-unifier-la-notion-de-groupe">P-06 — Unifier la notion de groupe</h2>
+<p>Faire reposer les synthèses mensuelles sur <code>monthly_group_selections</code> pour le mois demandé, ou documenter clairement l’usage distinct du champ historique <code>users.group_id</code>. Cette évolution éviterait une différence entre le groupe utilisé pour générer et celui utilisé pour filtrer une synthèse.</p>
+<h2 id="p-07-consolider-les-fonctions-operationnelles">P-07 — Consolider les fonctions opérationnelles</h2>
+<p>Décider du rôle métier du champ <code>horaire</code>, relier éventuellement une absence approuvée au planning selon une règle validée, ajouter une pagination aux listes et traiter les exports volumineux de façon progressive ou asynchrone. Chacune de ces évolutions exige une décision métier préalable.</p>
+<h2 id="p-08-ameliorer-les-notifications-et-la-coherence-temporelle">P-08 — Améliorer les notifications et la cohérence temporelle</h2>
+<p>Si le besoin est confirmé, introduire un centre de notifications persistant et calculer les états mensuels depuis une date renvoyée par le serveur. Cela éviterait de dépendre de l’horloge du navigateur et permettrait de retrouver un message après rechargement.</p>
+<h2 id="p-09-renforcer-l-exploitation">P-09 — Renforcer l’exploitation</h2>
+<p>Définir une version Node supportée, une procédure de configuration, un pipeline de validation, un déploiement reproductible, des sauvegardes, des journaux structurés, des métriques et des alertes. Ces fonctions ne sont pas visibles actuellement et leur choix dépend de l’infrastructure autorisée.</p>
+<h2 id="p-10-documenter-l-api-et-homogeneiser-l-interface">P-10 — Documenter l’API et homogénéiser l’interface</h2>
+<p>Produire un contrat OpenAPI à partir des routes et validations, puis harmoniser les libellés français/anglais. Une vérification d’accessibilité et la possibilité d’héberger localement les assets CDN consolideraient l’usage sur le réseau interne.</p>
+<div class="page-break"></div>
+<h1 id="annexes">Annexes</h1>
+<h2 id="annexe-a-structure-du-projet">Annexe A — Structure du projet</h2>
+<pre data-language="text"><code>leoni-planing/
+├── config/                 constantes, permissions, menu et base
+├── controllers/            adaptation HTTP et orchestration
+├── middlewares/            authentification et validation
+├── models/                 accès aux données par domaine
+├── routes/                 pages et API
+├── services/               règles métier et transactions
+├── sql/
+│   ├── schema.sql          schéma consolidé
+│   └── migrations/         migrations 001 à 007
+├── tests/                  trois fichiers de tests natifs Node
+├── utils/                  erreurs, logs et fonctions partagées
+├── validations/            chaînes express-validator
+├── views/
+│   ├── assets/css/         feuille de style
+│   └── assets/js/          client API et scripts de pages
+├── package.json
+├── package-lock.json
+└── server.js</code></pre>
+<p>Les secrets d’environnement, dépendances installées, métadonnées et documents externes au code sont volontairement absents de cet inventaire.</p>
+<h2 id="annexe-b-catalogue-des-routes-de-pages">Annexe B — Catalogue des routes de pages</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Méthode</th>
+<th>Chemin</th>
+<th>Accès</th>
+<th>Résultat</th>
+</tr></thead><tbody>
+<tr>
+<td>GET</td>
+<td><code>/</code></td>
+<td>Public</td>
+<td>Redirection vers <code>/login</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/login</code></td>
+<td>Public, avec redirection si session</td>
+<td>Page de connexion</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/change-password</code></td>
+<td>Authentifié</td>
+<td>Page de changement du mot de passe</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/dashboard</code></td>
+<td>Authentifié, onboarding terminé</td>
+<td>Tableau de bord</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/users-page</code></td>
+<td>Permission <code>users.read</code></td>
+<td>Gestion des utilisateurs</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/planning-page</code></td>
+<td>Authentifié, onboarding terminé</td>
+<td>Planning et sélection</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/calendar-page</code></td>
+<td>Permission <code>planning.read.own</code></td>
+<td>Calendrier</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/leave-requests-page</code></td>
+<td>Permission <code>leave_requests.read.own</code></td>
+<td>Congés</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/export-page</code></td>
+<td>Permission <code>export.csv</code></td>
+<td>Export</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/logs-page</code></td>
+<td>Permission <code>audit.read</code></td>
+<td>Audit</td>
+</tr>
+</tbody></table></div>
+<h2 id="annexe-c-catalogue-des-routes-api">Annexe C — Catalogue des routes API</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Groupe</th>
+<th>Méthode et chemin</th>
+<th>Protection ou finalité</th>
+</tr></thead><tbody>
+<tr>
+<td>Authentification</td>
+<td><code>GET /api/auth/session</code></td>
+<td>État de session</td>
+</tr>
+<tr>
+<td>Authentification</td>
+<td><code>POST /api/auth/login</code></td>
+<td>Validation et limitation de connexion</td>
+</tr>
+<tr>
+<td>Authentification</td>
+<td><code>POST /api/auth/logout</code></td>
+<td>Destruction de session</td>
+</tr>
+<tr>
+<td>Authentification</td>
+<td><code>POST /api/auth/change-password</code></td>
+<td>Authentifié, validation</td>
+</tr>
+<tr>
+<td>Utilisateurs</td>
+<td><code>GET /api/users</code></td>
+<td><code>users.read</code></td>
+</tr>
+<tr>
+<td>Utilisateurs</td>
+<td><code>POST /api/users</code></td>
+<td><code>users.create</code>, validation</td>
+</tr>
+<tr>
+<td>Utilisateurs</td>
+<td><code>PUT /api/users/:id</code></td>
+<td><code>users.update</code>, validation</td>
+</tr>
+<tr>
+<td>Utilisateurs</td>
+<td><code>DELETE /api/users/:id</code></td>
+<td><code>users.delete</code>, suppression logique</td>
+</tr>
+<tr>
+<td>Fenêtre</td>
+<td><code>GET /api/planning/generation-window</code></td>
+<td><code>planning.generate.own</code></td>
+</tr>
+<tr>
+<td>Planning</td>
+<td><code>POST /api/planning/generate</code></td>
+<td><code>planning.generate.own</code>, cible contrôlée</td>
+</tr>
+<tr>
+<td>Planning</td>
+<td><code>GET /api/planning/calendar</code></td>
+<td>Authentifié, périmètre service</td>
+</tr>
+<tr>
+<td>Planning</td>
+<td><code>GET /api/planning</code></td>
+<td>Authentifié, filtres et périmètre service</td>
+</tr>
+<tr>
+<td>Planning</td>
+<td><code>GET /api/planning/all</code></td>
+<td>Authentifié, périmètre service</td>
+</tr>
+<tr>
+<td>Planning</td>
+<td><code>GET /api/planning/:user_id</code></td>
+<td>Authentifié, périmètre service</td>
+</tr>
+<tr>
+<td>Sélection</td>
+<td><code>GET /api/monthly-group-selections/mine</code></td>
+<td>Lecture personnelle</td>
+</tr>
+<tr>
+<td>Sélection</td>
+<td><code>PUT /api/monthly-group-selections/mine</code></td>
+<td>Écriture personnelle et transaction</td>
+</tr>
+<tr>
+<td>Sélection</td>
+<td><code>GET /api/monthly-group-selections</code></td>
+<td>Lecture globale TL</td>
+</tr>
+<tr>
+<td>Tableau de bord</td>
+<td><code>GET /api/dashboard/stats</code></td>
+<td>Authentifié, onboarding terminé</td>
+</tr>
+<tr>
+<td>Congés</td>
+<td><code>GET /api/leave-requests/mine</code></td>
+<td>Lecture personnelle</td>
+</tr>
+<tr>
+<td>Congés</td>
+<td><code>POST /api/leave-requests</code></td>
+<td>Création personnelle validée</td>
+</tr>
+<tr>
+<td>Congés</td>
+<td><code>PATCH /api/leave-requests/:id/cancel</code></td>
+<td>Annulation personnelle</td>
+</tr>
+<tr>
+<td>Congés</td>
+<td><code>GET /api/leave-requests</code></td>
+<td><code>leave_requests.manage</code></td>
+</tr>
+<tr>
+<td>Congés</td>
+<td><code>PATCH /api/leave-requests/:id/approve</code></td>
+<td>Gestion TL, validation</td>
+</tr>
+<tr>
+<td>Congés</td>
+<td><code>PATCH /api/leave-requests/:id/reject</code></td>
+<td>Gestion TL, validation</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td><code>POST /api/work-sessions/auto-start</code></td>
+<td>Planning personnel éligible</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td><code>POST /api/work-sessions/heartbeat</code></td>
+<td>Session personnelle</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td><code>POST /api/work-sessions/pause</code></td>
+<td>Session personnelle</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td><code>POST /api/work-sessions/end</code></td>
+<td>Session personnelle</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td><code>GET /api/work-sessions/mine</code></td>
+<td>Historique personnel filtré</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td><code>GET /api/work-sessions/summary</code></td>
+<td>Synthèse Team Leader</td>
+</tr>
+<tr>
+<td>Export</td>
+<td><code>GET /api/export/csv</code></td>
+<td><code>export.csv</code></td>
+</tr>
+<tr>
+<td>Export</td>
+<td><code>GET /api/export/xlsx</code></td>
+<td><code>export.xlsx</code></td>
+</tr>
+<tr>
+<td>Audit</td>
+<td><code>GET /api/logs</code></td>
+<td><code>audit.read</code></td>
+</tr>
+</tbody></table></div>
+<p>Toutes les API d’écriture sont placées sous la protection CSRF globale après la session. Les chemins sont reconstitués depuis les points de montage de <code>server.js</code> et les routeurs relatifs.</p>
+<h2 id="annexe-d-matrice-complete-des-permissions">Annexe D — Matrice complète des permissions</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Permission</th>
+<th>Team Leader</th>
+<th>Data Cleansing</th>
+</tr></thead><tbody>
+<tr>
+<td><code>dashboard.read</code></td>
+<td>Oui</td>
+<td>Oui</td>
+</tr>
+<tr>
+<td><code>dashboard.statistics</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>users.read</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>users.create</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>users.update</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>users.delete</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>planning.read.own</code></td>
+<td>Oui</td>
+<td>Oui</td>
+</tr>
+<tr>
+<td><code>planning.read.all</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>planning.generate.own</code></td>
+<td>Oui</td>
+<td>Oui</td>
+</tr>
+<tr>
+<td><code>planning.generate.all</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>monthly_group_selection.read.own</code></td>
+<td>Oui</td>
+<td>Oui</td>
+</tr>
+<tr>
+<td><code>monthly_group_selection.write.own</code></td>
+<td>Oui</td>
+<td>Oui</td>
+</tr>
+<tr>
+<td><code>monthly_group_selection.read.all</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>work_sessions.read.summary</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>leave_requests.read.own</code></td>
+<td>Oui</td>
+<td>Oui</td>
+</tr>
+<tr>
+<td><code>leave_requests.manage</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>export.csv</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>export.xlsx</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>audit.read</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+<tr>
+<td><code>settings.manage</code></td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+</tbody></table></div>
+<p><code>settings.manage</code> est déclaré dans la matrice mais aucun module de paramètres correspondant n’est monté dans les routes actuelles. Sa présence représente une capacité configurée mais non matérialisée par une interface ou un endpoint identifié.</p>
+<h2 id="annexe-e-resume-des-tables">Annexe E — Résumé des tables</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Table</th>
+<th>PK</th>
+<th>FK principales</th>
+<th>Unicités et index</th>
+<th>Cycle de vie</th>
+</tr></thead><tbody>
+<tr>
+<td><code>users</code></td>
+<td><code>id</code></td>
+<td>—</td>
+<td>username/e-mail/matricule uniques ; index rôle/groupe/suppression</td>
+<td>Timestamps et suppression logique</td>
+</tr>
+<tr>
+<td><code>monthly_group_selections</code></td>
+<td><code>id</code></td>
+<td>utilisateur, cascade</td>
+<td>utilisateur/mois unique ; index mois/groupe</td>
+<td>Création/mise à jour, verrou métier après planning</td>
+</tr>
+<tr>
+<td><code>planning</code></td>
+<td><code>id</code></td>
+<td>utilisateur, cascade</td>
+<td>utilisateur/date unique ; index mois</td>
+<td>Créé en lot, heures mises à jour</td>
+</tr>
+<tr>
+<td><code>work_sessions</code></td>
+<td><code>id</code></td>
+<td>utilisateur cascade, planning mise à null</td>
+<td>index utilisateur/date/statut ; unicité active</td>
+<td>active → paused/ended/expired</td>
+</tr>
+<tr>
+<td><code>leave_requests</code></td>
+<td><code>id</code></td>
+<td>demandeur cascade, réviseur mise à null</td>
+<td>index utilisateur/statut/dates</td>
+<td>pending → approved/rejected/cancelled</td>
+</tr>
+<tr>
+<td><code>audit_logs</code></td>
+<td><code>id</code></td>
+<td>utilisateur mise à null</td>
+<td>index date/action</td>
+<td>Ajout uniquement par les flux observés</td>
+</tr>
+</tbody></table></div>
+<h2 id="annexe-f-catalogue-synthetique-des-regles">Annexe F — Catalogue synthétique des règles</h2>
+<p>Les règles RG-01 à RG-36 sont détaillées à la section 2.7. Elles se répartissent comme suit :</p>
+<ul>
+<li>RG-01 à RG-05 : authentification et mot de passe ;</li>
+<li>RG-06 à RG-09 : rôles, administration et unicités des utilisateurs ;</li>
+<li>RG-10 à RG-22 : date métier, sélection, génération et consultation du planning ;</li>
+<li>RG-23 à RG-26 : congés ;</li>
+<li>RG-27 à RG-34 : sessions de travail et heures ;</li>
+<li>RG-35 à RG-36 : export et audit.</li>
+</ul>
+<p>La liste exhaustive est également reprise dans <code>01_audit_projet_actuel.md</code> et tracée par <code>04_matrice_tracabilite.md</code>.</p>
+<h2 id="annexe-g-catalogue-des-tests">Annexe G — Catalogue des tests</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Fichier</th>
+<th>Domaine</th>
+<th>Nature</th>
+</tr></thead><tbody>
+<tr>
+<td><code>planningGenerationWindow.test.js</code></td>
+<td>Fenêtre, fuseau, fins de mois et mois cible</td>
+<td>Tests unitaires avec <code>node:test</code></td>
+</tr>
+<tr>
+<td><code>monthlyGroupSelectionWindowGuard.test.js</code></td>
+<td>Garde de sélection mensuelle</td>
+<td>Service avec substituts et transaction simulée</td>
+</tr>
+<tr>
+<td><code>planningServiceGenerationGuard.test.js</code></td>
+<td>Refus et dates des groupes A/B</td>
+<td>Service avec substituts et lot simulé</td>
+</tr>
+</tbody></table></div>
+<p>Résultat global du 15 juillet 2026 : <strong>19 réussis, 0 échoué, 0 ignoré</strong>. Les cinquante scénarios TM préparés dans le chapitre 4 restent à valider tant qu’ils ne sont pas exécutés dans un environnement d’essai.</p>
+<h2 id="annexe-h-liste-des-captures">Annexe H — Liste des captures</h2>
+<ol>
+<li>connexion ;</li>
+<li>changement obligatoire du mot de passe ;</li>
+<li>tableau de bord Team Leader ;</li>
+<li>tableau de bord Data Cleansing ;</li>
+<li>gestion des utilisateurs ;</li>
+<li>création d’un utilisateur ;</li>
+<li>sélection mensuelle ;</li>
+<li>génération ;</li>
+<li>consultation du planning ;</li>
+<li>session de travail ;</li>
+<li>calendrier ;</li>
+<li>congés personnels ;</li>
+<li>traitement des congés ;</li>
+<li>export ;</li>
+<li>audit ;</li>
+<li>accès interdit.</li>
+</ol>
+<p>Le cadrage détaillé, la navigation, les données à masquer et les légendes figurent dans <code>03_plan_captures.md</code>. Aucune capture fictive n’est incluse.</p>
+<h2 id="annexe-i-liste-des-diagrammes">Annexe I — Liste des diagrammes</h2>
+<p>Quinze sources PlantUML sont préparées dans <code>rapport_stage/diagrams/</code> : cas d’utilisation, architecture, composants, données, authentification, mot de passe, utilisateur, sélection, génération, consultation, création et traitement de congé, session de travail, export et audit. Le fichier <code>diagrams/README.md</code> donne les commandes de rendu. Les images ne sont pas intégrées tant qu’un moteur PlantUML local n’est pas disponible et que leur rendu n’a pas été vérifié.</p>
+<h2 id="annexe-j-guide-d-installation-sans-secrets">Annexe J — Guide d’installation sans secrets</h2>
+<p>Ce guide décrit uniquement les étapes génériques déduites du projet. Il ne confirme pas un déploiement de production.</p>
+<ol>
+<li>installer une version de Node.js compatible à valider, ainsi qu’une instance MySQL d’essai ;</li>
+<li>copier le projet dans un répertoire autorisé ;</li>
+<li>exécuter <code>npm ci</code> depuis <code>leoni-planing/</code> pour reproduire le verrou de dépendances ;</li>
+<li>créer une configuration locale à partir de l’exemple, sans publier ses valeurs ;</li>
+<li>renseigner les variables génériques nécessaires : <code>PORT</code>, <code>NODE_ENV</code>, <code>DB_HOST</code>, <code>DB_USER</code>, <code>DB_PASSWORD</code>, <code>DB_NAME</code>, <code>SESSION_SECRET</code>, <code>RATE_LIMIT_WINDOW_MS</code>, <code>RATE_LIMIT_MAX</code>, <code>LOGIN_RATE_LIMIT_MAX</code>, <code>LOG_LEVEL</code> ;</li>
+<li>préparer une base vide ou de recette conformément aux règles de l’organisation ;</li>
+<li>examiner le comportement d’initialisation de <code>config/db.js</code> avant tout premier démarrage, car il peut modifier le schéma et amorcer un compte ;</li>
+<li>démarrer dans l’environnement autorisé avec <code>npm start</code> ;</li>
+<li>exécuter séparément <code>node --test tests/*.test.js</code> ;</li>
+<li>vérifier les pages, les permissions et les journaux avec des comptes d’essai.</li>
+</ol>
+<p>Ne jamais intégrer les valeurs de configuration au rapport, au code client, aux captures ou aux journaux partagés. Pour la production, une procédure spécifique de migration, de sauvegarde, de rotation des secrets et de supervision doit être définie par les responsables techniques.</p>
+<h2 id="annexe-k-glossaire">Annexe K — Glossaire</h2>
+<ul>
+<li><strong>Groupe A / B :</strong> choix mensuel qui détermine les jours distants générés.</li>
+<li><strong>Heures prévues :</strong> valeur attendue enregistrée séparément des heures réellement calculées.</li>
+<li><strong>Heures réalisées :</strong> résultat du cumul des secondes de sessions, plafonné à huit heures par journée.</li>
+<li><strong>Heartbeat :</strong> signal périodique d’une interface active vers le serveur.</li>
+<li><strong>Onboarding :</strong> étape imposant le remplacement initial du mot de passe.</li>
+<li><strong>Planning distant :</strong> ligne <code>remote</code> créée pour une date calculée.</li>
+<li><strong>Permission :</strong> action atomique accordée à un rôle.</li>
+<li><strong>Session HTTP :</strong> état d’authentification conservé côté serveur et référencé par un cookie.</li>
+<li><strong>Session de travail :</strong> enregistrement métier des périodes actives d’une journée distante.</li>
+<li><strong>Suppression logique :</strong> conservation de la ligne utilisateur avec indicateur de désactivation.</li>
+<li><strong>Transaction :</strong> ensemble d’opérations SQL validé ou annulé comme une unité.</li>
+</ul>
+<p>Le glossaire complet figure dans <code>08_glossaire.md</code>.</p>
+<h1 id="references">Références</h1>
+<h2 id="sources-internes">Sources internes</h2>
+<ol>
+<li>Projet <code>leoni-planing</code> : code source actuel de <code>server.js</code>, <code>config/</code>, <code>routes/</code>, <code>controllers/</code>, <code>services/</code>, <code>models/</code>, <code>middlewares/</code>, <code>validations/</code>, <code>utils/</code> et <code>views/</code>.</li>
+<li>Manifeste et verrou des dépendances : <code>package.json</code> et <code>package-lock.json</code>.</li>
+<li>Schéma et migrations : <code>sql/schema.sql</code> et <code>sql/migrations/001</code> à <code>007</code>.</li>
+<li>Tests : les trois fichiers du répertoire <code>tests/</code>.</li>
+<li>Exemple de configuration non sensible : <code>.env.example</code>, limité aux noms de variables.</li>
+</ol>
+<h2 id="documentations-officielles-consultees-le-15-juillet-2026">Documentations officielles consultées le 15 juillet 2026</h2>
+<ol>
+<li>Express.js, <em>5.x API Reference</em> : <a href="https://expressjs.com/en/5x/api/">https://expressjs.com/en/5x/api/</a>.</li>
+<li>Node.js, <em>Test runner</em> : <a href="https://nodejs.org/api/test.html">https://nodejs.org/api/test.html</a>.</li>
+<li>MySQL, <em>Documentation</em> : <a href="https://dev.mysql.com/doc/">https://dev.mysql.com/doc/</a>.</li>
+<li>MySQL2, <em>Documentation</em> : <a href="https://sidorares.github.io/node-mysql2/docs">https://sidorares.github.io/node-mysql2/docs</a>.</li>
+<li>express-session, <em>Documentation officielle</em> : <a href="https://github.com/expressjs/session">https://github.com/expressjs/session</a>.</li>
+<li>express-validator, <em>Documentation</em> : <a href="https://express-validator.github.io/docs/">https://express-validator.github.io/docs/</a>.</li>
+<li>Helmet.js, <em>Documentation officielle</em> : <a href="https://helmetjs.github.io/">https://helmetjs.github.io/</a>.</li>
+<li>Bootstrap 5.3, <em>Introduction</em> : <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">https://getbootstrap.com/docs/5.3/getting-started/introduction/</a>.</li>
+<li>ExcelJS, <em>Dépôt officiel</em> : <a href="https://github.com/exceljs/exceljs">https://github.com/exceljs/exceljs</a>.</li>
+<li>bcrypt pour Node.js, <em>Dépôt officiel</em> : <a href="https://github.com/kelektiv/node.bcrypt.js">https://github.com/kelektiv/node.bcrypt.js</a>.</li>
+<li>csurf, <em>Dépôt officiel</em> : <a href="https://github.com/expressjs/csurf">https://github.com/expressjs/csurf</a>.</li>
+<li>PlantUML, <em>Documentation officielle</em> : <a href="https://plantuml.com/">https://plantuml.com/</a>.</li>
+</ol>
+<p>Les documentations externes expliquent les technologies générales. Les règles, rôles, routes, tables et résultats propres au projet restent fondés sur les sources internes.</p>
+</body></html>

@@ -1,0 +1,30 @@
+@startuml
+title Séquence de traitement d'une demande de congé
+autonumber
+skinparam shadowing false
+actor "Team Leader" as TL
+boundary "Page Congés" as Page
+control "Auth, manage et validation" as MW
+control "LeaveRequestController" as C
+control "LeaveRequestService" as S
+entity "LeaveRequest" as M
+database "MySQL" as DB
+TL -> Page : approuver ou rejeter
+Page -> MW : PATCH /api/leave-requests/:id/{approve|reject}
+MW -> MW : exiger manage, valider id et commentaire
+MW -> C : action de traitement
+C -> S : traiter(id, TL, décision)
+S -> DB : BEGIN
+S -> M : charger la demande FOR UPDATE
+M -> DB : SELECT demande
+alt Absente, non pending ou demande du TL
+  S -> DB : ROLLBACK
+  S --> Page : 400, 403 ou 404
+else Traitement autorisé
+  S -> M : UPDATE statut, commentaire, reviewed_by, reviewed_at
+  M -> DB : mise à jour conditionnée par pending
+  S -> DB : INSERT audit_logs APPROVED ou REJECTED
+  S -> DB : COMMIT
+  S --> Page : demande mise à jour
+end
+@enduml

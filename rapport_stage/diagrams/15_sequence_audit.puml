@@ -1,0 +1,26 @@
+@startuml
+title Séquence de consultation du journal d'audit
+autonumber
+skinparam shadowing false
+actor "Team Leader" as TL
+boundary "Page Audit" as Page
+control "Auth, onboarding et audit.read" as MW
+control "LogController" as C
+database "MySQL" as DB
+TL -> Page : ouvrir les journaux
+Page -> MW : GET /api/logs
+MW -> MW : vérifier session, onboarding et audit.read
+alt Permission absente
+  MW --> Page : 403
+else Permission accordée
+  MW -> C : getLogs(req, res)
+  C -> DB : SELECT audit_logs LEFT JOIN users\nORDER BY created_at DESC LIMIT 100
+  DB --> C : événements récents
+  C --> Page : JSON
+  Page -> Page : afficher date, acteur, action et détail
+end
+note right of DB
+  L'adresse IP est stockée dans audit_logs
+  mais n'est pas affichée dans la page actuelle.
+end note
+@enduml

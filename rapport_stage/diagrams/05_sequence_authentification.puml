@@ -1,0 +1,55 @@
+@startuml
+title Séquence d'authentification par e-mail
+autonumber
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+
+actor "Utilisateur" as Utilisateur
+boundary "Page de connexion" as Page
+control "LeoniAPI" as API
+control "Middlewares Express\nlimitation et CSRF" as MW
+control "Validation login" as Validation
+control "AuthController" as Controleur
+control "bcrypt" as Bcrypt
+database "MySQL" as DB
+
+Utilisateur -> Page : saisir e-mail et mot de passe
+Page -> API : login(e-mail, mot de passe)
+API -> MW : GET /api/auth/csrf-token
+MW -> DB : créer ou mettre à jour la session CSRF
+DB --> MW : session disponible
+MW --> API : jeton CSRF
+
+API -> MW : POST /api/auth/login\navec jeton CSRF
+MW -> MW : appliquer les limites globale et login
+MW -> MW : vérifier le jeton CSRF
+MW -> Validation : valider et normaliser l'e-mail
+
+alt Données invalides
+  Validation --> API : 400, erreurs de validation
+else Données valides
+  Validation -> Controleur : login(req, res)
+  Controleur -> DB : SELECT users WHERE email = ?\nAND is_deleted = 0
+  DB --> Controleur : utilisateur éventuel
+
+  alt Aucun utilisateur actif
+    Controleur --> API : 404, utilisateur introuvable
+  else Utilisateur trouvé
+    Controleur -> Bcrypt : compare(mot de passe, hash)
+    Bcrypt --> Controleur : résultat
+
+    alt Mot de passe incorrect
+      Controleur --> API : 401
+    else Mot de passe correct
+      Controleur -> Controleur : construire le profil de session\net les permissions du rôle
+      Controleur -> DB : INSERT audit_logs, action LOGIN
+      DB --> Controleur : insertion terminée
+      Controleur --> MW : JSON succès et redirection
+      MW -> DB : persister req.session.user
+      DB --> MW : session enregistrée
+      MW --> API : utilisateur sans hash de mot de passe
+      API --> Page : /change-password si changement requis,\nsinon /dashboard
+    end
+  end
+end
+@enduml

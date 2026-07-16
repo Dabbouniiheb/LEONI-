@@ -1,0 +1,45 @@
+@startuml
+title Séquence de génération du planning Home Office
+autonumber
+skinparam shadowing false
+actor "Utilisateur autorisé" as U
+boundary "Page Planning" as Page
+control "Auth, onboarding, permission, validation" as MW
+control "PlanningController" as C
+control "PlanningService" as S
+control "Service de fenêtre" as W
+entity "Planning / Sélection" as M
+database "MySQL" as DB
+U -> Page : générer pour un mois et une cible
+Page -> MW : POST /api/planning/generate
+MW -> MW : exiger generate.own et valider
+MW -> C : generatePlanning(req, res)
+C -> C : contrôler generate.all si cible différente
+alt Cible interdite
+  C --> Page : 403
+else Cible autorisée
+  C -> S : generatePlanning(cible, mois)
+  S -> DB : BEGIN
+  S -> W : date MySQL et fenêtre Africa/Tunis
+  W --> S : mois suivant autorisé ou erreur
+  S -> M : verrouiller utilisateur et sélection
+  M -> DB : SELECT ... FOR UPDATE
+  S -> M : vérifier absence de planning
+  alt Sélection absente ou planning existant
+    S -> DB : ROLLBACK
+    S --> Page : 400, 404 ou 409
+  else Règles satisfaites
+    S -> W : relire et revalider la fenêtre
+    S -> S : calculer les dates A ou B
+    note right of S
+      A : mercredi, jeudi, vendredis 1/3/5.
+      B : lundi, mardi, vendredis 2/4.
+    end note
+    S -> M : insertion en lot, status remote,\nréalisé 0 h, prévu 8 h
+    M -> DB : INSERT planning
+    S -> DB : INSERT audit_logs GENERATE_PLANNING
+    S -> DB : COMMIT
+    S --> Page : dates générées
+  end
+end
+@enduml

@@ -29,12 +29,6 @@ class BadRequestError extends AppError {
   }
 }
 
-class UnauthorizedError extends AppError {
-  constructor(message = "Unauthorized") {
-    super(message, HTTP_STATUS.UNAUTHORIZED);
-  }
-}
-
 class ForbiddenError extends AppError {
   constructor(message = "Access forbidden: insufficient permissions") {
     super(message, HTTP_STATUS.FORBIDDEN);
@@ -53,25 +47,15 @@ class ConflictError extends AppError {
   }
 }
 
-class ValidationError extends BadRequestError {
-  constructor(errors = []) {
-    super("Validation failed", errors);
-    this.name = "ValidationError";
-  }
-}
-
 function withErrorCode(error, code) {
   error.code = code;
   return error;
 }
 
 module.exports = {
-  AppError,
   BadRequestError,
-  UnauthorizedError,
   ForbiddenError,
   NotFoundError,
   ConflictError,
-  ValidationError,
   withErrorCode,
 };

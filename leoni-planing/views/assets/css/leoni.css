@@ -19,7 +19,6 @@
   --leoni-gris-clair: #F4F6F9;
   --leoni-gris-fonce: #2D3142;
   --leoni-border: rgba(32, 36, 66, 0.08);
-  --leoni-border-strong: rgba(32, 36, 66, 0.14);
   --leoni-surface: #FFFFFF;
   --leoni-surface-soft: #F8FAFC;
   --leoni-surface-muted: #EEF2F7;
@@ -533,27 +532,6 @@ a:hover {
   box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
 }
 
-.btn-leoni-ghost {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--leoni-text-muted);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  min-height: var(--leoni-button-height);
-  border-radius: var(--leoni-radius);
-  padding: 0.5rem 0.9rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: all var(--leoni-duration) var(--leoni-ease);
-}
-
-.btn-leoni-ghost:hover {
-  background: var(--leoni-surface-muted);
-  color: var(--leoni-primary);
-}
-
 .btn-icon {
   width: 34px;
   height: 34px;
@@ -563,8 +541,7 @@ a:hover {
 
 .btn-sm.btn-leoni-primary,
 .btn-sm.btn-leoni-outline,
-.btn-sm.btn-leoni-danger,
-.btn-sm.btn-leoni-ghost {
+.btn-sm.btn-leoni-danger {
   min-height: 32px;
   padding: 0.375rem 0.7rem;
   font-size: 0.8rem;

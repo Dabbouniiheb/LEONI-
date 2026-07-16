@@ -1,6 +1,5 @@
 (async () => {
   if (!(await LeoniAuth.ensureAccess())) return;
-  await LeoniAuth.refreshSession();
 
   const loggedUser = LeoniAuth.getUser();
   const canManageLeaveRequests = LeoniAuth.hasPermission("leave_requests.manage");

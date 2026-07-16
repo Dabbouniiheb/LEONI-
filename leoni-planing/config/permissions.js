@@ -106,7 +106,6 @@ function getPermissionsForRole(role) {
 
 module.exports = {
   PERMISSIONS,
-  ROLE_PERMISSIONS,
   hasPermission,
   getPermissionsForRole,
 };

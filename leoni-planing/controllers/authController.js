@@ -1,13 +1,5 @@
 /**
- * Authentication Controller
- *
- * Changes from original:
- * - Uses async bcrypt (compare/hash) instead of sync versions
- * - Includes permissions array in session for RBAC
- * - Removed dead register() endpoint (referenced non-existent schema)
- * - Uses constants instead of magic strings
- * - Uses structured logger
- * - Uses asyncHandler for all routes
+ * Authentication controller for session, login, logout, and password-change flows.
  */
 
 const bcrypt = require("bcrypt");
@@ -15,9 +7,7 @@ const db = require("../config/db");
 const { AUDIT_ACTIONS, VALIDATION_RULES } = require("../config/constants");
 const { getPermissionsForRole } = require("../config/permissions");
 const { logAction } = require("../utils/logger");
-const logger = require("../utils/appLogger");
 const asyncHandler = require("../utils/asyncHandler");
-const AppError = require("../utils/errors");
 
 function sessionUserPayload(userRow) {
   return {

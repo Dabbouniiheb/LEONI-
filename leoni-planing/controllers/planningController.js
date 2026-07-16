@@ -1,11 +1,5 @@
 /**
- * Planning Controller
- *
- * Changes:
- * - Refactored to Enterprise Architecture: Controller -> Service -> Model
- * - Removed all business logic and SQL queries
- * - Uses PlanningService for all operations
- * - Implemented asyncHandler
+ * Planning controller delegating business and data operations to PlanningService.
  */
 
 const PlanningService = require("../services/PlanningService");
@@ -34,32 +28,22 @@ exports.generatePlanning = asyncHandler(async (req, res) => {
     return res.status(403).json({ success: false, message: "Forbidden: You cannot generate planning for other users" });
   }
 
-  try {
-    const result = await PlanningService.generatePlanning(targetUserId, month);
-    const { planningDays, generationWindow, groupCode } = result;
+  const result = await PlanningService.generatePlanning(targetUserId, month);
+  const { planningDays, generationWindow, groupCode } = result;
 
-    await logAction(
-      loggedUser.id,
-      AUDIT_ACTIONS.GENERATE_PLANNING,
-      `actor_user_id=${loggedUser.id}; target_user_id=${targetUserId}; server_date=${generationWindow.server_date}; timezone=${generationWindow.timezone}; allowed_month=${generationWindow.allowed_month}; group=${groupCode}; generated_rows=${planningDays.length}`,
-      req.ip
-    );
+  await logAction(
+    loggedUser.id,
+    AUDIT_ACTIONS.GENERATE_PLANNING,
+    `actor_user_id=${loggedUser.id}; target_user_id=${targetUserId}; server_date=${generationWindow.server_date}; timezone=${generationWindow.timezone}; allowed_month=${generationWindow.allowed_month}; group=${groupCode}; generated_rows=${planningDays.length}`,
+    req.ip
+  );
 
-    res.json({
-      success: true,
-      message: `Generated ${planningDays.length} planning entries`,
-      planning: planningDays,
-      window: generationWindow,
-    });
-  } catch (err) {
-    if (err.message === "Invalid month format. Expected YYYY-MM") {
-      return res.status(400).json({ success: false, message: err.message });
-    }
-    if (err.message === "User not found") {
-      return res.status(404).json({ success: false, message: err.message });
-    }
-    throw err;
-  }
+  res.json({
+    success: true,
+    message: `Generated ${planningDays.length} planning entries`,
+    planning: planningDays,
+    window: generationWindow,
+  });
 });
 
 exports.getPlanning = asyncHandler(async (req, res) => {
@@ -82,15 +66,8 @@ exports.getPlanningByUser = asyncHandler(async (req, res) => {
   const targetUserId = req.params.user_id;
   const loggedUser = req.session.user;
 
-  try {
-    const results = await PlanningService.getPlanningByUser(targetUserId, loggedUser, ROLES);
-    res.json(results);
-  } catch (err) {
-    if (err.message === "Access forbidden") {
-      return res.status(403).json({ success: false, message: "Access forbidden: cannot view other users' planning" });
-    }
-    throw err;
-  }
+  const results = await PlanningService.getPlanningByUser(targetUserId, loggedUser, ROLES);
+  res.json(results);
 });
 
 exports.getAllPlanning = asyncHandler(async (req, res) => {

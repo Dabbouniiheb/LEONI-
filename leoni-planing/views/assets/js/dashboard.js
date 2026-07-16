@@ -1,19 +1,10 @@
 (async () => {
   if (!(await LeoniAuth.ensureAccess())) return;
-  await LeoniAuth.refreshSession();
 
   const loggedUser = LeoniAuth.getUser();
-
-  // Determine current/next target validation month based on business day 25
-  const today = new Date();
-  let targetMonthKey = today.toISOString().slice(0, 7);
+  const escapeHtml = LeoniLayout.escapeHtml;
+  let targetMonthKey = "";
   let isNextMonth = false;
-  
-  if (today.getDate() >= 25) {
-    isNextMonth = true;
-    const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    targetMonthKey = nextMonth.toISOString().slice(0, 7);
-  }
 
   const content = `
     <!-- ALERTS / NOTIFICATIONS SECTION -->
@@ -31,21 +22,21 @@
       <div class="col-sm-6 col-xl-3">
         <article class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-percent"></i></div>
-          <div class="stat-label">Validation Rate (${targetMonthKey})</div>
+          <div class="stat-label">Validation Rate (<span data-dashboard-target-month>—</span>)</div>
           <p class="stat-value" id="statValidationRate">—</p>
         </article>
       </div>
       <div class="col-sm-6 col-xl-3">
         <article class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
-          <div class="stat-label">Monthly Groups A / B (${targetMonthKey})</div>
+          <div class="stat-label">Monthly Groups A / B (<span data-dashboard-target-month>—</span>)</div>
           <p class="stat-value" id="statGroups">—</p>
         </article>
       </div>
       <div class="col-sm-6 col-xl-3">
         <article class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
-          <div class="stat-label">Completed Plannings (${targetMonthKey})</div>
+          <div class="stat-label">Completed Plannings (<span data-dashboard-target-month>—</span>)</div>
           <p class="stat-value" id="statCompleted">—</p>
         </article>
       </div>
@@ -57,7 +48,7 @@
         <section class="panel h-100">
           <div class="panel-header d-flex justify-content-between align-items-center">
             <h2>Overview</h2>
-            <span class="badge-role bg-primary text-white">Role: ${loggedUser.role}</span>
+            <span class="badge-role bg-primary text-white">Role: ${escapeHtml(loggedUser.role)}</span>
           </div>
           <div class="panel-body">
             <p class="mb-4">
@@ -105,6 +96,20 @@
 
   LeoniLayout.showLoading(true);
   try {
+    const generationWindowResponse = await LeoniAPI.getPlanningGenerationWindow();
+    const generationWindow = generationWindowResponse.window;
+    isNextMonth = Boolean(generationWindow?.is_open && generationWindow.allowed_month);
+    targetMonthKey = isNextMonth
+      ? generationWindow.allowed_month
+      : generationWindow?.current_month;
+    if (!/^\d{4}-\d{2}$/.test(String(targetMonthKey || ""))) {
+      throw new Error("Unable to determine the dashboard target month");
+    }
+    document.querySelectorAll("[data-dashboard-target-month]").forEach((label) => {
+      label.textContent = targetMonthKey;
+    });
+    const targetMonthLabel = escapeHtml(targetMonthKey);
+
     // 1. Fetch Stats & populate stat cards
     const stats = await LeoniAPI.getStats({ month: targetMonthKey });
     document.getElementById("statTotalUsers").textContent = stats.totalUsers ?? 0;
@@ -127,7 +132,7 @@
             <i class="fa-solid fa-circle-check status-alert-icon me-3 text-success"></i>
             <div>
               <strong>Statut : Validé (Vert)</strong><br/>
-              Votre planning Home Office pour le mois de <strong>${targetMonthKey}</strong> a été généré et validé avec succès.
+              Votre planning Home Office pour le mois de <strong>${targetMonthLabel}</strong> a été généré et validé avec succès.
             </div>
           </div>`;
       } else {
@@ -138,7 +143,7 @@
               <i class="fa-solid fa-clock status-alert-icon me-3 text-warning"></i>
               <div>
                 <strong>Statut : En attente (Orange)</strong><br/>
-                Veuillez sélectionner votre groupe Home Office et générer votre planning pour le mois prochain (<strong>${targetMonthKey}</strong>) avant la fin du mois.
+                Veuillez sélectionner votre groupe Home Office et générer votre planning pour le mois prochain (<strong>${targetMonthLabel}</strong>) avant la fin du mois.
                 <a href="/planning-page" class="alert-link ms-2">Générer maintenant <i class="fa-solid fa-arrow-right"></i></a>
               </div>
             </div>`;
@@ -149,7 +154,7 @@
               <i class="fa-solid fa-triangle-exclamation status-alert-icon me-3 text-danger"></i>
               <div>
                 <strong>Statut : Délai dépassé (Rouge)</strong><br/>
-                Vous n'avez pas validé votre planning Home Office pour le mois en cours (<strong>${targetMonthKey}</strong>). Veuillez le soumettre immédiatement.
+                Vous n'avez pas validé votre planning Home Office pour le mois en cours (<strong>${targetMonthLabel}</strong>). Veuillez le soumettre immédiatement.
                 <a href="/planning-page" class="alert-link ms-2">Générer maintenant <i class="fa-solid fa-arrow-right"></i></a>
               </div>
             </div>`;
@@ -162,7 +167,7 @@
           <i class="fa-solid fa-circle-info status-alert-icon me-3 text-info"></i>
           <div>
             <strong>Validation System Active</strong><br/>
-            Current validation rate for month <strong>${targetMonthKey}</strong> is <strong>${stats.validationRate}%</strong>.
+            Current validation rate for month <strong>${targetMonthLabel}</strong> is <strong>${escapeHtml(stats.validationRate)}%</strong>.
             You can monitor and generate planning for employees below.
           </div>
         </div>`;
@@ -193,12 +198,12 @@
         const groupLabel = LeoniLayout.formatGroup(monthlyGroupId);
         const groupBadge = LeoniLayout.groupBadgeClass(monthlyGroupId);
         const groupHtml = monthlySelection
-          ? `<span class="badge-group ${groupBadge}">Group ${groupLabel}</span>`
+          ? `<span class="badge-group ${groupBadge}">Group ${escapeHtml(groupLabel)}</span>`
           : `<span class="text-muted">Not selected</span>`;
 
         return `
           <tr>
-            <td><code>${emp.matricule}</code></td>
+            <td><code>${escapeHtml(emp.matricule)}</code></td>
             <td class="fw-semibold">${escapeHtml(emp.name)}</td>
             <td>${groupHtml}</td>
             <td>${escapeHtml(emp.department || "—")}</td>
@@ -209,7 +214,7 @@
       const trackerHtml = `
         <section class="panel mt-4">
           <div class="panel-header">
-            <h2>Employee Validation Tracker - ${targetMonthKey}</h2>
+            <h2>Employee Validation Tracker - ${targetMonthLabel}</h2>
           </div>
           <div class="panel-body p-0">
             <div class="table-responsive">
@@ -248,11 +253,4 @@
     LeoniLayout.showLoading(false);
   }
 
-  function escapeHtml(str) {
-    return String(str ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
 })();

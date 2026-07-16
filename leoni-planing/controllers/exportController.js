@@ -1,17 +1,11 @@
 /**
- * Export Controller
- *
- * Changes from original:
- * - Filters soft-deleted users
- * - Uses structured logger and constants
- * - Uses asyncHandler
+ * Export controller for CSV and Excel planning downloads.
  */
 
 const ExcelJS = require("exceljs");
 const db = require("../config/db");
 const { AUDIT_ACTIONS } = require("../config/constants");
 const { logAction } = require("../utils/logger");
-const logger = require("../utils/appLogger");
 const asyncHandler = require("../utils/asyncHandler");
 
 async function fetchExportRows(filters) {

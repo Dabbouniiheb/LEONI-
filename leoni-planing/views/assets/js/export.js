@@ -1,8 +1,5 @@
 (async () => {
   if (!(await LeoniAuth.ensureAccess())) return;
-  await LeoniAuth.refreshSession();
-
-  const loggedUser = LeoniAuth.getUser();
 
   const content = `
     <!-- FILTERS FOR EXPORT -->
@@ -66,8 +63,8 @@
       </div>
       <div class="panel-body">
         <ul class="mb-0">
-          <li class="mb-2">CSV: <code>GET /export-planning</code> (UTF-8 with BOM)</li>
-          <li class="mb-0">Excel: <code>GET /export-xlsx</code></li>
+          <li class="mb-2">CSV: <code>GET /api/export/csv</code> (UTF-8 with BOM)</li>
+          <li class="mb-0">Excel: <code>GET /api/export/xlsx</code></li>
         </ul>
       </div>
     </section>`;

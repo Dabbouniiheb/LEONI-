@@ -31,7 +31,6 @@
       </div>
     </section>`;
 
-  await LeoniAuth.refreshSession();
   LeoniLayout.mount({
     pageId: "logs",
     title: "Audit Logs",
@@ -39,13 +38,7 @@
     contentHtml: content,
   });
 
-  function escapeHtml(str) {
-    return String(str ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
+  const escapeHtml = LeoniLayout.escapeHtml;
 
   function formatDate(value) {
     if (!value) return "—";

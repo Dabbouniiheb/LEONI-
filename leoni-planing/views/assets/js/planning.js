@@ -1,6 +1,5 @@
 (async () => {
   if (!(await LeoniAuth.ensureAccess())) return;
-  await LeoniAuth.refreshSession();
 
   const loggedUser = LeoniAuth.getUser();
   const HEARTBEAT_INTERVAL_MS = 60 * 1000;
@@ -120,7 +119,7 @@
     </div>
 
     <!-- REMOTE WORK SESSION SECTION -->
-    <section class="panel mb-3 work-session-panel" id="workSessionPanel">
+    <section class="panel mb-3" id="workSessionPanel">
       <div class="panel-header">
         <div>
           <h2>Remote Work Tracking</h2>
@@ -247,13 +246,7 @@
     "July", "August", "September", "October", "November", "December",
   ]);
 
-  function escapeHtml(str) {
-    return String(str ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
+  const escapeHtml = LeoniLayout.escapeHtml;
 
   function normalizeGroup(groupId) {
     return LeoniLayout.formatGroup(groupId);
@@ -638,7 +631,7 @@
         return `
           <tr>
             <td class="fw-semibold">${escapeHtml(name)}</td>
-            <td><span class="badge-group ${badgeClass}">Group ${group}</span></td>
+            <td><span class="badge-group ${badgeClass}">Group ${escapeHtml(group)}</span></td>
             <td>${escapeHtml(row.month_key || "—")}</td>
             <td><strong>${escapeHtml(dateStr)}</strong></td>
             <td><span class="badge-role">${escapeHtml(row.status || "remote")}</span></td>

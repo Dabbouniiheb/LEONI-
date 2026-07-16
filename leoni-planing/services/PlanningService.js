@@ -7,7 +7,13 @@ const {
   PLANNING_STATUS,
   VALIDATION_RULES,
 } = require("../config/constants");
-const { ConflictError, withErrorCode } = require("../utils/errors");
+const {
+  BadRequestError,
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+  withErrorCode,
+} = require("../utils/errors");
 
 const MONTHLY_SELECTION_REQUIRED_MESSAGE =
   "Select Group A or Group B for the next month before generating the Home Office Calendar.";
@@ -69,7 +75,7 @@ class PlanningService {
 
   static async generatePlanning(userId, month) {
     if (!month || !VALIDATION_RULES.MONTH_KEY_REGEX.test(month)) {
-      throw new Error("Invalid month format. Expected YYYY-MM");
+      throw new BadRequestError("Invalid month format. Expected YYYY-MM");
     }
 
     const connection = await db.getConnection();
@@ -86,7 +92,7 @@ class PlanningService {
 
       const user = await Planning.findUserForPlanning(userId, connection);
       if (!user) {
-        throw new Error("User not found");
+        throw new NotFoundError("User not found");
       }
 
       const monthlySelection = await MonthlyGroupSelection.findByUserAndMonth(
@@ -182,7 +188,7 @@ class PlanningService {
 
   static async getPlanningByUser(targetUserId, loggedUser, ROLES) {
     if (loggedUser.role !== ROLES.TEAM_LEADER && String(targetUserId) !== String(loggedUser.id)) {
-      throw new Error("Access forbidden");
+      throw new ForbiddenError("Access forbidden: cannot view other users' planning");
     }
     return await Planning.findByUserId(targetUserId);
   }

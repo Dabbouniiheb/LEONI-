@@ -1,11 +1,5 @@
 /**
- * Database connection pool and safe initialization.
- *
- * Changes from original:
- * - Uses CREATE TABLE IF NOT EXISTS instead of DROP TABLE (data safety)
- * - Uses structured logger instead of console.log
- * - Adds graceful shutdown handler
- * - Uses async bcrypt.hash instead of bcrypt.hashSync
+ * Database connection pool with data-preserving initialization and graceful shutdown.
  */
 
 const mysql = require("mysql2/promise");
@@ -189,7 +183,7 @@ async function initializeDatabase() {
           "Data Management",
         ]
       );
-      logger.info("Seeded default user: admin@leoni.com / admin1234");
+      logger.info("Default Team Leader account seeded");
     }
   } catch (error) {
     logger.error("Database initialization failed", { error });

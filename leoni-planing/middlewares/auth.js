@@ -100,5 +100,4 @@ module.exports = {
   auth,
   requireOnboardingComplete,
   requirePermission,
-  wantsJson,
 };

@@ -2,7 +2,7 @@
  * Audit Logger — User action tracking.
  *
  * Records business-level events (login, user CRUD, planning, exports)
- * into the audit_logs table. Now includes IP address tracking.
+ * into the audit_logs table, including a client IP address when provided.
  *
  * This is separate from the application logger (appLogger.js)
  * which handles system/debug logging.

@@ -8,19 +8,10 @@ const ROLES = Object.freeze({
   DATA_CLEANSING: "Data Cleansing",
 });
 
-const ROLE_VALUES = Object.freeze(Object.values(ROLES));
-
 const GROUPS = Object.freeze({
   A: 1,
   B: 2,
 });
-
-const GROUP_LABELS = Object.freeze({
-  [GROUPS.A]: "Group A",
-  [GROUPS.B]: "Group B",
-});
-
-const GROUP_VALUES = Object.freeze(Object.values(GROUPS));
 
 const PLANNING_STATUS = Object.freeze({
   ONSITE: "onsite",
@@ -40,12 +31,6 @@ const LEAVE_TYPES = Object.freeze({
   EXCEPTIONAL: "exceptional",
   UNPAID: "unpaid",
   OTHER: "other",
-});
-
-const VALIDATION_STATUS = Object.freeze({
-  VALIDATED: "validated",
-  PENDING: "pending",
-  EXPIRED: "expired",
 });
 
 const WORK_SESSION_STATUS = Object.freeze({
@@ -123,14 +108,10 @@ const HTTP_STATUS = Object.freeze({
 
 module.exports = {
   ROLES,
-  ROLE_VALUES,
   GROUPS,
-  GROUP_LABELS,
-  GROUP_VALUES,
   PLANNING_STATUS,
   LEAVE_REQUEST_STATUS,
   LEAVE_TYPES,
-  VALIDATION_STATUS,
   WORK_SESSION_STATUS,
   MONTHLY_GROUP_SELECTION_ERROR_CODES,
   PLANNING_GENERATION_ERROR_CODES,

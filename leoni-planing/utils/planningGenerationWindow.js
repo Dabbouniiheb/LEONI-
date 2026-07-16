@@ -63,6 +63,19 @@ function buildPlanningGenerationWindow(utcInstant, timezone = BUSINESS_TIMEZONE)
   };
 }
 
+function getTargetMonthContext(window) {
+  const allowedMonth = String(window?.allowed_month || "");
+  const currentMonth = String(window?.current_month || "");
+  const isNextMonth = Boolean(
+    window?.is_open && VALIDATION_RULES.MONTH_KEY_REGEX.test(allowedMonth)
+  );
+
+  return {
+    monthKey: isNextMonth ? allowedMonth : currentMonth,
+    isNextMonth,
+  };
+}
+
 function validatePlanningGenerationWindow(requestedMonth, window) {
   if (!window?.is_open || !window.allowed_month) {
     throw withErrorCode(
@@ -86,8 +99,7 @@ function validatePlanningGenerationWindow(requestedMonth, window) {
 }
 
 module.exports = {
-  WINDOW_CLOSED_MESSAGE,
-  INVALID_MONTH_MESSAGE,
   buildPlanningGenerationWindow,
+  getTargetMonthContext,
   validatePlanningGenerationWindow,
 };

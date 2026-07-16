@@ -72,20 +72,6 @@ class MonthlyGroupSelection {
     return rows;
   }
 
-  static async findMissingForMonth(monthKey, employeeRole, connection = db) {
-    const [rows] = await connection.query(
-      `SELECT u.id, CONCAT(u.first_name, ' ', u.last_name) AS name, u.matricule
-       FROM users u
-       LEFT JOIN monthly_group_selections mgs
-         ON mgs.user_id = u.id AND mgs.month_key = ?
-       WHERE u.is_deleted = 0
-         AND u.role = ?
-         AND mgs.id IS NULL
-       ORDER BY u.first_name, u.last_name`,
-      [monthKey, employeeRole]
-    );
-    return rows;
-  }
 }
 
 module.exports = MonthlyGroupSelection;

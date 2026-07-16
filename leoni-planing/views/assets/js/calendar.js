@@ -1,6 +1,5 @@
 (async () => {
   if (!(await LeoniAuth.ensureAccess())) return;
-  await LeoniAuth.refreshSession();
 
   const content = `
     <section class="panel">

@@ -1,13 +1,8 @@
 /**
  * LEONI Layout Module
  *
- * Renders the application shell: sidebar, topbar, and content area.
- *
- * Key changes:
- * - Sidebar items are filtered by user permissions (from session)
- * - User role badge displayed in sidebar footer
- * - Toast notification system added
- * - Confirmation modal added (replaces window.confirm)
+ * Renders the application shell with permission-filtered navigation,
+ * toast notifications, and a promise-based confirmation dialog.
  */
 const LeoniLayout = (() => {
   // ── Sidebar Configuration ────────────────────────────────
@@ -37,6 +32,7 @@ const LeoniLayout = (() => {
   function renderShell({ pageId, title, subtitle }) {
     const user = LeoniAuth.getUser();
     const visibleItems = getVisibleNavItems(user);
+    const userInitials = escapeHtml(LeoniAuth.initials(user?.name));
 
     const navHtml = visibleItems
       .map((item) => {
@@ -67,7 +63,7 @@ const LeoniLayout = (() => {
           </nav>
           <div class="sidebar-footer">
             <div class="sidebar-user-info">
-              <div class="user-avatar sidebar-avatar">${LeoniAuth.initials(user?.name)}</div>
+              <div class="user-avatar sidebar-avatar">${userInitials}</div>
               <div class="sidebar-user-details">
                 <span class="sidebar-user-name">${escapeHtml(user?.name || "User")}</span>
                 <span class="sidebar-user-role">${escapeHtml(user?.role || "")}</span>
@@ -85,13 +81,13 @@ const LeoniLayout = (() => {
                 <i class="fa-solid fa-bars"></i>
               </button>
               <div>
-                <h1 class="topbar-title">${title}</h1>
-                ${subtitle ? `<p class="topbar-subtitle">${subtitle}</p>` : ""}
+                <h1 class="topbar-title">${escapeHtml(title)}</h1>
+                ${subtitle ? `<p class="topbar-subtitle">${escapeHtml(subtitle)}</p>` : ""}
               </div>
             </div>
             <div class="topbar-user">
               <div class="user-pill">
-                <div class="user-avatar">${LeoniAuth.initials(user?.name)}</div>
+                <div class="user-avatar">${userInitials}</div>
                 <span>${escapeHtml(user?.name || "User")}</span>
               </div>
             </div>
@@ -182,7 +178,7 @@ const LeoniLayout = (() => {
   }
 
   // ── Confirmation Modal ───────────────────────────────────
-  // Replaces window.confirm() with a professional modal.
+  // Show an application-styled confirmation dialog.
   function confirm({ title = "Confirm Action", message, confirmText = "Confirm", cancelText = "Cancel", danger = false }) {
     return new Promise((resolve) => {
       const overlay = document.createElement("div");
@@ -232,7 +228,8 @@ const LeoniLayout = (() => {
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   return {

@@ -1,5 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
 const path = require("node:path");
 const {
   buildPlanningGenerationWindow,
@@ -38,6 +39,9 @@ const fakePlanning = {
   },
   async batchInsert(values) {
     state.batchValues = values;
+  },
+  async findByUserId() {
+    return [];
   },
 };
 
@@ -87,6 +91,58 @@ test("closed window rejects before any planning insert", async () => {
   assert.equal(state.batchValues, null);
   assert.equal(state.committed, false);
   assert.equal(state.rolledBack, true);
+});
+
+test("invalid generation month format uses a typed bad-request error", async () => {
+  await assert.rejects(
+    PlanningService.generatePlanning(2, "invalid"),
+    (error) => {
+      assert.equal(error.name, "BadRequestError");
+      assert.equal(error.statusCode, 400);
+      assert.equal(error.isOperational, true);
+      assert.equal(error.message, "Invalid month format. Expected YYYY-MM");
+      return true;
+    }
+  );
+});
+
+test("missing planning user uses a typed not-found error", async () => {
+  state.userExists = false;
+
+  await assert.rejects(
+    PlanningService.generatePlanning(999, "2026-08"),
+    (error) => {
+      assert.equal(error.name, "NotFoundError");
+      assert.equal(error.statusCode, 404);
+      assert.equal(error.isOperational, true);
+      assert.equal(error.message, "User not found");
+      return true;
+    }
+  );
+  assert.equal(state.rolledBack, true);
+});
+
+test("cross-user planning access uses a typed forbidden error with the existing client message", async () => {
+  await assert.rejects(
+    PlanningService.getPlanningByUser(99, { id: 2, role: "Data Cleansing" }, {
+      TEAM_LEADER: "Team Leader",
+    }),
+    (error) => {
+      assert.equal(error.name, "ForbiddenError");
+      assert.equal(error.statusCode, 403);
+      assert.equal(error.isOperational, true);
+      assert.equal(error.message, "Access forbidden: cannot view other users' planning");
+      return true;
+    }
+  );
+});
+
+test("planning controller does not classify operational errors by message text", () => {
+  const source = fs.readFileSync(
+    path.join(__dirname, "..", "controllers", "planningController.js"),
+    "utf8"
+  );
+  assert.doesNotMatch(source, /err\.message\s*===/);
 });
 
 test("open window rejects every requested month except the backend allowed month", async () => {

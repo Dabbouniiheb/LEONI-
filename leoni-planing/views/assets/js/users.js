@@ -1,6 +1,5 @@
 (async () => {
   if (!(await LeoniAuth.ensureAccess())) return;
-  await LeoniAuth.refreshSession();
 
   const loggedUser = LeoniAuth.getUser();
 
@@ -182,10 +181,10 @@
             <td><span class="badge-role">${esc(user.role)}</span></td>
             <td>${esc(user.department || "—")}</td>
             <td class="text-end">
-              <button type="button" class="btn btn-sm btn-leoni-outline btn-icon me-1" data-action="edit" data-id="${user.id}" aria-label="Edit ${esc(user.name)}" title="Edit user">
+              <button type="button" class="btn btn-sm btn-leoni-outline btn-icon me-1" data-action="edit" data-id="${Number(user.id)}" aria-label="Edit ${esc(user.name)}" title="Edit user">
                 <i class="fa-solid fa-pen"></i>
               </button>
-              <button type="button" class="btn btn-sm btn-leoni-outline btn-leoni-danger-outline btn-icon" data-action="delete" data-id="${user.id}" aria-label="Delete ${esc(user.name)}" title="Delete user">
+              <button type="button" class="btn btn-sm btn-leoni-outline btn-leoni-danger-outline btn-icon" data-action="delete" data-id="${Number(user.id)}" aria-label="Delete ${esc(user.name)}" title="Delete user">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </td>

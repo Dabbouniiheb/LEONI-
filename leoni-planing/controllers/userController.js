@@ -1,20 +1,11 @@
 /**
- * User Management Controller
- *
- * Changes from original:
- * - Soft delete (is_deleted flag) instead of permanent DELETE
- * - Async bcrypt.hash instead of bcrypt.hashSync
- * - Uses constants instead of magic strings
- * - Filters out soft-deleted users in all queries
- * - Uses structured logger
- * - Uses asyncHandler and express-validator
+ * User management controller with soft-delete and audit-log support.
  */
 
 const bcrypt = require("bcrypt");
 const db = require("../config/db");
 const { AUDIT_ACTIONS, ROLES, VALIDATION_RULES } = require("../config/constants");
 const { logAction } = require("../utils/logger");
-const logger = require("../utils/appLogger");
 const asyncHandler = require("../utils/asyncHandler");
 
 exports.getUsers = asyncHandler(async (req, res) => {

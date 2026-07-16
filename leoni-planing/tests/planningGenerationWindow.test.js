@@ -2,6 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const {
   buildPlanningGenerationWindow,
+  getTargetMonthContext,
   validatePlanningGenerationWindow,
 } = require("../utils/planningGenerationWindow");
 
@@ -78,6 +79,26 @@ test("Africa/Tunis business date controls opening and automatic closing", () => 
   assert.equal(closesAfterUtcMidnightOffset.server_date, "2026-08-01");
   assert.equal(closesAfterUtcMidnightOffset.is_open, false);
   assert.equal(closesAfterUtcMidnightOffset.allowed_month, null);
+});
+
+test("target month context is derived from the Africa/Tunis generation window", () => {
+  const beforeOpening = buildPlanningGenerationWindow("2026-07-24T22:30:00Z");
+  assert.deepEqual(getTargetMonthContext(beforeOpening), {
+    monthKey: "2026-07",
+    isNextMonth: false,
+  });
+
+  const afterTunisMidnight = buildPlanningGenerationWindow("2026-07-24T23:30:00Z");
+  assert.deepEqual(getTargetMonthContext(afterTunisMidnight), {
+    monthKey: "2026-08",
+    isNextMonth: true,
+  });
+
+  const afterMonthEndInTunis = buildPlanningGenerationWindow("2026-07-31T23:30:00Z");
+  assert.deepEqual(getTargetMonthContext(afterMonthEndInTunis), {
+    monthKey: "2026-08",
+    isNextMonth: false,
+  });
 });
 
 test("validation allows only the backend-calculated next month", () => {

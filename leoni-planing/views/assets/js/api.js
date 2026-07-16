@@ -1,8 +1,7 @@
 /**
  * LEONI API Client
  *
- * Centralized API communication layer.
- * All endpoints updated to use /api/ prefix.
+ * Centralized communication layer for application API endpoints.
  */
 const LeoniAPI = (() => {
   const base = "";

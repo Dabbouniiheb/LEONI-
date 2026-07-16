@@ -1,22 +1,20 @@
 /**
- * Dashboard Controller
- *
- * Changes from original:
- * - Loads independent user, monthly-group, and planning statistics in parallel
- * - Filters soft-deleted users
- * - Uses structured logger
- * - Uses asyncHandler
+ * Dashboard controller for user, monthly-group, and planning statistics.
  */
 
 const db = require("../config/db");
-const logger = require("../utils/appLogger");
 const { ROLES } = require("../config/constants");
-const { getTargetMonthKey } = require("../utils/helpers");
+const PlanningGenerationWindowService = require("../services/PlanningGenerationWindowService");
+const { getTargetMonthContext } = require("../utils/planningGenerationWindow");
 const asyncHandler = require("../utils/asyncHandler");
 
 exports.getStats = asyncHandler(async (req, res) => {
-  const { monthKey: defaultMonthKey } = getTargetMonthKey();
-  const monthKey = req.query.month || defaultMonthKey;
+  let monthKey = req.query.month;
+  if (!monthKey) {
+    const generationWindow =
+      await PlanningGenerationWindowService.getPlanningGenerationWindow();
+    ({ monthKey } = getTargetMonthContext(generationWindow));
+  }
 
   const [userStatsResult, monthlyGroupStatsResult, planningStatsResult] = await Promise.all([
     db.query(

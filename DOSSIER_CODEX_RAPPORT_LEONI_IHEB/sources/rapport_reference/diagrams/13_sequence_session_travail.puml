@@ -1,0 +1,48 @@
+@startuml
+title Séquence d'une session de travail à distance
+autonumber
+skinparam shadowing false
+actor "Utilisateur" as U
+boundary "Page Planning" as Page
+control "Auth, permission et validation" as MW
+control "WorkSessionController" as C
+control "WorkSessionService" as S
+entity "WorkSession" as M
+database "MySQL" as DB
+U -> Page : ouvrir le planning du jour
+Page -> MW : POST /api/work-sessions/auto-start
+MW -> C : requête autorisée
+C -> S : autoStartSession(user, planning)
+S -> S : expirer les sessions obsolètes
+S -> DB : BEGIN
+S -> M : verrouiller planning remote personnel du jour
+M -> DB : SELECT planning et session active/paused
+alt Planning non éligible
+  S -> DB : COMMIT
+  S --> Page : tracking_available = false
+else Planning éligible
+  S -> M : créer ou reprendre, active_slot = 1
+  M -> DB : INSERT ou UPDATE work_sessions
+  S -> DB : COMMIT et audit STARTED/RESUMED
+  S --> Page : session active
+  loop Toutes les 60 secondes pendant l'activité
+    Page -> MW : POST /api/work-sessions/heartbeat
+    MW -> S : heartbeat(user, session, is_active)
+    S -> M : verrouiller, cumuler au plus la grâce,
+mettre à jour heartbeat/statut
+    M -> DB : UPDATE work_sessions
+    S -> DB : SUM active_seconds et UPDATE work_hour\nplafonné à 8 h
+    S --> Page : état et résumé
+  end
+  alt Inactivité navigateur de cinq minutes
+    Page -> MW : POST /pause
+    MW -> S : transition paused
+  else Fin explicite
+    Page -> MW : POST /end
+    MW -> S : transition ended
+  else Heartbeat obsolète
+    S -> M : transition expired lors du nettoyage
+  end
+  S -> DB : cumuler secondes, recalculer heures et auditer
+end
+@enduml

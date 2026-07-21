@@ -1,0 +1,111 @@
+@startuml
+title Composants et dépendances de l'application
+left to right direction
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+
+package "Interface navigateur" {
+  component "LeoniAPI" as LeoniAPI
+  component "LeoniAuth" as LeoniAuth
+  component "LeoniLayout" as LeoniLayout
+  component "Pages fonctionnelles\nDashboard, utilisateurs, planning,\ncalendrier, congés, export, audit" as PagesJS
+  PagesJS --> LeoniAPI
+  PagesJS --> LeoniAuth
+  PagesJS --> LeoniLayout
+  LeoniAuth --> LeoniAPI
+}
+
+package "Couche HTTP Express" {
+  component "Routes d'authentification" as RAuth
+  component "Routes utilisateurs" as RUsers
+  component "Routes planning et calendrier" as RPlanning
+  component "Routes sélections mensuelles" as RGroups
+  component "Routes congés" as RLeave
+  component "Routes sessions de travail" as RSession
+  component "Routes dashboard, export et audit" as RSupport
+  component "Authentification, onboarding,\npermissions et validation" as Middlewares
+}
+
+package "Contrôleurs" {
+  component "AuthController" as CAuth
+  component "UserController" as CUsers
+  component "PlanningController" as CPlanning
+  component "MonthlyGroupSelectionController" as CGroups
+  component "LeaveRequestController" as CLeave
+  component "WorkSessionController" as CSession
+  component "Dashboard, Export et Log Controllers" as CSupport
+}
+
+package "Services métier" {
+  component "PlanningService" as SPlanning
+  component "PlanningGenerationWindowService" as SWindow
+  component "MonthlyGroupSelectionService" as SGroups
+  component "LeaveRequestService" as SLeave
+  component "WorkSessionService" as SSession
+}
+
+package "Modèles et persistance" {
+  component "Planning" as MPlanning
+  component "MonthlyGroupSelection" as MGroups
+  component "LeaveRequest" as MLeave
+  component "User" as MUser
+  component "WorkSession" as MSession
+  component "Pool mysql2/promise" as Pool
+}
+
+database "MySQL" as DB
+
+LeoniAPI --> RAuth
+LeoniAPI --> RUsers
+LeoniAPI --> RPlanning
+LeoniAPI --> RGroups
+LeoniAPI --> RLeave
+LeoniAPI --> RSession
+LeoniAPI --> RSupport
+
+RAuth --> Middlewares
+RUsers --> Middlewares
+RPlanning --> Middlewares
+RGroups --> Middlewares
+RLeave --> Middlewares
+RSession --> Middlewares
+RSupport --> Middlewares
+
+RAuth --> CAuth
+RUsers --> CUsers
+RPlanning --> CPlanning
+RGroups --> CGroups
+RLeave --> CLeave
+RSession --> CSession
+RSupport --> CSupport
+
+CPlanning --> SPlanning
+CGroups --> SGroups
+CLeave --> SLeave
+CSession --> SSession
+
+SPlanning --> SWindow
+SPlanning --> MPlanning
+SPlanning --> MGroups
+SGroups --> SWindow
+SGroups --> MGroups
+SLeave --> MLeave
+SLeave --> MUser
+SSession --> MSession
+
+MPlanning --> Pool
+MGroups --> Pool
+MLeave --> Pool
+MUser --> Pool
+MSession --> Pool
+CAuth --> Pool : SQL direct
+CUsers --> Pool : SQL direct
+CSupport --> Pool : SQL direct
+Pool --> DB
+
+note bottom of Middlewares
+  Les permissions sont résolues à partir du rôle
+  « Team Leader » ou « Data Cleansing ».
+end note
+@enduml

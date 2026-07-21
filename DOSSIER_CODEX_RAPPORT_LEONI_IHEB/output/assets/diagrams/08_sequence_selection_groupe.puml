@@ -1,0 +1,46 @@
+@startuml
+title Séquence de sélection mensuelle du groupe Home Office
+autonumber
+skinparam shadowing false
+actor "Utilisateur" as U
+boundary "Page Planning" as Page
+control "Auth, onboarding, permission, validation" as MW
+control "MonthlyGroupSelectionController" as C
+control "MonthlyGroupSelectionService" as S
+control "PlanningGenerationWindowService" as W
+entity "MonthlyGroupSelection" as M
+database "MySQL" as DB
+U -> Page : choisir A ou B pour le mois suivant
+Page -> MW : PUT /api/monthly-group-selections/mine
+MW -> MW : vérifier write.own, mois et groupe
+MW -> C : saveMine(req, res)
+C -> S : saveMine(user.id, month_key, group_id)
+S -> DB : BEGIN
+S -> W : lire date MySQL en Africa/Tunis
+W --> S : fenêtre, date et mois autorisé
+S -> S : exiger fenêtre ouverte et mois suivant
+S -> M : verrouiller utilisateur et sélection,\nvérifier le planning existant
+M -> DB : SELECT utilisateur et sélection FOR UPDATE,\nSELECT EXISTS planning
+alt Fenêtre fermée ou mois invalide
+  S -> DB : ROLLBACK
+  S --> C : erreur 400
+  C --> Page : 400
+else Contrôles de cohérence réussis
+  alt Planning présent et changement demandé
+    S -> DB : ROLLBACK
+    S --> C : erreur 409
+    C --> Page : 409
+  else Valeur autorisée
+    opt Groupe nouveau ou différent
+      S -> M : INSERT ... ON DUPLICATE KEY UPDATE
+      M -> DB : enregistrer la sélection unique
+    end
+    S -> DB : COMMIT
+    opt Groupe créé ou modifié
+      S -> DB : INSERT audit_logs SELECTED ou CHANGED
+    end
+    S --> C : sélection enregistrée
+    C --> Page : succès
+  end
+end
+@enduml

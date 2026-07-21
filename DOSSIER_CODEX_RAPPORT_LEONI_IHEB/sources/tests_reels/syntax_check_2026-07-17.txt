@@ -1,0 +1,10 @@
+Execution date: 2026-07-17
+Command: npm run check:syntax
+Node: v22.16.0
+npm: 10.9.2
+
+
+> leoni-planing@1.0.0 check:syntax
+> node scripts/check-syntax.js
+
+Syntax check passed: 58/58 files

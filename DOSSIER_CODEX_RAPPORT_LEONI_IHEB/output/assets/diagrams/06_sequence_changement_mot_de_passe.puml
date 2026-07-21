@@ -1,0 +1,37 @@
+@startuml
+title Séquence de changement du mot de passe
+autonumber
+skinparam shadowing false
+actor "Utilisateur authentifié" as U
+boundary "Page changement" as Page
+control "Middlewares CSRF, auth, validation" as MW
+control "AuthController" as C
+control "bcrypt" as BCrypt
+database "MySQL" as DB
+U -> Page : saisir ancien, nouveau et confirmation
+Page -> MW : POST /api/auth/change-password
+MW -> MW : vérifier session, jeton et données
+alt Validation refusée
+  MW --> Page : 400
+else Données valides
+  MW -> C : changePassword(req, res)
+  C -> DB : SELECT hash WHERE id = ? AND is_deleted = 0
+  DB --> C : hash éventuel
+  C -> BCrypt : compare(ancien, hash)
+  BCrypt --> C : résultat
+  alt Ancien mot de passe incorrect
+    C --> Page : 401
+  else Ancien mot de passe correct
+    C -> BCrypt : hash(nouveau, 10 tours)
+    BCrypt --> C : nouveau hash
+    C -> DB : UPDATE password, first_login = 0,\nmust_change_password = 0
+    C -> DB : INSERT audit_logs PASSWORD_CHANGED
+    C --> Page : succès puis /dashboard
+  end
+end
+note over U, DB
+  Le flux exige le mot de passe courant.
+  Aucune réinitialisation par Team Leader
+  n'est exposée par les routes actuelles.
+end note
+@enduml

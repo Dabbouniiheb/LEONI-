@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rapport de stage - IHEB DABBOUNI</title>
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #d9dde3; font-family: Calibri, Arial, sans-serif; color: #111111; }
+.page {
+  width: 210mm; height: 297mm; margin: 0 auto 8mm; padding: 17.5mm 21.5mm 16.5mm;
+  background: white; position: relative; overflow: hidden; break-after: page; page-break-after: always;
+  font-size: 10.1pt; line-height: 1.08;
+}
+.page:last-child { break-after: auto; page-break-after: auto; }
+.running { position:absolute; top:6.5mm; left:21.5mm; right:21.5mm; text-align:center; font-size:7.8pt; color:#5B6573; font-weight:700; }
+.folio { position:absolute; bottom:6.3mm; left:21.5mm; right:21.5mm; text-align:center; font-size:7.8pt; color:#5B6573; }
+.cover .running, .cover .folio { display:none; }
+h1 { margin:0 0 8pt; font-size:18pt; line-height:1.08; color:#17365D; }
+h2 { margin:0 0 7pt; font-size:15pt; line-height:1.08; color:#1F4D78; }
+h3.subheading { margin:2pt 0 5pt; font-size:12.6pt; color:#2E74B5; }
+p { margin:0 0 3.2pt; text-align:justify; }
+.source { font-size:8pt; font-style:italic; color:#5B6573; }
+.reference { font-size:8.6pt; line-height:1; margin-bottom:2.2pt; }
+.compact { font-size:8.7pt; line-height:1; }
+.front-text { font-size:12.4pt; line-height:1.35; font-style:italic; margin:18pt 12mm 8pt; }
+.keywords { font-size:9.5pt; font-weight:700; color:#17365D; }
+.kicker { color:#A97922; font-size:8.3pt; font-weight:700; letter-spacing:.06em; margin-bottom:3pt; }
+ul, ol { margin:2pt 0 4pt 7mm; padding-left:4mm; }
+li { margin-bottom:2.2pt; }
+aside { margin:3pt 0 4pt; padding:5pt 8pt; border-left:4px solid #2E74B5; background:#F4F7FA; font-size:8.8pt; line-height:1.05; }
+table { border-collapse:collapse; width:100%; margin:3pt 0 4pt; table-layout:fixed; }
+caption { text-align:left; font-size:8.8pt; color:#5B6573; font-style:italic; font-weight:700; margin-bottom:3pt; }
+th { background:#17365D; color:white; font-weight:700; text-align:center; }
+th, td { border:1px solid #b7c3d0; padding:3px 5px; vertical-align:middle; line-height:1.02; overflow-wrap:anywhere; }
+tbody tr:nth-child(even) { background:#f7f9fb; }
+figure { margin:4pt 0 3pt; text-align:center; }
+figure img { max-width:100%; max-height:174mm; object-fit:contain; }
+figcaption { font-size:8.8pt; color:#5B6573; font-style:italic; margin-top:2pt; }
+.toc-entry { display:flex; align-items:baseline; margin:0 0 3px; font-size:9.7pt; }
+.toc-entry.level-2 { padding-left:6mm; font-size:9.1pt; }
+.toc-entry span { white-space:nowrap; }
+.toc-entry i { flex:1; border-bottom:1px dotted #999; margin:0 4px 2px; }
+.toc-entry b { min-width:8mm; text-align:right; }
+.cover { text-align:center; padding-top:34mm; }
+.cover h1 { font-size:25pt; line-height:1.08; text-align:center; margin:26pt 0 10pt; }
+.cover p { text-align:center; }
+.cover-kicker { font-size:15pt; color:#5B6573; font-weight:700; }
+.cover-subtitle { font-size:12.5pt; color:#1F4D78; font-style:italic; margin-bottom:16pt; }
+.cover-meta { font-size:10.2pt; margin-bottom:2.3pt; }
+.cover-year { font-size:10.5pt; color:#17365D; font-weight:700; margin-top:15pt; }
+@media print {
+  html, body { background:white; }
+  .page { margin:0; box-shadow:none; }
+}
+</style></head><body>
+<section class="page cover" id="couverture">
+<h1>Développement d&#x27;une application web de gestion du planning Home Office pour LEONI Data Management</h1>
+<p class="cover-kicker">RAPPORT DE STAGE</p>
+<p class="cover-subtitle">Stage d&#x27;été</p>
+<p class="cover-meta">Réalisé par IHEB DABBOUNI</p>
+<p class="cover-meta">Matricule : 290420</p>
+<p class="cover-meta">EPI - Digital School</p>
+<p class="cover-meta">Deuxième année du cycle préparatoire</p>
+<p class="cover-meta">Organisme d&#x27;accueil : LEONI</p>
+<p class="cover-meta">Périmètre métier : Material Master Data Management</p>
+<p class="cover-meta">Site : Messadine</p>
+<p class="cover-meta">Encadrant professionnel : M. Iheb Mahmoudi</p>
+<p class="cover-meta">Période : du 15 juin au 15 juillet 2026</p>
+<p class="cover-meta">Durée : 30 jours</p>
+<p class="cover-year">Année universitaire : 2025-2026</p>
+</section>
+<section class="page" id="dedicace">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 2 / 64</div>
+<h1>Dédicace</h1>
+<p class="front-text">Je dédie ce travail à M. Iheb Mahmoudi, pour son encadrement, ses conseils et la confiance qu&#x27;il m&#x27;a accordée durant ce stage.</p>
+<p class="front-text">Je le dédie également à LEONI, qui m&#x27;a offert l&#x27;occasion de travailler sur un besoin concret, ainsi qu&#x27;à EPI Digital School, pour la formation et les connaissances qui m&#x27;ont permis de mener ce projet.</p>
+<p class="front-text">Enfin, je dédie ce travail à mon ami Ayoub Bahrouni, pour son aide ponctuelle et son soutien sur certains détails du projet.</p>
+</section>
+<section class="page" id="remerciements">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 3 / 64</div>
+<h1>Remerciements</h1>
+<p class="front-text">Au terme de ce stage, je tiens à exprimer ma sincère gratitude à M. Iheb Mahmoudi pour son accompagnement, ses orientations et la validation progressive de mon travail.</p>
+<p class="front-text">Je remercie LEONI, et particulièrement le périmètre Material Master Data Management du site de Messadine, pour l&#x27;accueil et pour l&#x27;opportunité de développer une solution liée à une problématique professionnelle réelle.</p>
+<p class="front-text">J&#x27;adresse également mes remerciements à EPI Digital School pour la qualité de la formation reçue. Enfin, je remercie mon ami Ayoub Bahrouni pour l&#x27;aide ponctuelle qu&#x27;il m&#x27;a apportée sur certains détails.</p>
+</section>
+<section class="page" id="resume">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 4 / 64</div>
+<h1>Résumé</h1>
+<p class="body">Ce rapport présente la conception et la réalisation d&#x27;une application web consacrée à la gestion du planning Home Office dans le périmètre Material Master Data Management de LEONI. Le besoin prend naissance dans un processus manuel fondé sur Excel, peu centralisé, exposé aux erreurs de saisie et insuffisamment traçable. L&#x27;objectif du projet consiste à regrouper les opérations de planification, à automatiser l&#x27;application des règles mensuelles et à sécuriser l&#x27;accès aux informations selon les responsabilités de chaque profil.</p>
+<p class="body">La solution distingue deux rôles : Team Leader et Data Cleansing. Elle couvre l&#x27;authentification par e-mail, le renouvellement obligatoire du mot de passe au premier accès, l&#x27;administration des comptes, la sélection mensuelle d&#x27;un groupe A ou B, la génération du planning du mois suivant, la consultation sous forme de tableau ou de calendrier, les demandes de congé, le suivi non intrusif des sessions de travail à distance, les exports CSV et XLSX, le tableau de bord et l&#x27;audit. Le calcul de la fenêtre autorisée est effectué côté serveur dans le fuseau Africa/Tunis, du 25 au dernier jour réel du mois.</p>
+<p class="body">L&#x27;application repose sur un monolithe Node.js et Express, une base MySQL avec magasin de sessions, ainsi que des pages HTML, CSS et JavaScript consommant des API JSON. La sécurité observable comprend notamment bcrypt, la protection CSRF, Helmet et sa politique CSP, la limitation des requêtes, la validation des données, les permissions atomiques, les transactions et plusieurs contraintes d&#x27;intégrité. Ces observations décrivent le code ; elles ne constituent pas une certification de sécurité.</p>
+<p class="body">Les preuves fournies pour l&#x27;exécution du 17 juillet 2026 font état de 33 tests automatisés réussis sur 33 avec Node.js v22.16.0, ainsi que de 58 fichiers JavaScript valides sur 58 lors de la vérification syntaxique. La solution demeure un prototype fonctionnel avancé : aucun déploiement de production n&#x27;est confirmé et elle n&#x27;est pas actuellement utilisée par les employés.</p>
+<p class="keywords">Mots-clés : Home Office, planning, application web, Node.js, Express, MySQL, contrôle d&#x27;accès, audit, travail à distance.</p>
+</section>
+<section class="page" id="abstract">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 5 / 64</div>
+<h1>Abstract</h1>
+<p class="body">This report presents the design and implementation of a web application dedicated to Home Office schedule management within LEONI&#x27;s Material Master Data Management business scope. The project addresses a manual, Excel-based process that was insufficiently centralized, exposed to data-entry errors, and difficult to trace. Its purpose is to centralize scheduling operations, automate monthly business rules, and secure access according to each user&#x27;s responsibilities.</p>
+<p class="body">The solution defines two roles: Team Leader and Data Cleansing. It includes e-mail authentication, mandatory password renewal on first access, user administration, monthly selection of group A or B, next-month schedule generation, table and calendar views, leave requests, non-intrusive remote-work session tracking, CSV and XLSX exports, dashboard indicators, and audit events. The permitted generation window is computed on the server in the Africa/Tunis time zone, from the 25th through the actual last day of the month.</p>
+<p class="body">The application is implemented as a Node.js and Express monolith connected to MySQL and a database-backed session store. HTML, CSS, and JavaScript pages consume JSON APIs. Observable safeguards include bcrypt, CSRF protection, Helmet and a Content Security Policy, rate limiting, input validation, atomic permissions, transactions, and data-integrity constraints. These findings document the implementation and must not be interpreted as a security certification.</p>
+<p class="body">Evidence supplied for the run performed on 17 July 2026 records 33 successful automated tests out of 33 using Node.js v22.16.0. The syntax check also reports 58 valid JavaScript files out of 58. At the end of the internship, the application remains an advanced functional prototype: no production deployment is confirmed, and employees are not currently using it.</p>
+<p class="keywords">Keywords: Home Office, scheduling, web application, Node.js, Express, MySQL, access control, audit, remote work.</p>
+</section>
+<section class="page" id="table-matieres">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 6 / 64</div>
+<h1>Table des matières</h1>
+<nav class="toc"><div class="toc-entry level-1"><span>Dédicace</span><i></i><b>2</b></div><div class="toc-entry level-1"><span>Remerciements</span><i></i><b>3</b></div><div class="toc-entry level-1"><span>Résumé et mots-clés</span><i></i><b>4</b></div><div class="toc-entry level-1"><span>Abstract and keywords</span><i></i><b>5</b></div><div class="toc-entry level-1"><span>Table des matières</span><i></i><b>6</b></div><div class="toc-entry level-1"><span>Liste des figures</span><i></i><b>8</b></div><div class="toc-entry level-1"><span>Liste des tableaux</span><i></i><b>10</b></div><div class="toc-entry level-1"><span>Liste des abréviations</span><i></i><b>10</b></div><div class="toc-entry level-1"><span>Introduction générale</span><i></i><b>11</b></div><div class="toc-entry level-1"><span>Chapitre 1 - Organisme et cadre du stage</span><i></i><b>12</b></div><div class="toc-entry level-2"><span>1.1 Organisme, périmètre et cadre administratif</span><i></i><b>12</b></div><div class="toc-entry level-2"><span>1.2 Situation antérieure et problématique</span><i></i><b>13</b></div><div class="toc-entry level-2"><span>1.3 Objectifs, besoin initial et version finale</span><i></i><b>14</b></div><div class="toc-entry level-2"><span>1.4 Contribution personnelle et méthode</span><i></i><b>15</b></div><div class="toc-entry level-2"><span>1.5 Chronologie, difficultés et compétences</span><i></i><b>16</b></div><div class="toc-entry level-1"><span>Chapitre 2 - Analyse et conception</span><i></i><b>17</b></div><div class="toc-entry level-2"><span>2.1 Acteurs et responsabilités</span><i></i><b>17</b></div><div class="toc-entry level-2"><span>2.2 Évolution du périmètre</span><i></i><b>18</b></div><div class="toc-entry level-2"><span>2.3 Modules et besoins fonctionnels</span><i></i><b>19</b></div><div class="toc-entry level-2"><span>2.4 Besoins non fonctionnels et règles</span><i></i><b>20</b></div><div class="toc-entry level-2"><span>2.5 Cas d&#x27;utilisation global</span><i></i><b>21</b></div><div class="toc-entry level-2"><span>2.6 Architecture générale</span><i></i><b>22</b></div><div class="toc-entry level-2"><span>2.7 Composants de l&#x27;application</span><i></i><b>23</b></div><div class="toc-entry level-2"><span>2.8 Modèle de données</span><i></i><b>24</b></div><div class="toc-entry level-2"><span>2.9 Tables et intégrité</span><i></i><b>25</b></div><div class="toc-entry level-2"><span>2.10 Contrôle d&#x27;accès</span><i></i><b>26</b></div><div class="toc-entry level-2"><span>2.11 Conception de la sécurité</span><i></i><b>27</b></div></nav>
+</section>
+<section class="page" id="table-matieres-suite">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 7 / 64</div>
+<h1>Table des matières - suite</h1>
+<nav class="toc"><div class="toc-entry level-2"><span>2.12 à 2.19 Diagrammes de séquence</span><i></i><b>28</b></div><div class="toc-entry level-2"><span>2.20 Synthèse de la conception</span><i></i><b>39</b></div><div class="toc-entry level-1"><span>Chapitre 3 - Réalisation</span><i></i><b>40</b></div><div class="toc-entry level-2"><span>3.1 Environnement et organisation technique</span><i></i><b>40</b></div><div class="toc-entry level-2"><span>3.2 Authentification</span><i></i><b>41</b></div><div class="toc-entry level-2"><span>3.3 Premier changement de mot de passe</span><i></i><b>42</b></div><div class="toc-entry level-2"><span>3.4 Tableau de bord</span><i></i><b>43</b></div><div class="toc-entry level-2"><span>3.5 Gestion des utilisateurs</span><i></i><b>44</b></div><div class="toc-entry level-2"><span>3.6 Génération et suivi du planning</span><i></i><b>45</b></div><div class="toc-entry level-2"><span>3.7 Suivi non intrusif du travail distant</span><i></i><b>46</b></div><div class="toc-entry level-2"><span>3.8 Calendriers</span><i></i><b>47</b></div><div class="toc-entry level-2"><span>3.9 Congés</span><i></i><b>49</b></div><div class="toc-entry level-2"><span>3.10 Export</span><i></i><b>51</b></div><div class="toc-entry level-2"><span>3.11 Audit</span><i></i><b>52</b></div><div class="toc-entry level-2"><span>3.12 Gestion des erreurs</span><i></i><b>53</b></div><div class="toc-entry level-2"><span>3.13 Bilan de réalisation</span><i></i><b>54</b></div><div class="toc-entry level-1"><span>Chapitre 4 - Tests et validation</span><i></i><b>55</b></div><div class="toc-entry level-2"><span>4.1 Protocole et résultats</span><i></i><b>55</b></div><div class="toc-entry level-2"><span>4.2 Répartition des tests</span><i></i><b>56</b></div><div class="toc-entry level-2"><span>4.3 Scénarios automatisés couverts</span><i></i><b>57</b></div><div class="toc-entry level-2"><span>4.4 Portée et limites</span><i></i><b>58</b></div><div class="toc-entry level-2"><span>4.5 Matrice manuelle à exécuter</span><i></i><b>59</b></div><div class="toc-entry level-1"><span>Conclusion générale</span><i></i><b>61</b></div><div class="toc-entry level-1"><span>Perspectives</span><i></i><b>62</b></div><div class="toc-entry level-1"><span>Références</span><i></i><b>63</b></div><div class="toc-entry level-1"><span>Annexes</span><i></i><b>64</b></div></nav>
+<aside><strong>Actualisation :</strong> Dans le DOCX, les entrées sont placées dans un champ de table des matières et les titres utilisent les styles hiérarchiques de Word. Les numéros affichés correspondent à la présente version de 64 pages.</aside>
+</section>
+<section class="page" id="liste-figures">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 8 / 64</div>
+<h1>Liste des figures</h1>
+<table style="font-size:8.8pt"><thead><tr><th>No</th><th>Intitulé</th><th>Page</th></tr></thead><tbody><tr><td>1</td><td>Cas d&#x27;utilisation global de l&#x27;application</td><td>21</td></tr><tr><td>2</td><td>Architecture globale</td><td>22</td></tr><tr><td>3</td><td>Composants backend, frontend et données</td><td>23</td></tr><tr><td>4</td><td>Modèle de données principal</td><td>24</td></tr><tr><td>5</td><td>Séquence d&#x27;authentification</td><td>28</td></tr><tr><td>6</td><td>Séquence de changement du mot de passe</td><td>29</td></tr><tr><td>7</td><td>Séquence de gestion d&#x27;un utilisateur</td><td>30</td></tr><tr><td>8</td><td>Séquence de sélection mensuelle du groupe</td><td>31</td></tr><tr><td>9</td><td>Séquence de génération du planning</td><td>32</td></tr><tr><td>10</td><td>Séquence de consultation du planning</td><td>33</td></tr><tr><td>11</td><td>Séquence de création d&#x27;une demande de congé</td><td>34</td></tr><tr><td>12</td><td>Séquence de traitement d&#x27;une demande de congé</td><td>35</td></tr><tr><td>13</td><td>Séquence d&#x27;une session de travail distant</td><td>36</td></tr><tr><td>14</td><td>Séquence d&#x27;export CSV ou XLSX</td><td>37</td></tr></tbody></table>
+</section>
+<section class="page" id="liste-figures-suite">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 9 / 64</div>
+<h1>Liste des figures - suite</h1>
+<table style="font-size:8.8pt"><thead><tr><th>No</th><th>Intitulé</th><th>Page</th></tr></thead><tbody><tr><td>15</td><td>Séquence de consultation de l&#x27;audit</td><td>38</td></tr><tr><td>16</td><td>Page de connexion</td><td>41</td></tr><tr><td>17</td><td>Changement obligatoire du mot de passe</td><td>42</td></tr><tr><td>18</td><td>Tableau de bord du Team Leader</td><td>43</td></tr><tr><td>19</td><td>Gestion des utilisateurs</td><td>44</td></tr><tr><td>20</td><td>Planning du Team Leader</td><td>45</td></tr><tr><td>21</td><td>Suivi distant actif côté Data Cleansing</td><td>46</td></tr><tr><td>22</td><td>Calendrier du Team Leader</td><td>47</td></tr><tr><td>23</td><td>Calendrier personnel Data Cleansing</td><td>48</td></tr><tr><td>24</td><td>Gestion des congés côté Team Leader</td><td>49</td></tr><tr><td>25</td><td>Gestion personnelle des congés</td><td>50</td></tr><tr><td>26</td><td>Page d&#x27;export CSV et XLSX</td><td>51</td></tr><tr><td>27</td><td>Journal d&#x27;audit</td><td>52</td></tr><tr><td>28</td><td>Page 404 fournie</td><td>53</td></tr></tbody></table>
+<p class="source">Les figures 1 à 15 sont des rendus des sources PlantUML fournies. Les figures 16 à 28 proviennent exclusivement des captures du catalogue, après recadrage et anonymisation par masques opaques.</p>
+</section>
+<section class="page" id="listes-tableaux-abreviations">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 10 / 64</div>
+<h1>Liste des tableaux et des abréviations</h1>
+<h3 class="subheading">Liste des tableaux</h3>
+<table style="font-size:7.6pt"><thead><tr><th>No</th><th>Intitulé</th><th>Page</th></tr></thead><tbody><tr><td>1</td><td>Informations confirmées sur le stage</td><td>12</td></tr><tr><td>2</td><td>Limites du processus manuel fondé sur Excel</td><td>13</td></tr><tr><td>3</td><td>Acteurs et responsabilités</td><td>17</td></tr><tr><td>4</td><td>Besoin initial et version finale</td><td>18</td></tr><tr><td>5</td><td>Modules fonctionnels</td><td>19</td></tr><tr><td>6</td><td>Besoins non fonctionnels observables</td><td>20</td></tr><tr><td>7</td><td>Tables principales et fonctions</td><td>25</td></tr><tr><td>8</td><td>Permissions par rôle</td><td>26</td></tr><tr><td>9</td><td>Environnement technique</td><td>40</td></tr><tr><td>10</td><td>Protocole et résultats automatisés</td><td>55</td></tr><tr><td>11</td><td>Répartition des cinq fichiers de tests</td><td>56</td></tr><tr><td>12</td><td>Scénarios effectivement couverts</td><td>57</td></tr><tr><td>13</td><td>Limites des preuves automatisées</td><td>58</td></tr><tr><td>14</td><td>Matrice manuelle à exécuter - partie 1</td><td>59</td></tr><tr><td>15</td><td>Matrice manuelle à exécuter - partie 2</td><td>60</td></tr><tr><td>16</td><td>Perspectives proposées</td><td>62</td></tr><tr><td>17</td><td>Matrice de traçabilité synthétique</td><td>64</td></tr></tbody></table>
+<h3 class="subheading">Liste des abréviations</h3>
+<table style="font-size:7.4pt"><thead><tr><th>Abréviation</th><th>Signification</th></tr></thead><tbody><tr><td>API</td><td>Application Programming Interface</td></tr><tr><td>BDD</td><td>Base de données</td></tr><tr><td>CSP</td><td>Content Security Policy</td></tr><tr><td>CSRF</td><td>Cross-Site Request Forgery</td></tr><tr><td>CSV</td><td>Comma-Separated Values</td></tr><tr><td>HO</td><td>Home Office</td></tr><tr><td>HTML</td><td>HyperText Markup Language</td></tr><tr><td>HTTP</td><td>Hypertext Transfer Protocol</td></tr><tr><td>JSON</td><td>JavaScript Object Notation</td></tr><tr><td>SQL</td><td>Structured Query Language</td></tr><tr><td>TL</td><td>Team Leader</td></tr><tr><td>UML</td><td>Unified Modeling Language</td></tr><tr><td>UI</td><td>User Interface</td></tr><tr><td>XLSX</td><td>Format de classeur Microsoft Excel</td></tr></tbody></table>
+</section>
+<section class="page" id="introduction-generale">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 11 / 64</div>
+<h1>Introduction générale</h1>
+<p class="body">L&#x27;organisation du travail hybride fait apparaître un besoin simple en apparence mais exigeant dans sa mise en œuvre : préparer des jours Home Office cohérents, les rendre visibles aux personnes concernées et conserver une trace des décisions. Dans le contexte du stage, ce processus reposait auparavant sur Excel. Les manipulations manuelles rendaient la centralisation difficile, augmentaient le risque d&#x27;erreur et ne fournissaient pas une traçabilité suffisante des choix mensuels, des modifications et des exports.</p>
+<p class="body">L&#x27;idée d&#x27;une application web a été proposée par un employé, puis précisée avec M. Iheb Mahmoudi. Les utilisateurs visés sont les Team Leaders et les collaborateurs Data Cleansing. La population potentiellement concernée dépasse 99 personnes selon l&#x27;estimation communiquée par l&#x27;étudiant ; ce chiffre est présenté comme un ordre de grandeur et non comme une statistique institutionnelle.</p>
+<p class="body">La problématique retenue est donc la suivante : comment centraliser, automatiser et sécuriser la préparation du planning Home Office, tout en distinguant les responsabilités, en appliquant une règle temporelle unique et en conservant des éléments utiles de suivi et d&#x27;audit ? La réponse développée associe une interface web, des API JSON, des traitements serveur et une base relationnelle. Le cœur du projet est la sélection mensuelle d&#x27;un groupe A ou B et la génération du seul mois suivant pendant la fenêtre allant du 25 au dernier jour réel, selon la date métier Africa/Tunis.</p>
+<p class="body">Le rapport distingue trois niveaux. Le besoin initial provient du cahier des charges. La version finale est décrite à partir du code actuel. La validation repose sur les sorties de tests réellement fournies. Cette distinction permet d&#x27;expliquer les écarts sans transformer une intention en fonction réalisée, ni une inspection statique en preuve d&#x27;exécution.</p>
+<p class="body">Le premier chapitre présente le cadre du stage, la contribution individuelle et la progression suivie. Le deuxième formalise les acteurs, les besoins, les données, l&#x27;architecture et les séquences. Le troisième décrit la réalisation module par module à partir des écrans fournis. Le quatrième expose le protocole de test, les résultats 33/33 et 58/58, leurs limites et une matrice manuelle qui reste à exécuter. La conclusion situe enfin le prototype et ses perspectives.</p>
+<aside><strong>État du produit :</strong> À la clôture du stage, la solution est un prototype fonctionnel avancé. Aucun déploiement en production n&#x27;est confirmé et l&#x27;application n&#x27;est pas utilisée actuellement par les employés.</aside>
+</section>
+<section class="page" id="chapitre-1">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 12 / 64</div>
+<div class="kicker">CADRE PROFESSIONNEL ET DÉMARCHE PERSONNELLE</div>
+<h1>Chapitre 1 - Organisme et cadre du stage</h1>
+<h3 class="subheading">1.1 Organisme, périmètre et cadre administratif</h3>
+<p class="body">LEONI constitue l&#x27;organisme d&#x27;accueil du stage. Le présent rapport se limite volontairement aux informations confirmées et utiles à la compréhension du projet. Material Master Data Management est le périmètre métier communiqué pour le stage au site de Messadine ; cette expression n&#x27;est pas utilisée comme une dénomination juridique de l&#x27;entreprise.</p>
+<p class="body">Le stage d&#x27;été a été réalisé par Iheb Dabbouni, étudiant en deuxième année du cycle préparatoire à EPI - Digital School. Sa période officielle s&#x27;étend du 15 juin au 15 juillet 2026, pour une durée de 30 jours, pendant l&#x27;année universitaire 2025-2026. M. Iheb Mahmoudi a assuré l&#x27;encadrement professionnel, en communiquant les besoins, en apportant des conseils fonctionnels et en validant progressivement les choix et les résultats.</p>
+<table style="font-size:8.7pt"><caption>Tableau 1 - Informations confirmées sur le stage</caption><thead><tr><th>Élément</th><th>Information</th></tr></thead><tbody><tr><td>Étudiant</td><td>IHEB DABBOUNI - matricule 290420</td></tr><tr><td>Établissement</td><td>EPI - Digital School</td></tr><tr><td>Niveau</td><td>Deuxième année du cycle préparatoire</td></tr><tr><td>Nature et période</td><td>Stage d&#x27;été, du 15 juin au 15 juillet 2026</td></tr><tr><td>Durée</td><td>30 jours</td></tr><tr><td>Organisme</td><td>LEONI</td></tr><tr><td>Périmètre métier</td><td>Material Master Data Management</td></tr><tr><td>Site</td><td>Messadine</td></tr><tr><td>Encadrement professionnel</td><td>M. Iheb Mahmoudi</td></tr></tbody></table>
+<p class="body">Le projet est rattaché à un besoin concret de gestion du planning Home Office. Le rapport ne développe ni organigramme, ni statistiques institutionnelles, ni description détaillée du service, car ces éléments ne sont pas nécessaires à la démonstration technique et ne figurent pas parmi les informations validées.</p>
+<p class="source">Sources : fichiers d&#x27;informations validées 01, 02 et 10.</p>
+</section>
+<section class="page" id="situation-problematique">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 13 / 64</div>
+<h2>1.2 Situation antérieure et problématique</h2>
+<p class="body">Avant l&#x27;application, le planning Home Office était préparé et suivi au moyen de fichiers Excel. Ce mode opératoire répondait au besoin immédiat de disposer d&#x27;un tableau partagé, mais il reposait fortement sur des manipulations manuelles. Lorsque les choix de groupe, les dates, les corrections et les exports sont traités dans plusieurs fichiers ou versions, la cohérence dépend davantage de l&#x27;attention des opérateurs que de contrôles systématiques.</p>
+<table style="font-size:8.6pt"><caption>Tableau 2 - Limites du processus manuel fondé sur Excel</caption><thead><tr><th>Limite</th><th>Conséquence pour le processus</th></tr></thead><tbody><tr><td>Données dispersées</td><td>Centralisation et recherche plus difficiles.</td></tr><tr><td>Saisie manuelle</td><td>Risque d&#x27;erreur lors de l&#x27;ajout ou de la modification.</td></tr><tr><td>Règles appliquées par l&#x27;opérateur</td><td>Possibilité d&#x27;une interprétation non uniforme des groupes et des dates.</td></tr><tr><td>Traçabilité limitée</td><td>Difficulté à reconstituer les choix et opérations importantes.</td></tr><tr><td>Consolidation répétitive</td><td>Temps consacré aux filtres, rapprochements et exports.</td></tr><tr><td>Versions multiples</td><td>Risque de travailler sur un état qui n&#x27;est plus le plus récent.</td></tr></tbody></table>
+<p class="body">Le problème ne réside donc pas dans le format Excel lui-même, mais dans un processus peu centralisé, fortement manuel et insuffisamment traçable. L&#x27;application proposée vise à déplacer les règles essentielles vers le serveur, à stocker les états dans une base commune et à limiter chaque action au périmètre du rôle connecté.</p>
+<p class="body">La problématique générale peut être formulée ainsi : comment fournir une plateforme unique pour préparer et consulter le planning Home Office, tout en contrôlant les droits, la période de génération, la cohérence des données et la traçabilité des opérations ? Cette question se décline en enjeux techniques : authentifier, autoriser, calculer une date métier fiable, prévenir les doublons, protéger les écritures concurrentes, présenter les données clairement et distinguer les heures prévues des heures réellement comptabilisées.</p>
+<aside><strong>Portée des preuves visuelles :</strong> Les captures illustrent des écrans d&#x27;une démonstration. Elles ne prouvent ni l&#x27;utilisation opérationnelle par les employés ni l&#x27;exécution de tous les parcours de bout en bout.</aside>
+<p class="source">Sources : contexte métier validé et cahier des charges initial.</p>
+</section>
+<section class="page" id="objectifs-perimetre">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 14 / 64</div>
+<h2>1.3 Objectifs, besoin initial et version finale</h2>
+<p class="body">L&#x27;objectif général est de concevoir une application web interne capable de centraliser, automatiser et sécuriser la gestion du planning Home Office. Le cahier des charges initial prévoyait l&#x27;authentification, le changement du mot de passe au premier accès, la gestion des utilisateurs et des rôles, les groupes A/B, la génération mensuelle, un tableau de bord, des alertes de validation, l&#x27;export Excel et l&#x27;audit.</p>
+<p class="body">Le code final conserve ce noyau et l&#x27;étend. La connexion s&#x27;effectue par adresse e-mail. Les autorisations reposent sur des permissions atomiques. Le choix mensuel est persisté, le mois cible est calculé côté serveur et la fenêtre est bornée du 25 au dernier jour réel dans le fuseau Africa/Tunis. La version finale ajoute le calendrier, les congés, le suivi non intrusif du travail distant, le CSV, les protections HTTP et des contraintes d&#x27;intégrité renforcées.</p>
+<ul><li>Centraliser les comptes, les sélections, les plannings et les opérations associées.</li><li>Automatiser les jours Home Office des groupes A et B.</li><li>Séparer le périmètre global du Team Leader et les opérations personnelles Data Cleansing.</li><li>Permettre une consultation en tableau et en calendrier.</li><li>Conserver les événements importants dans un journal d&#x27;audit.</li><li>Produire des exports CSV et XLSX selon des filtres autorisés.</li><li>Comptabiliser le temps actif sans enregistrer écran, frappe, souris ou application visitée.</li></ul>
+<p class="body">Trois écarts doivent être exprimés sans ambiguïté. Le cahier proposait une connexion par e-mail ou nom d&#x27;utilisateur, alors que l&#x27;interface actuelle utilise l&#x27;e-mail. Une réinitialisation du mot de passe par le Team Leader n&#x27;est pas exposée dans l&#x27;application. Enfin, les notifications réalisées sont des alertes visuelles du tableau de bord ; aucun envoi par e-mail ou Teams n&#x27;est revendiqué.</p>
+<aside><strong>Lecture des écarts :</strong> Les congés, initialement envisagés comme une évolution, sont présents dans la version finale. À l&#x27;inverse, la mise en production et l&#x27;usage par les employés ne sont pas confirmés.</aside>
+<p class="source">Sources : cahier des charges, fichier 03 et code actuel.</p>
+</section>
+<section class="page" id="contribution-methode">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 15 / 64</div>
+<h2>1.4 Contribution personnelle et méthode</h2>
+<p class="body">Le développement a été réalisé individuellement par Iheb Dabbouni. Sa contribution couvre l&#x27;analyse du besoin, la conception de la base de données, le backend Node.js et Express, les interfaces HTML, CSS et JavaScript, l&#x27;authentification, les permissions, la génération mensuelle, la gestion des utilisateurs, les congés, les exports, le journal d&#x27;audit, le suivi du travail distant, les tests et la documentation.</p>
+<p class="body">Ayoub Bahrouni a apporté une aide ponctuelle sur certains détails. Cette contribution est mentionnée comme un soutien ciblé et non comme un co-développement. M. Iheb Mahmoudi a précisé les besoins, formulé des conseils et validé progressivement les résultats. Aucune fréquence chiffrée de réunion n&#x27;est attribuée, car les échanges ont été organisés selon l&#x27;avancement et les besoins de validation.</p>
+<p class="body">La démarche suivie est incrémentale. Après l&#x27;étude du processus Excel et des règles métier, les fondations techniques ont été installées. Les modules ont ensuite été développés par étapes, présentés dans le navigateur, corrigés à partir des retours et renforcés par des tests ciblés. Cette description rend compte de la progression sans rattacher artificiellement le travail à une méthode Scrum ou à un cycle formel non documenté.</p>
+<ul><li>Analyse du cahier des charges et reformulation des règles sensibles.</li><li>Conception des tables, des relations et des contraintes d&#x27;unicité.</li><li>Développement par modules : comptes, planning, calendrier, congés, sessions, export et audit.</li><li>Démonstrations intermédiaires et prise en compte des retours de l&#x27;encadrant.</li><li>Tests unitaires ciblés sur la date métier, le mois cible, les gardes et l&#x27;échappement HTML.</li><li>Corrections successives, vérification syntaxique, diagrammes et rédaction.</li></ul>
+<p class="body">Les outils utilisés comprennent Node.js, npm, Express, MySQL, HTML5, CSS3, JavaScript, Bootstrap, un navigateur et Visual Studio Code. PlantUML a servi à la modélisation. GitHub, Codex et ChatGPT ont été employés comme outils d&#x27;assistance à la programmation et à la documentation, sous le contrôle de l&#x27;étudiant.</p>
+<aside><strong>Responsabilité :</strong> L&#x27;assistance logicielle ne remplace ni l&#x27;analyse du besoin, ni les choix de conception, ni la vérification des résultats assumés par l&#x27;étudiant.</aside>
+<p class="source">Source : fichier 04 relatif au travail personnel, à la méthode et aux compétences.</p>
+</section>
+<section class="page" id="chronologie-competences">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 16 / 64</div>
+<h2>1.5 Chronologie, difficultés et compétences</h2>
+<p class="body">La chronologie suivante synthétise le déroulement du stage ; elle ne constitue pas un relevé quotidien signé. Du 15 au 21 juin, le travail a porté sur l&#x27;analyse du besoin, le processus Excel, les rôles, le modèle initial et l&#x27;authentification. Du 22 au 28 juin, les comptes, permissions, groupes et premières règles de planning ont été mis en place. Du 29 juin au 5 juillet, la génération mensuelle, la fenêtre du 25, le tableau de bord et les vues de planning ont été intégrés. Du 6 au 12 juillet, les congés, sessions distantes, exports, audits et mécanismes de cohérence ont complété l&#x27;ensemble. Les 13, 14 et 15 juillet ont été consacrés aux vérifications, corrections, diagrammes, captures et documentation.</p>
+<p class="body">Les difficultés majeures ont concerné le calcul fiable des dates A/B, la restriction au mois suivant, la séparation des permissions, la cohérence des écritures concurrentes, le cumul du temps actif sans surveillance intrusive et l&#x27;évolution du schéma. Les solutions observables combinent une date métier calculée côté serveur, des validations centralisées, des erreurs typées, des transactions avec verrous, des contraintes uniques, des contrôles de propriété, un heartbeat avec expiration et la séparation planned_work_hour / work_hour.</p>
+<ul><li>Compétences techniques : API Express, modélisation MySQL, migrations, transactions, autorisation, validation, sécurité HTTP, interface responsive, export et tests node:test.</li><li>Compétences professionnelles : autonomie, priorisation, communication, prise en compte des retours, documentation des limites et attention à la confidentialité.</li><li>Compétence de synthèse : relier une règle métier, son implémentation, sa preuve de test et sa présentation UML.</li></ul>
+<p class="body">Cette progression a permis de transformer un besoin concret de gestion du Home Office en une application structurée. Elle a également montré qu&#x27;un prototype riche doit rester présenté avec prudence : une fonction visible dans le code n&#x27;est pas équivalente à une validation en production, et une capture d&#x27;écran n&#x27;est pas un test de bout en bout.</p>
+<aside><strong>Transition :</strong> Le chapitre suivant formalise l&#x27;analyse et la conception à partir de la hiérarchie de vérité : informations validées, code actuel, sorties de tests, cahier des charges puis rapport de référence.</aside>
+<p class="source">Sources : fichiers 04 et 05.</p>
+</section>
+<section class="page" id="chapitre-2">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 17 / 64</div>
+<div class="kicker">FORMALISATION FONCTIONNELLE, DONNÉES ET SÉQUENCES</div>
+<h1>Chapitre 2 - Analyse et conception</h1>
+<h3 class="subheading">2.1 Acteurs et responsabilités</h3>
+<p class="body">L&#x27;analyse distingue les acteurs humains des mécanismes techniques. Le visiteur non authentifié ne peut accéder qu&#x27;à la connexion. Un utilisateur authentifié dont le renouvellement initial est requis reste limité à cette étape. Une fois l&#x27;onboarding terminé, le rôle et les permissions déterminent le périmètre fonctionnel.</p>
+<table style="font-size:8.1pt"><caption>Tableau 3 - Acteurs et responsabilités</caption><thead><tr><th>Acteur</th><th>Responsabilités principales</th><th>Restrictions structurantes</th></tr></thead><tbody><tr><td>Visiteur</td><td>Afficher la connexion et soumettre des identifiants.</td><td>Aucun accès aux pages métier.</td></tr><tr><td>Utilisateur en premier accès</td><td>Remplacer son mot de passe initial.</td><td>Redirection hors des modules tant que le changement reste exigé.</td></tr><tr><td>Data Cleansing</td><td>Planning et calendrier personnels, groupe mensuel, congés personnels, sessions distantes.</td><td>Pas d&#x27;administration, d&#x27;export global ni de lecture de l&#x27;audit.</td></tr><tr><td>Team Leader</td><td>Fonctions personnelles, administration, vue globale, congés à traiter, export et audit.</td><td>Reste soumis aux validations, à la fenêtre et à l&#x27;interdiction de traiter sa propre demande.</td></tr><tr><td>Horloge serveur</td><td>Déterminer la date métier et le mois cible.</td><td>Référence technique, sans interface humaine.</td></tr><tr><td>Nettoyage interne</td><td>Rechercher et expirer les sessions devenues obsolètes.</td><td>Dépend de l&#x27;exécution du serveur.</td></tr></tbody></table>
+<p class="body">La séparation ne se limite pas à l&#x27;affichage du menu. Les routes sensibles appliquent des permissions, tandis que les services complètent le contrôle par la propriété de la ressource ou le périmètre global. Par exemple, un collaborateur peut consulter son planning et piloter sa session personnelle ; le Team Leader peut lire des synthèses et agir sur des comptes ou demandes selon les droits prévus.</p>
+<aside><strong>Principe de conception :</strong> Le contrôle côté interface améliore l&#x27;expérience, mais la décision d&#x27;autorisation doit rester côté serveur. Le rapport décrit cette défense en profondeur sans présumer qu&#x27;elle est exhaustive.</aside>
+<p class="source">Sources : constantes de rôles, matrice de permissions, routes, middlewares et services.</p>
+</section>
+<section class="page" id="evolution-perimetre">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 18 / 64</div>
+<h2>2.2 Évolution du périmètre</h2>
+<p class="body">Le cahier des charges constitue la référence du besoin initial, tandis que le code actuel décrit la version finale. La comparaison met en évidence des précisions, des extensions et quelques fonctions non exposées. Cette lecture évite de confondre l&#x27;intention du départ avec le comportement réellement observable.</p>
+<table style="font-size:7.5pt"><caption>Tableau 4 - Besoin initial et version finale</caption><thead><tr><th>Domaine</th><th>Besoin initial</th><th>Version finale observable</th></tr></thead><tbody><tr><td>Connexion</td><td>E-mail ou nom d&#x27;utilisateur.</td><td>Adresse e-mail.</td></tr><tr><td>Premier accès</td><td>Changement obligatoire.</td><td>Blocage des pages métier jusqu&#x27;au renouvellement.</td></tr><tr><td>Comptes</td><td>Création, modification, suppression et réinitialisation.</td><td>Création, modification et suppression logique ; réinitialisation par TL non exposée.</td></tr><tr><td>Groupes</td><td>Choix A ou B.</td><td>Sélection mensuelle persistée et verrouillée après génération.</td></tr><tr><td>Fenêtre</td><td>Ouverture à partir du 25.</td><td>Du 25 au dernier jour réel, mois suivant calculé côté serveur en Africa/Tunis.</td></tr><tr><td>Planning</td><td>Génération et consultation.</td><td>Génération A/B, tableau, filtres et calendrier.</td></tr><tr><td>Alertes</td><td>Statuts à partir du 25.</td><td>Alertes visuelles du tableau de bord, sans envoi externe revendiqué.</td></tr><tr><td>Export</td><td>Excel.</td><td>CSV et XLSX avec filtres.</td></tr><tr><td>Audit</td><td>Actions principales.</td><td>Journal des événements récents.</td></tr><tr><td>Congés</td><td>Évolution future.</td><td>Création, annulation, approbation et rejet.</td></tr><tr><td>Travail distant</td><td>Non prévu.</td><td>Heartbeat, pause, reprise, fin, expiration et cumul plafonné.</td></tr></tbody></table>
+<p class="body">La version finale ajoute ainsi des capacités utiles sans modifier l&#x27;objectif central. Elle reste cependant un prototype avancé. Les fonctions décrites résultent du code actuel ; elles ne prouvent ni un déploiement ni un usage réel à l&#x27;échelle de la population potentielle.</p>
+<p class="source">Sources : cahier des charges, fichier 03 et inspection du code.</p>
+</section>
+<section class="page" id="modules-besoins">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 19 / 64</div>
+<h2>2.3 Modules et besoins fonctionnels</h2>
+<p class="body">La solution regroupe des modules autour d&#x27;un même compte et d&#x27;une même date métier. Les pages HTML fournissent le contexte visuel ; les scripts du navigateur appellent les API JSON ; les routes et services appliquent les contrôles avant la lecture ou l&#x27;écriture en base.</p>
+<table style="font-size:7.6pt"><caption>Tableau 5 - Modules fonctionnels</caption><thead><tr><th>Module</th><th>Finalité</th><th>Acteur principal</th><th>Persistance</th></tr></thead><tbody><tr><td>Authentification</td><td>Ouvrir, vérifier et fermer la session.</td><td>Tous</td><td>users et sessions MySQL</td></tr><tr><td>Utilisateurs</td><td>Créer, modifier, lister et désactiver.</td><td>Team Leader</td><td>users, audit_logs</td></tr><tr><td>Sélection mensuelle</td><td>Enregistrer A ou B pour le mois cible.</td><td>Chacun pour soi</td><td>monthly_group_selections</td></tr><tr><td>Planning</td><td>Générer, filtrer et consulter les jours.</td><td>Selon permission</td><td>planning</td></tr><tr><td>Calendrier</td><td>Présenter les jours par mois.</td><td>Selon périmètre</td><td>planning, users</td></tr><tr><td>Tableau de bord</td><td>Afficher indicateurs et états mensuels.</td><td>Profils autorisés</td><td>Agrégats</td></tr><tr><td>Congés</td><td>Créer, annuler ou traiter une demande.</td><td>Tous / TL</td><td>leave_requests, audit_logs</td></tr><tr><td>Sessions de travail</td><td>Cumul actif, pause, reprise, fin et expiration.</td><td>Propriétaire / TL en synthèse</td><td>work_sessions, planning</td></tr><tr><td>Export</td><td>Générer CSV ou XLSX filtré.</td><td>Team Leader</td><td>Lecture planning/users</td></tr><tr><td>Audit</td><td>Conserver et lire les événements importants.</td><td>Application / Team Leader</td><td>audit_logs</td></tr></tbody></table>
+<p class="body">Les besoins critiques découlent des dépendances entre modules. Une génération exige une session valide, un onboarding terminé, une fenêtre ouverte, le mois cible exact, une sélection mensuelle existante et l&#x27;absence de planning déjà créé. Une session de travail exige de plus une ligne personnelle de planning au statut remote pour la date serveur. Ces préconditions limitent les états incohérents.</p>
+<ul><li>BF-01 à BF-04 : connexion, renouvellement, déconnexion et administration des comptes.</li><li>BF-05 à BF-10 : fenêtre, sélection, génération et consultation du planning.</li><li>BF-11 à BF-15 : calendrier, tableau de bord et cycle des congés.</li><li>BF-16 à BF-20 : sessions distantes, exports et audit.</li></ul>
+<p class="source">Sources : routes, contrôleurs, services, modèles et schéma SQL.</p>
+</section>
+<section class="page" id="besoins-non-fonctionnels">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 20 / 64</div>
+<h2>2.4 Besoins non fonctionnels et règles</h2>
+<p class="body">Les besoins non fonctionnels sont déduits de mécanismes vérifiables. Ils expriment une intention technique et une mise en œuvre observable, accompagnées d&#x27;une réserve lorsque la preuve dynamique manque.</p>
+<table style="font-size:7.4pt"><caption>Tableau 6 - Besoins non fonctionnels observables</caption><thead><tr><th>Besoin</th><th>Mise en œuvre observable</th><th>Réserve</th></tr></thead><tbody><tr><td>Confidentialité des mots de passe</td><td>Hashage bcrypt et valeurs non renvoyées dans la session.</td><td>Aucun audit cryptographique indépendant.</td></tr><tr><td>Autorisation</td><td>Session, onboarding, permissions et contrôles de propriété.</td><td>Couverture à confirmer dynamiquement sur tous les endpoints.</td></tr><tr><td>Intégrité</td><td>Clés, unicités, transactions et verrous sur les flux sensibles.</td><td>Les preuves fournies ne couvrent pas tous les scénarios MySQL réels.</td></tr><tr><td>Protection HTTP</td><td>CSRF, Helmet/CSP, cookies et limitation des requêtes.</td><td>Pas de campagne dynamique complète des en-têtes.</td></tr><tr><td>Traçabilité</td><td>Actions nommées et journal d&#x27;audit.</td><td>Exhaustivité de tous les événements non démontrée.</td></tr><tr><td>Maintenabilité</td><td>Répertoires routes, contrôleurs, services et modèles.</td><td>Accès aux données encore hétérogène.</td></tr><tr><td>Résilience des sessions</td><td>Heartbeat, expiration et nettoyage périodique.</td><td>Dépend de l&#x27;exécution continue du processus.</td></tr><tr><td>Compatibilité</td><td>Bootstrap, CSS responsive et scripts partagés.</td><td>Aucun essai multi-navigateur fourni.</td></tr></tbody></table>
+<p class="body">Les règles principales sont les suivantes : connexion par e-mail ; rôles Team Leader et Data Cleansing ; suppression logique des comptes ; fenêtre fermée du 1er au 24 et ouverte du 25 au dernier jour réel ; seul le mois suivant est accepté ; un choix mensuel A ou B par utilisateur ; verrou après génération ; une ligne de planning par utilisateur et date ; propriété des données personnelles ; huit heures prévues séparées des heures réalisées et plafonnement du cumul réel à huit heures.</p>
+<aside><strong>Précision méthodologique :</strong> Une observation statique peut confirmer la présence d&#x27;un contrôle ou d&#x27;une contrainte. Elle ne suffit pas à certifier sa résistance à toutes les menaces ou conditions d&#x27;exploitation.</aside>
+<p class="source">Sources : middlewares, permissions, services, validations, schéma et migrations.</p>
+</section>
+<section class="page" id="cas-utilisation">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 21 / 64</div>
+<h2>2.5 Cas d&#x27;utilisation global</h2>
+<p class="body">Le diagramme global met en relation les deux rôles et les fonctions qui leur sont accessibles. Les opérations personnelles sont partagées lorsque les permissions le permettent ; les fonctions d&#x27;administration et de consultation globale sont rattachées au Team Leader.</p>
+<figure><img src="assets/diagrams/01_cas_utilisation_global.png" alt="Cas d&#x27;utilisation global de l&#x27;application."><figcaption>Figure 1 - Cas d&#x27;utilisation global de l&#x27;application.</figcaption></figure>
+<p class="body">La modélisation souligne la séparation entre l&#x27;usage individuel et la supervision. Elle ne fait intervenir aucun service de messagerie externe, puisque les notifications réalisées sont visuelles dans l&#x27;application.</p>
+<p class="source">Source : diagramme PlantUML fourni, vérifié par rapport aux routes et permissions.</p>
+</section>
+<section class="page" id="architecture-generale">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 22 / 64</div>
+<h2>2.6 Architecture générale</h2>
+<p class="body">L&#x27;application est un monolithe Express. Le même processus sert les pages, expose les API JSON, applique les middlewares et accède à MySQL. Ce choix simplifie la cohérence du prototype et le déploiement futur d&#x27;une première version, tout en imposant une discipline claire dans la séparation des responsabilités.</p>
+<figure><img src="assets/diagrams/02_architecture_globale.png" alt="Architecture globale du prototype."><figcaption>Figure 2 - Architecture globale du prototype.</figcaption></figure>
+<p class="body">Le navigateur charge des pages HTML, une feuille CSS et des scripts JavaScript. Les appels API traversent la session, la protection CSRF, les contrôles d&#x27;accès et les validations avant d&#x27;atteindre les contrôleurs, services ou modèles. Les données et les sessions HTTP sont conservées dans MySQL.</p>
+<p class="source">Source : server.js, routes, middlewares, configuration de base et vues.</p>
+</section>
+<section class="page" id="composants">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 23 / 64</div>
+<h2>2.7 Composants de l&#x27;application</h2>
+<p class="body">L&#x27;organisation du code s&#x27;inspire d&#x27;une architecture en couches : les routes décrivent l&#x27;entrée HTTP, les contrôleurs adaptent requêtes et réponses, les services portent les règles complexes, les modèles centralisent une partie des accès SQL et les middlewares gèrent les préoccupations transversales.</p>
+<figure><img src="assets/diagrams/03_composants_application.png" alt="Composants backend, frontend et données."><figcaption>Figure 3 - Composants backend, frontend et données.</figcaption></figure>
+<p class="body">Cette séparation reste hétérogène. Certains contrôleurs effectuent encore directement des requêtes, alors que les flux de génération, de sélection, de congés et de sessions sont davantage structurés autour de services. Le rapport parle donc d&#x27;une architecture inspirée de couches plutôt que d&#x27;une application uniformément stratifiée.</p>
+<p class="source">Source : arborescence et responsabilités des modules du code actuel.</p>
+</section>
+<section class="page" id="modele-donnees">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 24 / 64</div>
+<h2>2.8 Modèle de données</h2>
+<p class="body">Le modèle relationnel relie les utilisateurs aux sélections mensuelles, aux jours planifiés, aux sessions de travail, aux demandes de congé et aux événements d&#x27;audit. Les clés étrangères structurent la propriété ; les contraintes uniques empêchent plusieurs états incompatibles.</p>
+<figure><img src="assets/diagrams/04_modele_donnees.png" alt="Modèle de données principal."><figcaption>Figure 4 - Modèle de données principal.</figcaption></figure>
+<p class="body">Le modèle distingue volontairement la planification et la mesure : planned_work_hour représente la durée prévue d&#x27;une journée, tandis que work_hour reçoit la durée réellement cumulée à partir des sessions actives.</p>
+<p class="source">Source : schéma SQL consolidé et migrations numérotées.</p>
+</section>
+<section class="page" id="tables-integrite">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 25 / 64</div>
+<h2>2.9 Tables et mécanismes d&#x27;intégrité</h2>
+<p class="body">Six tables métier dominent le modèle. Leur articulation permet de suivre l&#x27;état mensuel sans écraser l&#x27;historique et de rattacher chaque opération à un utilisateur ou à une date.</p>
+<table style="font-size:8.0pt"><caption>Tableau 7 - Tables principales et fonctions</caption><thead><tr><th>Table</th><th>Fonction</th><th>Intégrité ou cycle de vie</th></tr></thead><tbody><tr><td>users</td><td>Compte, rôle, groupe historique et onboarding.</td><td>E-mail, nom d&#x27;utilisateur et matricule uniques ; suppression logique.</td></tr><tr><td>monthly_group_selections</td><td>Choix A/B par utilisateur et mois.</td><td>Unicité utilisateur/mois ; verrou métier après planning.</td></tr><tr><td>planning</td><td>Jours sur site ou distants, heures prévues/réalisées.</td><td>Unicité utilisateur/date ; relation vers users.</td></tr><tr><td>work_sessions</td><td>Périodes actives et cumuls en secondes.</td><td>Statuts active, paused, ended, expired ; prévention de l&#x27;actif concurrent.</td></tr><tr><td>leave_requests</td><td>Demande, statut et décision.</td><td>Cycle pending vers approved, rejected ou cancelled.</td></tr><tr><td>audit_logs</td><td>Événements importants.</td><td>Ajout par les flux applicatifs et lecture récente.</td></tr></tbody></table>
+<p class="body">Les transactions encadrent les opérations où plusieurs vérifications et écritures doivent rester cohérentes. La sélection mensuelle contrôle la fenêtre, le mois, l&#x27;existence d&#x27;un planning puis insère ou met à jour le choix. La génération vérifie l&#x27;utilisateur, la sélection et l&#x27;absence de doublon avant l&#x27;insertion en lot. Les verrous de lecture sur les lignes sensibles réduisent le risque de deux traitements concurrents.</p>
+<p class="body">Les contraintes SQL complètent la logique applicative. Une unicité utilisateur/date protège le planning même si deux requêtes franchissaient simultanément un contrôle préalable. Les relations déterminent aussi le comportement lors d&#x27;une suppression logique ou d&#x27;une évolution de compte. Cette complémentarité illustre une défense d&#x27;intégrité à plusieurs niveaux.</p>
+<aside><strong>Limite de validation :</strong> Les sorties de tests fournies utilisent des substituts pour plusieurs scénarios. Une campagne d&#x27;intégration sur une base MySQL isolée reste nécessaire pour valider tous les verrouillages et annulations réelles.</aside>
+<p class="source">Sources : services, modèles, schéma et migrations.</p>
+</section>
+<section class="page" id="controle-acces">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 26 / 64</div>
+<h2>2.10 Contrôle d&#x27;accès</h2>
+<p class="body">Les rôles sont traduits en permissions atomiques. Cette approche évite de disperser uniquement des comparaisons de libellés et permet aux routes de déclarer l&#x27;action attendue. Les contrôles de propriété restent indispensables pour les ressources personnelles.</p>
+<table style="font-size:7.6pt"><caption>Tableau 8 - Permissions par rôle</caption><thead><tr><th>Permission fonctionnelle</th><th>Team Leader</th><th>Data Cleansing</th></tr></thead><tbody><tr><td>Lire le tableau de bord</td><td>Oui</td><td>Oui</td></tr><tr><td>Lire les statistiques globales</td><td>Oui</td><td>Non</td></tr><tr><td>Lire, créer, modifier ou désactiver un utilisateur</td><td>Oui</td><td>Non</td></tr><tr><td>Lire son planning et son calendrier</td><td>Oui</td><td>Oui</td></tr><tr><td>Lire tous les plannings</td><td>Oui</td><td>Non</td></tr><tr><td>Générer son planning</td><td>Oui</td><td>Oui</td></tr><tr><td>Générer pour un autre utilisateur</td><td>Oui</td><td>Non</td></tr><tr><td>Lire/écrire sa sélection mensuelle</td><td>Oui</td><td>Oui</td></tr><tr><td>Lire toutes les sélections</td><td>Oui</td><td>Non</td></tr><tr><td>Gérer ses demandes de congé</td><td>Oui</td><td>Oui</td></tr><tr><td>Traiter les demandes d&#x27;autrui</td><td>Oui</td><td>Non</td></tr><tr><td>Lire une synthèse de sessions</td><td>Oui</td><td>Non</td></tr><tr><td>Exporter CSV/XLSX</td><td>Oui</td><td>Non</td></tr><tr><td>Lire l&#x27;audit</td><td>Oui</td><td>Non</td></tr></tbody></table>
+<p class="body">Le tableau décrit la matrice configurée, mais son application n&#x27;est pas uniforme. L&#x27;endpoint des statistiques ne vérifie pas dashboard.statistics et les lectures de planning s&#x27;appuient encore sur des comparaisons de rôle dans le service plutôt que sur planning.read.all. La permission settings.manage n&#x27;est associée à aucun module identifié. Ces écarts doivent être corrigés et testés avant de considérer la matrice comme entièrement appliquée.</p>
+<p class="source">Sources : matrice de permissions, routes de pages et routes API.</p>
+</section>
+<section class="page" id="conception-securite">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 27 / 64</div>
+<h2>2.11 Conception de la sécurité</h2>
+<p class="body">La sécurité observable s&#x27;organise en plusieurs couches. L&#x27;authentification vérifie le mot de passe avec bcrypt, puis conserve dans la session un profil réduit. Le stockage des sessions repose sur MySQL. Les pages métier exigent une session et, lorsque nécessaire, la fin du premier changement de mot de passe.</p>
+<ul><li>Helmet configure des en-têtes HTTP et une politique de sécurité du contenu.</li><li>La protection CSRF s&#x27;applique aux requêtes d&#x27;écriture après l&#x27;installation de la session.</li><li>Un limiteur général et un limiteur spécifique réduisent la fréquence de certaines requêtes.</li><li>express-validator contrôle formats, longueurs, dates et valeurs autorisées.</li><li>Les permissions et contrôles de propriété limitent le périmètre des ressources.</li><li>Les erreurs typées évitent de déduire la réponse HTTP d&#x27;un texte libre.</li><li>L&#x27;échappement HTML partagé réduit le risque d&#x27;injection dans les écrans couverts par les tests.</li><li>Les transactions, verrous et unicités protègent l&#x27;intégrité des écritures sensibles.</li></ul>
+<p class="body">Le suivi du travail distant est conçu pour comptabiliser une activité applicative sans surveillance intrusive. Le navigateur envoie un heartbeat, demande une pause après inactivité, puis permet la reprise ou la fin. Le serveur expire les sessions trop anciennes et cumule les secondes actives. Aucune capture d&#x27;écran, frappe, coordonnée de souris ou liste d&#x27;applications visitées n&#x27;est enregistrée par ce mécanisme.</p>
+<p class="body">La séparation des heures prévues et réalisées évite de confondre une journée planifiée avec une durée effectivement comptabilisée. La durée réelle est plafonnée à huit heures par jour. Ce plafond et la logique de transition doivent néanmoins être vérifiés dans des scénarios d&#x27;intégration avec horloge, base et navigateur réels.</p>
+<aside><strong>Portée de l&#x27;analyse :</strong> Le présent rapport documente des contrôles présents dans le code. Il ne conclut pas à une certification de sécurité, à l&#x27;absence de vulnérabilité ni à la conformité d&#x27;un environnement de production.</aside>
+<p class="source">Sources : server.js, middlewares, validations, services de session et schéma SQL.</p>
+</section>
+<section class="page" id="sequence-5">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 28 / 64</div>
+<h2>2.12 Séquence d&#x27;authentification</h2>
+<p class="body">L&#x27;utilisateur soumet son e-mail et son mot de passe. Le serveur valide le format, limite les tentatives, recherche le compte actif et compare le hash. La session est ensuite établie, avec une redirection vers le renouvellement initial ou le tableau de bord.</p>
+<figure><img src="assets/diagrams/05_sequence_authentification.png" alt="Séquence d&#x27;authentification."><figcaption>Figure 5 - Séquence d&#x27;authentification.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : routes d&#x27;authentification, contrôleur, validation et script de connexion.</p>
+</section>
+<section class="page" id="sequence-6">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 29 / 64</div>
+<h2>2.13 Séquence de changement du mot de passe</h2>
+<p class="body">Le changement personnel exige une session valide, l&#x27;ancien mot de passe et un nouveau mot de passe conforme. Après vérification, le hash est remplacé et les indicateurs de premier accès sont désactivés.</p>
+<figure><img src="assets/diagrams/06_sequence_changement_mot_de_passe.png" alt="Séquence de changement du mot de passe."><figcaption>Figure 6 - Séquence de changement du mot de passe.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : middleware d&#x27;onboarding, contrôleur d&#x27;authentification et validation.</p>
+</section>
+<section class="page" id="sequence-7">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 30 / 64</div>
+<h2>2.14 Séquence de gestion d&#x27;un utilisateur</h2>
+<p class="body">Le Team Leader autorisé transmet des données validées. Le contrôleur et le modèle vérifient les unicités avant création ou modification. La suppression est logique afin de conserver les relations et la traçabilité.</p>
+<figure><img src="assets/diagrams/07_sequence_gestion_utilisateur.png" alt="Séquence de gestion d&#x27;un utilisateur."><figcaption>Figure 7 - Séquence de gestion d&#x27;un utilisateur.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : routes, contrôleur et modèle utilisateur.</p>
+</section>
+<section class="page" id="sequence-8">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 31 / 64</div>
+<h2>2.15 Séquence de sélection mensuelle</h2>
+<p class="body">La sélection A/B est personnelle. Le service calcule la fenêtre, refuse un mois différent de la cible, verrouille les données utiles et interdit la modification si le planning existe déjà.</p>
+<figure><img src="assets/diagrams/08_sequence_selection_groupe.png" alt="Séquence de sélection mensuelle du groupe."><figcaption>Figure 8 - Séquence de sélection mensuelle du groupe.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : service et modèle de sélection mensuelle.</p>
+</section>
+<section class="page" id="sequence-9">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 32 / 64</div>
+<h2>2.16 Séquence de génération du planning</h2>
+<p class="body">La génération réévalue côté serveur la date métier, le mois cible, l&#x27;utilisateur, la sélection et l&#x27;absence de planning. Les dates du groupe sont calculées puis insérées dans une transaction.</p>
+<figure><img src="assets/diagrams/09_sequence_generation_planning.png" alt="Séquence de génération du planning."><figcaption>Figure 9 - Séquence de génération du planning.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : contrôleur, service de planning et modèle de sélection.</p>
+</section>
+<section class="page" id="sequence-10">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 33 / 64</div>
+<h2>2.17 Séquence de consultation du planning</h2>
+<p class="body">Les filtres sont validés et le périmètre est déterminé à partir de la session. Le profil Data Cleansing reste limité à ses lignes ; le Team Leader autorisé peut élargir la consultation.</p>
+<figure><img src="assets/diagrams/10_sequence_consultation_planning.png" alt="Séquence de consultation du planning."><figcaption>Figure 10 - Séquence de consultation du planning.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : routes, service de planning et scripts des vues.</p>
+</section>
+<section class="page" id="sequence-11">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 34 / 64</div>
+<h2>2.18 Création d&#x27;une demande de congé</h2>
+<p class="body">Le demandeur saisit une période, un type et un motif conformes. Le service contrôle les dates, recherche un chevauchement pending ou approved, crée la demande puis journalise l&#x27;action.</p>
+<figure><img src="assets/diagrams/11_sequence_demande_conge.png" alt="Séquence de création d&#x27;une demande de congé."><figcaption>Figure 11 - Séquence de création d&#x27;une demande de congé.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : routes, validations et service des congés.</p>
+</section>
+<section class="page" id="sequence-12">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 35 / 64</div>
+<h2>2.19 Traitement d&#x27;une demande de congé</h2>
+<p class="body">Le Team Leader peut approuver ou rejeter une demande encore pending appartenant à une autre personne. Le statut, le réviseur et l&#x27;événement d&#x27;audit sont mis à jour dans le flux prévu.</p>
+<figure><img src="assets/diagrams/12_sequence_traitement_conge.png" alt="Séquence de traitement d&#x27;une demande de congé."><figcaption>Figure 12 - Séquence de traitement d&#x27;une demande de congé.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : service des congés et journal applicatif.</p>
+</section>
+<section class="page" id="sequence-13">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 36 / 64</div>
+<h2>2.20 Session de travail distant</h2>
+<p class="body">Une session ne peut démarrer ou reprendre que pour un planning remote personnel à la date serveur. Heartbeat, pause, reprise, fin et expiration alimentent un cumul de secondes puis les heures réelles.</p>
+<figure><img src="assets/diagrams/13_sequence_session_travail.png" alt="Séquence d&#x27;une session de travail distant."><figcaption>Figure 13 - Séquence d&#x27;une session de travail distant.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : routes, service et modèle de sessions.</p>
+</section>
+<section class="page" id="sequence-14">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 37 / 64</div>
+<h2>2.21 Export CSV ou XLSX</h2>
+<p class="body">Le Team Leader disposant de la permission choisit un format et des filtres. Le contrôleur lit les lignes autorisées, construit le fichier, prépare la réponse de téléchargement et crée un événement d&#x27;audit.</p>
+<figure><img src="assets/diagrams/14_sequence_export.png" alt="Séquence d&#x27;export CSV ou XLSX."><figcaption>Figure 14 - Séquence d&#x27;export CSV ou XLSX.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : routes et contrôleur d&#x27;export.</p>
+</section>
+<section class="page" id="sequence-15">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 38 / 64</div>
+<h2>2.22 Consultation de l&#x27;audit</h2>
+<p class="body">La lecture du journal est réservée au profil autorisé. Le contrôleur retourne les événements récents, puis l&#x27;interface présente les actions, acteurs et détails après échappement.</p>
+<figure><img src="assets/diagrams/15_sequence_audit.png" alt="Séquence de consultation de l&#x27;audit."><figcaption>Figure 15 - Séquence de consultation de l&#x27;audit.</figcaption></figure>
+<aside><strong>Lecture :</strong> Le diagramme représente le flux confirmé par le code. Les erreurs, annulations et contrôles restent résumés pour conserver une lecture A4.</aside>
+<p class="source">Source : routes d&#x27;audit, contrôleur et script d&#x27;interface.</p>
+</section>
+<section class="page" id="synthese-conception">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 39 / 64</div>
+<h2>2.23 Synthèse de la conception</h2>
+<p class="body">La conception relie une règle temporelle, une sélection mensuelle et une génération déterministe. La date métier est obtenue côté serveur dans Africa/Tunis. Avant le 25, la fenêtre est fermée. Du 25 au dernier jour réel, le seul mois accepté est le mois immédiatement suivant, y compris lors du passage de décembre à janvier.</p>
+<p class="body">Pour le groupe A, le générateur retient les mercredis, les jeudis et les vendredis de rang impair dans le mois. Pour le groupe B, il retient les lundis, les mardis et les vendredis de rang pair. Chaque date générée est enregistrée comme journée remote, avec huit heures prévues et zéro heure réalisée au moment de la création. L&#x27;unicité utilisateur/date prévient un doublon.</p>
+<ol><li>Étape 1 : calculer la date métier et le mois cible.</li><li>Étape 2 : vérifier que la fenêtre est ouverte et que le mois demandé correspond.</li><li>Étape 3 : contrôler l&#x27;utilisateur cible et le périmètre du demandeur.</li><li>Étape 4 : charger la sélection mensuelle A ou B.</li><li>Étape 5 : refuser toute génération déjà existante pour le mois.</li><li>Étape 6 : calculer les jours, insérer le lot et journaliser l&#x27;opération.</li></ol>
+<p class="body">Cette chaîne protège le système contre une date fournie uniquement par le navigateur, une sélection ancienne réutilisée par erreur ou une génération concurrente. Les transactions et verrous renforcent l&#x27;ensemble, tandis que les erreurs typées rendent les refus plus prévisibles pour le contrôleur et l&#x27;interface.</p>
+<p class="body">Le modèle conserve toutefois des axes d&#x27;amélioration : uniformiser les accès aux données, élargir les tests d&#x27;intégration, expliciter toutes les permissions de lecture et vérifier les comportements sur une base réelle. Ces points sont repris dans les perspectives sans remettre en cause la valeur du prototype.</p>
+<aside><strong>Bilan du chapitre :</strong> Les quinze diagrammes PlantUML ont été rendus depuis les sources fournies. Leur insertion vise à expliquer le code, non à revendiquer des systèmes ou acteurs externes absents.</aside>
+<p class="source">Sources : services de fenêtre, sélection et planning ; tests automatisés ; diagrammes PlantUML.</p>
+</section>
+<section class="page" id="chapitre-3">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 40 / 64</div>
+<div class="kicker">IMPLÉMENTATION ET INTERFACES DU PROTOTYPE</div>
+<h1>Chapitre 3 - Réalisation</h1>
+<h3 class="subheading">3.1 Environnement et organisation technique</h3>
+<p class="body">La réalisation repose sur une pile web classique, adaptée à un prototype interne : Node.js et Express pour le serveur, MySQL pour les données et les sessions, puis HTML, CSS et JavaScript natif côté navigateur. Bootstrap complète les composants d&#x27;interface. Le projet est structuré en répertoires fonctionnels afin de distinguer les entrées HTTP, la logique métier, les données et les ressources d&#x27;écran.</p>
+<table style="font-size:8.0pt"><caption>Tableau 9 - Environnement technique</caption><thead><tr><th>Élément</th><th>Rôle dans la solution</th><th>Observation</th></tr></thead><tbody><tr><td>Node.js / npm</td><td>Exécution serveur et gestion des dépendances.</td><td>CommonJS et tests natifs node:test.</td></tr><tr><td>Express</td><td>Pages, API JSON et chaîne de middlewares.</td><td>Application monolithique.</td></tr><tr><td>MySQL / mysql2</td><td>Données métier, transactions et magasin de sessions.</td><td>Pool de connexions et SQL paramétré.</td></tr><tr><td>HTML5 / CSS3</td><td>Structure et présentation des pages.</td><td>Feuille de style partagée et responsive.</td></tr><tr><td>JavaScript navigateur</td><td>Appels API, formulaires, calendrier et suivi.</td><td>Modules partagés pour API, session et mise en page.</td></tr><tr><td>Bootstrap</td><td>Composants visuels et adaptation d&#x27;écran.</td><td>Utilisé avec le style spécifique du projet.</td></tr><tr><td>ExcelJS</td><td>Construction du classeur XLSX.</td><td>Export réservé par permission.</td></tr><tr><td>PlantUML</td><td>Modélisation des cas, composants, données et séquences.</td><td>Quinze diagrammes fournis et rendus.</td></tr></tbody></table>
+<p class="body">Les répertoires routes, controllers, services, models, middlewares, validations et views donnent une lecture en couches. La séparation n&#x27;est pas uniforme : l&#x27;authentification, les utilisateurs, le tableau de bord, l&#x27;export et l&#x27;audit utilisent encore directement le pool SQL depuis leur contrôleur, alors que le planning, la sélection, les congés et les sessions s&#x27;appuient davantage sur des services et modèles.</p>
+<p class="body">Le serveur sert les pages et les ressources statiques, installe la session, les protections HTTP et les routeurs, puis déclenche un nettoyage périodique des sessions de travail obsolètes. La présence de cette organisation facilite la documentation, mais ne doit pas être assimilée à une architecture distribuée : tous les modules appartiennent au même processus Express.</p>
+<aside><strong>Portée :</strong> Les versions, commandes et mécanismes décrits proviennent des fichiers du projet et des sorties fournies. Aucun environnement de production n&#x27;est déduit de cette pile.</aside>
+<p class="source">Sources : package.json, server.js et arborescence du projet.</p>
+</section>
+<section class="page" id="capture-16">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 41 / 64</div>
+<h2>3.2 Authentification par e-mail</h2>
+<p class="body">La page de connexion collecte une adresse e-mail et un mot de passe. Le navigateur envoie les données à l&#x27;API, tandis que le serveur valide le format, applique la limitation spécifique, recherche un compte actif et compare le hash bcrypt. La réponse de session contient un profil réduit et les permissions dérivées du rôle.</p>
+<figure><img src="assets/captures/capture_01_login.png" alt="Page de connexion avec champs vides."><figcaption>Figure 16 - Page de connexion avec champs vides.</figcaption></figure>
+<aside><strong>Interprétation :</strong> La capture confirme le rendu de l&#x27;écran. Elle ne prouve pas à elle seule le cycle complet cookie, base et redirection.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-17">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 42 / 64</div>
+<h2>3.3 Premier changement de mot de passe</h2>
+<p class="body">Lorsque first_login ou must_change_password est actif, le middleware limite l&#x27;accès métier et redirige vers la page dédiée. L&#x27;utilisateur saisit son ancien mot de passe, un nouveau mot de passe conforme et sa confirmation. Après vérification, le hash est remplacé et les indicateurs d&#x27;onboarding sont désactivés.</p>
+<figure><img src="assets/captures/capture_02_changement_mot_de_passe.png" alt="Écran de changement obligatoire du mot de passe."><figcaption>Figure 17 - Écran de changement obligatoire du mot de passe.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Une seule des deux captures presque identiques a été retenue. Aucun secret ni valeur saisie n&#x27;est visible.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-18">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 43 / 64</div>
+<h2>3.4 Tableau de bord</h2>
+<p class="body">Le tableau de bord rassemble des cartes statistiques, l&#x27;état de la fenêtre de génération, le mois cible et des synthèses. Les valeurs visibles dans la capture sont des données de démonstration. Le mois cible doit provenir de la fenêtre calculée par le serveur, ce comportement faisant partie des scénarios automatisés.</p>
+<figure><img src="assets/captures/capture_03_dashboard_team_leader.png" alt="Tableau de bord du Team Leader."><figcaption>Figure 18 - Tableau de bord du Team Leader.</figcaption></figure>
+<aside><strong>Interprétation :</strong> La permission dashboard.statistics existe dans la configuration mais n&#x27;est pas appliquée à l&#x27;endpoint de statistiques ; ce point impose une correction avant un usage plus large.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-19">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 44 / 64</div>
+<h2>3.5 Gestion des utilisateurs</h2>
+<p class="body">Le Team Leader peut lister, créer, modifier et désactiver logiquement un utilisateur selon des permissions distinctes. Les contrôles portent notamment sur l&#x27;e-mail, le matricule, le rôle et les unicités. La suppression logique conserve la ligne et ses relations au lieu de l&#x27;effacer physiquement.</p>
+<figure><img src="assets/captures/capture_04_gestion_utilisateurs.png" alt="Page de gestion des utilisateurs anonymisée."><figcaption>Figure 19 - Page de gestion des utilisateurs anonymisée.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Les noms, e-mails et matricules ont été recouverts par des masques opaques. Aucun écran de réinitialisation du mot de passe par le Team Leader n&#x27;est exposé.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-20">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 45 / 64</div>
+<h2>3.6 Génération et suivi du planning</h2>
+<p class="body">La page Planning affiche la fenêtre, le mois cible, la sélection de groupe et les lignes accessibles. Lorsque la fenêtre est fermée, aucune génération ne doit être acceptée par le serveur. Lorsqu&#x27;elle est ouverte, la cible reste le mois suivant, indépendamment d&#x27;un paramètre proposé par le navigateur.</p>
+<figure><img src="assets/captures/capture_05_planning_team_leader.png" alt="Planning du Team Leader lorsque la fenêtre est fermée."><figcaption>Figure 20 - Planning du Team Leader lorsque la fenêtre est fermée.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Le générateur crée uniquement les jours distants ; il ne produit pas des lignes onsite. Le calendrier met donc en évidence les jours remote enregistrés.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-21">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 46 / 64</div>
+<h2>3.7 Suivi non intrusif du travail distant</h2>
+<p class="body">Le suivi démarre ou reprend une session uniquement si l&#x27;utilisateur possède un planning remote pour la date MySQL courante. Le navigateur transmet un heartbeat toutes les 60 secondes, détecte une inactivité après cinq minutes et demande une pause lors de la perte de visibilité. Le serveur expire les sessions obsolètes, cumule les secondes et met à jour l&#x27;heure réalisée.</p>
+<figure><img src="assets/captures/capture_06_planning_data_cleansing_suivi_actif.png" alt="Suivi distant actif côté Data Cleansing."><figcaption>Figure 21 - Suivi distant actif côté Data Cleansing.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Le mécanisme mesure l&#x27;activité de la page Planning, pas le travail global sur le poste. Il ne transmet ni capture d&#x27;écran, ni frappe, ni coordonnée de souris, ni application visitée.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-22">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 47 / 64</div>
+<h2>3.8 Calendrier du Team Leader</h2>
+<p class="body">La vue calendaire transforme les lignes de planning autorisées en repères mensuels. Pour le Team Leader, le périmètre peut couvrir plusieurs utilisateurs selon les contrôles du service. Les filtres et la navigation mensuelle servent à retrouver les jours distants enregistrés.</p>
+<figure><img src="assets/captures/capture_07_calendrier_team_leader.png" alt="Calendrier du Team Leader anonymisé."><figcaption>Figure 22 - Calendrier du Team Leader anonymisé.</figcaption></figure>
+<aside><strong>Interprétation :</strong> La capture prouve le rendu de la grille et non l&#x27;exhaustivité d&#x27;un planning présence/distance.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-23">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 48 / 64</div>
+<h2>3.8 Calendrier personnel Data Cleansing</h2>
+<p class="body">Le profil Data Cleansing consulte son propre calendrier. Le service limite le périmètre à l&#x27;identifiant de la session, même si un paramètre différent est soumis. Cette règle de propriété évite qu&#x27;un simple changement de filtre suffise à consulter les lignes d&#x27;un tiers.</p>
+<figure><img src="assets/captures/capture_08_calendrier_data_cleansing.png" alt="Calendrier personnel Data Cleansing anonymisé."><figcaption>Figure 23 - Calendrier personnel Data Cleansing anonymisé.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Le test automatisé de portée croisée confirme un refus typé pour l&#x27;accès au planning d&#x27;un autre utilisateur dans le service couvert.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-24">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 49 / 64</div>
+<h2>3.9 Traitement des congés</h2>
+<p class="body">Le Team Leader peut lire les demandes et approuver ou rejeter une demande pending appartenant à une autre personne. La décision utilise une mise à jour conditionnée par le statut, ce qui empêche deux décisions concurrentes de réussir sur la même ligne. La création, en revanche, ne place pas la recherche de chevauchement et l&#x27;insertion dans une transaction unique.</p>
+<figure><img src="assets/captures/capture_09_conges_team_leader.png" alt="Gestion des congés côté Team Leader, données sensibles masquées."><figcaption>Figure 24 - Gestion des congés côté Team Leader, données sensibles masquées.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Une approbation de congé n&#x27;entraîne pas automatiquement une modification du planning ; les deux modules restent indépendants.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-25">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 50 / 64</div>
+<h2>3.9 Gestion personnelle des congés</h2>
+<p class="body">Un utilisateur peut créer une demande validée, consulter son historique et annuler sa propre demande encore pending. Les dates, le type et le motif sont contrôlés. Le service refuse le traitement de sa propre demande par un Team Leader.</p>
+<figure><img src="assets/captures/capture_10_conges_data_cleansing.png" alt="Gestion personnelle des congés, informations anonymisées."><figcaption>Figure 25 - Gestion personnelle des congés, informations anonymisées.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Les dates, motifs, identités et informations de révision visibles dans la source ont été masqués. La capture ne remplace pas un test du cycle complet.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-26">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 51 / 64</div>
+<h2>3.10 Export CSV et XLSX</h2>
+<p class="body">Deux formats sont disponibles : un CSV UTF-8 et un classeur XLSX produit avec ExcelJS. Les filtres portent sur le mois, le groupe mensuel et l&#x27;utilisateur. Les colonnes exportées couvrent l&#x27;identité fonctionnelle, la date distante et l&#x27;heure réalisée ; l&#x27;heure prévue n&#x27;est pas incluse.</p>
+<figure><img src="assets/captures/capture_11_export.png" alt="Page d&#x27;export CSV et XLSX."><figcaption>Figure 26 - Page d&#x27;export CSV et XLSX.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Les lignes sont chargées en mémoire sans pagination. Le CSV échappe les séparateurs et guillemets mais ne neutralise pas explicitement les marqueurs de formule, point à renforcer.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-27">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 52 / 64</div>
+<h2>3.11 Journal d&#x27;audit</h2>
+<p class="body">Le journal conserve des actions telles que connexion, changement de mot de passe, gestion de comptes, sélection, génération, congés, exports et transitions de sessions. La page est réservée par permission et affiche jusqu&#x27;aux cent événements récents.</p>
+<figure><img src="assets/captures/capture_12_audit_logs.png" alt="Journal d&#x27;audit anonymisé."><figcaption>Figure 27 - Journal d&#x27;audit anonymisé.</figcaption></figure>
+<aside><strong>Interprétation :</strong> La journalisation est best effort : une erreur d&#x27;audit peut être absorbée et l&#x27;opération métier rester réussie. Les refus et lectures ne sont pas tous journalisés.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="capture-28">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 53 / 64</div>
+<h2>3.12 Gestion des erreurs 404 et 403</h2>
+<p class="body">Le projet prévoit des pages distinctes pour les ressources introuvables et les accès interdits. La capture fournie affiche le contenu d&#x27;une page 404, même si la barre d&#x27;adresse visible dans l&#x27;image source contenait /403. Elle doit donc être interprétée et légendée comme une page 404.</p>
+<figure><img src="assets/captures/capture_13_page_404.png" alt="Page 404 fournie, recadrée."><figcaption>Figure 28 - Page 404 fournie, recadrée.</figcaption></figure>
+<aside><strong>Interprétation :</strong> Aucune capture réelle de page 403 n&#x27;a été fournie. Le comportement 403 est décrit uniquement à partir des middlewares, permissions et erreurs typées du code.</aside>
+<p class="source">Source : capture fournie, recadrée et anonymisée par masques opaques.</p>
+</section>
+<section class="page" id="bilan-realisation">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 54 / 64</div>
+<h2>3.13 Bilan de réalisation</h2>
+<p class="body">La version finale assemble les fonctions attendues autour d&#x27;un même système. Le Team Leader dispose des écrans d&#x27;administration, de consultation globale, de traitement, d&#x27;export et d&#x27;audit. Le Data Cleansing gère ses propres choix, plannings, calendriers, congés et sessions. Les contrôles importants sont placés côté serveur, même lorsque l&#x27;interface adapte aussi le menu et les actions visibles.</p>
+<p class="body">La réalisation technique présente plusieurs points solides : date métier centralisée pour la génération, validations explicites, erreurs typées, requêtes paramétrées, transactions sur la sélection et la génération, contraintes d&#x27;unicité et suivi distant sans collecte détaillée du poste. Les scripts partagés d&#x27;échappement et de session réduisent également les duplications côté navigateur.</p>
+<p class="body">L&#x27;audit du code met cependant en évidence des limites précises. Certaines permissions déclarées ne sont pas appliquées aux endpoints correspondants. Une modification de rôle ou une suppression logique ne révoque pas automatiquement une session déjà active. Les congés ne sont pas liés au planning et leur création n&#x27;est pas transactionnelle. La synthèse des sessions existe comme API mais n&#x27;est pas exposée par une page. Le filtre de groupe de cette synthèse s&#x27;appuie encore sur le groupe historique de l&#x27;utilisateur.</p>
+<p class="body">D&#x27;autres améliorations relèvent de la robustesse : régénérer la session après l&#x27;authentification, uniformiser les accès aux données, neutraliser l&#x27;injection de formules dans le CSV, rendre les migrations explicites, auditer les échecs importants, paginer les listes et valider la configuration des proxys et ressources externes avant tout déploiement.</p>
+<ul><li>Fonction réalisée : alertes visuelles du tableau de bord ; aucun envoi externe revendiqué.</li><li>Fonction réalisée : jours Home Office distants ; aucune génération complète des jours onsite.</li><li>Fonction réalisée : heures prévues et réalisées séparées en base ; présentation non uniforme dans toutes les vues.</li><li>Fonction non confirmée : déploiement de production, exploitation réelle ou supervision d&#x27;infrastructure.</li></ul>
+<aside><strong>Conclusion du chapitre :</strong> Le prototype matérialise une piste technique centralisée en remplacement du traitement manuel. Les limites recensées orientent une phase de consolidation, sans être masquées par la qualité visuelle des écrans.</aside>
+<p class="source">Sources : code actuel, audit technique, diagrammes et captures fournies.</p>
+</section>
+<section class="page" id="chapitre-4">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 55 / 64</div>
+<div class="kicker">PREUVES AUTOMATISÉES ET LIMITES DE VALIDATION</div>
+<h1>Chapitre 4 - Tests et validation</h1>
+<h3 class="subheading">4.1 Protocole et résultats</h3>
+<p class="body">La validation documentée s&#x27;appuie sur deux sorties réelles enregistrées le 17 juillet 2026. La suite automatisée a été lancée avec la commande node --test tests/*.test.js sous Node.js v22.16.0 et npm 10.9.2. Une vérification syntaxique séparée a été exécutée par npm run check:syntax. Le présent travail n&#x27;attribue aucun succès à un scénario qui ne figure pas dans ces preuves.</p>
+<table style="font-size:8.5pt"><caption>Tableau 10 - Protocole et résultats automatisés</caption><thead><tr><th>Élément</th><th>Valeur prouvée</th></tr></thead><tbody><tr><td>Date d&#x27;exécution</td><td>17 juillet 2026</td></tr><tr><td>Commande des tests</td><td>node --test tests/*.test.js</td></tr><tr><td>Environnement</td><td>Node.js v22.16.0 ; npm 10.9.2</td></tr><tr><td>Fichiers de tests</td><td>5</td></tr><tr><td>Tests détectés</td><td>33</td></tr><tr><td>Tests réussis</td><td>33</td></tr><tr><td>Échecs / annulés / ignorés / TODO</td><td>0 / 0 / 0 / 0</td></tr><tr><td>Durée enregistrée</td><td>272,468626 ms</td></tr><tr><td>Commande syntaxique</td><td>npm run check:syntax</td></tr><tr><td>Résultat syntaxique</td><td>58 fichiers valides sur 58 contrôlés</td></tr></tbody></table>
+<p class="body">Le résultat global est donc 33/33 pour les tests automatisés et 58/58 pour le périmètre du script syntaxique. La sortie TAP fournit un statut ok pour chaque sous-test puis confirme zéro échec. Les preuves sont archivées dans les deux fichiers texte du dossier tests_reels.</p>
+<aside><strong>Règle d&#x27;interprétation :</strong> La réussite de la suite établit uniquement les comportements couverts. Elle ne transforme pas le prototype en produit validé pour la production et ne remplace pas les tests HTTP, MySQL et navigateur manquants.</aside>
+<p class="source">Sources : sorties test_run_2026-07-17.txt et syntax_check_2026-07-17.txt.</p>
+</section>
+<section class="page" id="repartition-tests">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 56 / 64</div>
+<h2>4.2 Répartition des cinq fichiers de tests</h2>
+<p class="body">Les 33 sous-tests sont répartis dans cinq fichiers. Cette répartition combine la date métier, les gardes de sélection et de génération, le mois cible du tableau de bord et plusieurs propriétés du frontend.</p>
+<table style="font-size:8.3pt"><caption>Tableau 11 - Répartition des cinq fichiers de tests</caption><thead><tr><th>Fichier</th><th>Nombre</th><th>Domaine principal</th></tr></thead><tbody><tr><td>dashboardTargetMonth.test.js</td><td>2</td><td>Mois du tableau de bord : valeur serveur et mois explicitement demandé.</td></tr><tr><td>frontendPhase2.test.js</td><td>7</td><td>Échappement HTML, contenu de layout, session unique et absence de calcul local du mois cible.</td></tr><tr><td>monthlyGroupSelectionWindowGuard.test.js</td><td>3</td><td>Fenêtre fermée, mois différent et sauvegarde autorisée.</td></tr><tr><td>planningGenerationWindow.test.js</td><td>11</td><td>Jours 1-24, fins de mois, février, changement d&#x27;année et Africa/Tunis.</td></tr><tr><td>planningServiceGenerationGuard.test.js</td><td>10</td><td>Erreurs typées, propriété, mois, doublon et groupes A/B.</td></tr><tr><td>Total</td><td>33</td><td>Tous réussis dans la sortie fournie.</td></tr></tbody></table>
+<p class="body">Les tests de fenêtre couvrent les mois de 28, 29, 30 et 31 jours. Le passage de décembre à janvier et les limites de la période du 25 sont vérifiés. Le service de génération est exercé avec des doubles de données pour observer les refus avant insertion et la création de lignes pour les deux groupes.</p>
+<p class="body">Le fichier frontendPhase2 vérifie un échappement commun pour le texte et les attributs, l&#x27;usage de cet échappement dans le layout et le tableau de bord, ainsi que l&#x27;absence de requêtes de session répétées pendant l&#x27;initialisation des pages protégées. Ces tests sont ciblés sur les sources et ne constituent pas une campagne de navigateur réel.</p>
+<aside><strong>Précision sur 58/58 :</strong> Le script syntaxique contrôle 58 fichiers sélectionnés. D&#x27;après son code, il exclut notamment le point d&#x27;entrée serveur, le script de vérification lui-même et les cinq fichiers de tests ; 58/58 ne signifie donc pas l&#x27;intégralité de tous les fichiers JavaScript du dépôt.</aside>
+<p class="source">Sources : cinq fichiers de tests, script check-syntax et sorties enregistrées.</p>
+</section>
+<section class="page" id="scenarios-couverts">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 57 / 64</div>
+<h2>4.3 Scénarios effectivement couverts</h2>
+<p class="body">La matrice ci-dessous ne contient que des scénarios dont le résultat est identifiable dans la sortie TAP. Elle regroupe des sous-tests proches afin de conserver une lecture académique.</p>
+<table style="font-size:7.5pt"><caption>Tableau 12 - Scénarios effectivement couverts</caption><thead><tr><th>Domaine</th><th>Scénario couvert</th><th>Résultat</th></tr></thead><tbody><tr><td>Fenêtre</td><td>Fermeture du jour 1 au jour 24.</td><td>Réussi</td></tr><tr><td>Fenêtre</td><td>Ouverture du 25 au dernier jour réel.</td><td>Réussi</td></tr><tr><td>Calendrier</td><td>Février non bissextile et bissextile.</td><td>Réussi</td></tr><tr><td>Calendrier</td><td>Mois de 30/31 jours et passage décembre-janvier.</td><td>Réussi</td></tr><tr><td>Fuseau</td><td>Date métier et mois cible Africa/Tunis.</td><td>Réussi</td></tr><tr><td>Sélection</td><td>Refus hors fenêtre ou pour un autre mois.</td><td>Réussi</td></tr><tr><td>Sélection</td><td>Sauvegarde pour le prochain mois autorisé.</td><td>Réussi</td></tr><tr><td>Génération</td><td>Refus avant toute insertion lorsque la fenêtre est fermée.</td><td>Réussi</td></tr><tr><td>Génération</td><td>Erreurs typées pour format, utilisateur absent et accès croisé.</td><td>Réussi</td></tr><tr><td>Génération</td><td>Refus d&#x27;une sélection ancienne et d&#x27;un planning existant.</td><td>Réussi</td></tr><tr><td>Groupes</td><td>Création A et B limitée au mois autorisé.</td><td>Réussi</td></tr><tr><td>Dashboard</td><td>Mois par défaut serveur et mois demandé préservé.</td><td>Réussi</td></tr><tr><td>Frontend</td><td>Échappement HTML partagé.</td><td>Réussi</td></tr><tr><td>Frontend</td><td>Une seule requête de session et pas de calcul local du mois cible.</td><td>Réussi</td></tr></tbody></table>
+<p class="body">Les résultats renforcent la confiance dans la règle la plus sensible : le serveur décide du mois et de la fenêtre. Ils montrent également que le client s&#x27;appuie sur le contexte renvoyé au lieu de recalculer localement la cible. En revanche, la suite ne compare pas exhaustivement toutes les dates générées pour tous les mois et tous les rangs de vendredi.</p>
+<p class="source">Source : sortie TAP du 17 juillet 2026 et code des cinq fichiers.</p>
+</section>
+<section class="page" id="limites-tests">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 58 / 64</div>
+<h2>4.4 Portée et limites des preuves</h2>
+<p class="body">Les tests automatisés utilisent des doubles et des objets simulés pour plusieurs services. Ils confirment la logique testée sans reproduire tous les comportements d&#x27;une base, d&#x27;un cookie, d&#x27;un navigateur et d&#x27;un serveur complets.</p>
+<table style="font-size:8.0pt"><caption>Tableau 13 - Limites des preuves automatisées</caption><thead><tr><th>Domaine non démontré de bout en bout</th><th>Conséquence pour le rapport</th></tr></thead><tbody><tr><td>Authentification, cookie, session et CSRF avec base réelle</td><td>Ne pas conclure à un cycle complet validé.</td></tr><tr><td>Administration des utilisateurs</td><td>Création, modification et suppression visibles dans le code, mais sans preuve automatisée fournie.</td></tr><tr><td>Congés</td><td>Aucun test du chevauchement, de l&#x27;annulation ou de la décision.</td></tr><tr><td>Sessions de travail</td><td>Transitions, expiration et plafond non couverts par la suite fournie.</td></tr><tr><td>Exports</td><td>Téléchargement et contenu CSV/XLSX non contrôlés automatiquement.</td></tr><tr><td>Migrations et contraintes MySQL</td><td>Verrous, annulations et schéma non éprouvés sur une instance isolée.</td></tr><tr><td>Sécurité dynamique</td><td>Aucune campagne de pénétration ou de validation complète des en-têtes.</td></tr><tr><td>Compatibilité</td><td>Aucune preuve multi-navigateur ou mobile.</td></tr><tr><td>Exploitation</td><td>Aucun déploiement, sauvegarde, supervision ou charge.</td></tr></tbody></table>
+<p class="body">Les treize captures uniques constituent des preuves visuelles de rendu. Elles confirment l&#x27;existence d&#x27;écrans, de cartes, de tableaux, de formulaires et d&#x27;états. Elles ne prouvent pas qu&#x27;une opération a réussi en base ni qu&#x27;une autorisation a été refusée. La capture finale prouve une page 404 ; aucune capture 403 réelle n&#x27;est disponible.</p>
+<p class="body">La validation honnête sépare donc quatre catégories : code inspecté, test automatisé réussi, rendu visuel fourni et scénario manuel non exécuté. Cette qualification est conservée dans la matrice des deux pages suivantes.</p>
+<aside><strong>Principe de traçabilité :</strong> Aucun test manuel n&#x27;est déclaré réussi sans compte rendu, sortie ou preuve dédiée.</aside>
+<p class="source">Sources : preuves de tests, catalogue des captures et audit du code.</p>
+</section>
+<section class="page" id="matrice-manuelle-1">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 59 / 64</div>
+<h2>4.5 Matrice manuelle à exécuter - partie 1</h2>
+<p class="body">Les scénarios suivants sont proposés pour une future recette. Leur statut reste Non exécuté, même lorsqu&#x27;une capture illustre l&#x27;écran concerné.</p>
+<table style="font-size:7.5pt"><caption>Tableau 14 - Matrice manuelle à exécuter - partie 1</caption><thead><tr><th>ID</th><th>Scénario</th><th>Statut</th><th>Preuve attendue</th></tr></thead><tbody><tr><td>TM-01</td><td>Connexion valide puis redirection selon l&#x27;onboarding.</td><td>Non exécuté</td><td>Cookie et compte d&#x27;essai contrôlé.</td></tr><tr><td>TM-02</td><td>Refus d&#x27;un mot de passe incorrect sans fuite d&#x27;information.</td><td>Non exécuté</td><td>Réponse HTTP et journal technique.</td></tr><tr><td>TM-03</td><td>Renouvellement initial puis accès au tableau de bord.</td><td>Non exécuté</td><td>État en base et nouvelle session.</td></tr><tr><td>TM-04</td><td>Création d&#x27;un utilisateur avec unicités valides.</td><td>Non exécuté</td><td>Ligne créée et audit.</td></tr><tr><td>TM-05</td><td>Refus d&#x27;un e-mail ou matricule déjà utilisé.</td><td>Non exécuté</td><td>Erreur et absence d&#x27;insertion.</td></tr><tr><td>TM-06</td><td>Suppression logique et révocation des accès.</td><td>Non exécuté</td><td>État du compte et session active.</td></tr><tr><td>TM-07</td><td>Data Cleansing refusé sur l&#x27;administration.</td><td>Non exécuté</td><td>Statut 403 réel.</td></tr><tr><td>TM-08</td><td>Sélection A/B pendant la fenêtre.</td><td>Non exécuté</td><td>Choix persisté et audit.</td></tr><tr><td>TM-09</td><td>Sélection refusée hors fenêtre.</td><td>Non exécuté</td><td>Réponse serveur réelle.</td></tr><tr><td>TM-10</td><td>Génération complète d&#x27;un mois A puis B.</td><td>Non exécuté</td><td>Dates exactes en base.</td></tr></tbody></table>
+<p class="body">La priorité porte sur les parcours d&#x27;identité et la génération, car ils conditionnent tous les autres modules. Les essais doivent être réalisés dans une base isolée avec des comptes d&#x27;essai non sensibles. Les valeurs de configuration et les identifiants ne doivent pas être intégrés au compte rendu.</p>
+<aside><strong>Méthode future :</strong> Une capture d&#x27;interface peut compléter un scénario, mais la preuve attendue doit aussi inclure le statut HTTP, l&#x27;état persistant ou le fichier produit selon le cas.</aside>
+<p class="source">Source : limites identifiées dans les preuves automatisées.</p>
+</section>
+<section class="page" id="matrice-manuelle-2">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 60 / 64</div>
+<h2>4.5 Matrice manuelle à exécuter - partie 2</h2>
+<table style="font-size:7.5pt"><caption>Tableau 15 - Matrice manuelle à exécuter - partie 2</caption><thead><tr><th>ID</th><th>Scénario</th><th>Statut</th><th>Preuve attendue</th></tr></thead><tbody><tr><td>TM-11</td><td>Consultation croisée planning et calendrier selon le rôle.</td><td>Non exécuté</td><td>Réponses 200/403 et données retournées.</td></tr><tr><td>TM-12</td><td>Cycle congé : création, approbation, rejet et annulation.</td><td>Non exécuté</td><td>États successifs et audit.</td></tr><tr><td>TM-13</td><td>Deux créations de congé concurrentes chevauchantes.</td><td>Non exécuté</td><td>Résultat des deux requêtes.</td></tr><tr><td>TM-14</td><td>Session : démarrage, heartbeat, pause, reprise et fin.</td><td>Non exécuté</td><td>Transitions et cumul en base.</td></tr><tr><td>TM-15</td><td>Expiration après perte de heartbeat.</td><td>Non exécuté</td><td>Statut expired et heure réelle.</td></tr><tr><td>TM-16</td><td>Plafond de huit heures sur une journée.</td><td>Non exécuté</td><td>Secondes brutes et work_hour.</td></tr><tr><td>TM-17</td><td>Téléchargement CSV avec contenu et encodage.</td><td>Non exécuté</td><td>Fichier contrôlé, formules neutralisées.</td></tr><tr><td>TM-18</td><td>Téléchargement XLSX avec filtres.</td><td>Non exécuté</td><td>Classeur et lignes attendues.</td></tr><tr><td>TM-19</td><td>Lecture des cent événements récents.</td><td>Non exécuté</td><td>Ordre, limite et anonymisation.</td></tr><tr><td>TM-20</td><td>Affichage réel des pages 404 et 403.</td><td>Non exécuté</td><td>Deux réponses et deux rendus distincts.</td></tr></tbody></table>
+<p class="body">La seconde partie cible les parcours d&#x27;intégration et les limites techniques. Les scénarios de concurrence sont particulièrement importants pour les congés et les sessions. Les exports doivent être ouverts dans un tableur de recette, avec vérification de l&#x27;encodage, des filtres, des colonnes et de la neutralisation de contenus interprétables comme formule.</p>
+<p class="body">Une recette complète devrait aussi mesurer les en-têtes HTTP, la durée des cookies, la limitation des tentatives, la révocation d&#x27;une session après changement de rôle ou désactivation, la compatibilité de navigateurs autorisés et les comportements lorsque la base ou le magasin de sessions deviennent indisponibles.</p>
+<aside><strong>Bilan vérifiable :</strong> Bilan du chapitre : 33/33 tests automatisés et 58/58 fichiers contrôlés syntaxiquement, avec vingt scénarios manuels explicitement laissés au statut Non exécuté.</aside>
+<p class="source">Sources : audit du code et limites des preuves du 17 juillet 2026.</p>
+</section>
+<section class="page" id="conclusion-generale">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 61 / 64</div>
+<h1>Conclusion générale</h1>
+<p class="body">Ce stage a permis de transformer un besoin concret de gestion du Home Office en une application web structurée. Le point de départ était un processus manuel fondé sur Excel, difficile à centraliser, exposé aux erreurs et insuffisamment traçable. La solution proposée réunit les comptes, les choix mensuels, les jours distants, les congés, les sessions de travail, les exports et les événements d&#x27;audit dans une même plateforme.</p>
+<p class="body">La réalisation répond au noyau du cahier des charges et l&#x27;enrichit par plusieurs fonctions. L&#x27;authentification s&#x27;effectue par e-mail, le premier renouvellement du mot de passe est obligatoire, les rôles s&#x27;appuient sur une matrice de permissions, la sélection A/B est persistée et la génération est limitée au mois suivant pendant la fenêtre serveur du 25 au dernier jour réel. Le calendrier, les congés, le CSV, le suivi non intrusif et les protections HTTP complètent le prototype.</p>
+<p class="body">Sur le plan technique, le projet a consolidé des compétences en Express, MySQL, modélisation, transactions, validation, contrôle d&#x27;accès, sécurité HTTP, interface responsive, export, tests et documentation UML. La progression incrémentale, les échanges organisés selon l&#x27;avancement et les corrections successives ont permis d&#x27;améliorer la cohérence entre le besoin, le code et la présentation.</p>
+<p class="body">Les preuves automatisées enregistrées après le stage indiquent 33 tests réussis sur 33 et une vérification syntaxique de 58 fichiers sur 58 contrôlés. Elles valident surtout la date métier, le mois cible, les gardes de sélection et de génération ainsi que plusieurs protections du frontend. Les parcours d&#x27;authentification complet, de congé, de session, d&#x27;export et de base réelle nécessitent encore une recette dédiée.</p>
+<p class="body">L&#x27;analyse a également mis en évidence des axes de consolidation : application uniforme des permissions, révocation des sessions lors des changements de compte, transaction des congés, cohérence temporelle des sessions, sécurité des exports, atomicité de l&#x27;audit et homogénéisation de la couche de données. Documenter ces limites fait partie de la qualité du travail et prépare une évolution maîtrisée.</p>
+<p class="body">La solution réalisée matérialise une alternative technique centralisée au traitement manuel. À la date de clôture du stage, elle demeure toutefois une version fonctionnelle de démonstration et n&#x27;est pas encore exploitée en production par les employés.</p>
+<aside><strong>Apport personnel :</strong> Le principal acquis consiste à relier une règle métier à un modèle de données, à des contrôles serveur, à des interfaces et à des preuves clairement qualifiées.</aside>
+</section>
+<section class="page" id="perspectives">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 62 / 64</div>
+<h1>Perspectives</h1>
+<p class="body">Les perspectives suivantes découlent des limites du prototype. Elles sont proposées comme travaux futurs et non comme fonctions déjà réalisées.</p>
+<table style="font-size:7.6pt"><caption>Tableau 16 - Perspectives proposées</caption><thead><tr><th>Priorité</th><th>Évolution</th><th>Résultat attendu</th></tr></thead><tbody><tr><td>P1</td><td>Étendre les tests unitaires, HTTP, MySQL et navigateur.</td><td>Couvrir les parcours aujourd&#x27;hui non prouvés.</td></tr><tr><td>P2</td><td>Appliquer toutes les permissions déclarées et tester la matrice.</td><td>Aligner configuration, routes et services.</td></tr><tr><td>P3</td><td>Révoquer les sessions après changement de rôle, mot de passe ou désactivation.</td><td>Limiter les privilèges persistants.</td></tr><tr><td>P4</td><td>Uniformiser l&#x27;accès aux données par services et modèles.</td><td>Améliorer maintenabilité et testabilité.</td></tr><tr><td>P5</td><td>Rendre la création des congés transactionnelle et relier, si validé, congé et planning.</td><td>Éviter les chevauchements concurrents et clarifier le métier.</td></tr><tr><td>P6</td><td>Durcir les exports et ajouter pagination ou traitement progressif.</td><td>Neutraliser les formules et maîtriser les volumes.</td></tr><tr><td>P7</td><td>Séparer migrations, amorçage et démarrage normal.</td><td>Rendre l&#x27;installation reproductible et contrôlée.</td></tr><tr><td>P8</td><td>Compléter l&#x27;audit, les filtres et la pagination.</td><td>Améliorer la traçabilité sans prétendre à l&#x27;exhaustivité actuelle.</td></tr><tr><td>P9</td><td>Évaluer accessibilité, compatibilité et ressources locales.</td><td>Consolider l&#x27;usage dans les navigateurs autorisés.</td></tr><tr><td>P10</td><td>Définir sauvegarde, supervision et procédure de déploiement.</td><td>Préparer une décision de mise en production.</td></tr><tr><td>P11</td><td>Étudier des notifications persistantes puis, si le besoin est validé, des canaux externes.</td><td>Améliorer le rappel sans revendiquer d&#x27;envoi actuel.</td></tr><tr><td>P12</td><td>Documenter l&#x27;API avec un contrat maintenu.</td><td>Faciliter tests, évolution et intégration.</td></tr></tbody></table>
+<p class="body">La priorité immédiate devrait être la validation d&#x27;intégration et le contrôle des autorisations. Les décisions fonctionnelles concernant congés, groupe historique, synthèse de sessions et notifications doivent être confirmées avant de modifier le comportement. Une mise en production ne devrait être envisagée qu&#x27;après une recette, une revue de sécurité et la définition de responsabilités d&#x27;exploitation.</p>
+<p class="source">Sources : audit du code, limites du chapitre 4 et cahier des charges.</p>
+</section>
+<section class="page" id="references">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 63 / 64</div>
+<h1>Références</h1>
+<h3 class="subheading">Sources internes</h3>
+<p class="reference">1. Fichiers validés 00 à 11 du dossier de régénération, version du 17 juillet 2026.</p>
+<p class="reference">2. Cahier des charges LEONI Data Management fourni dans le dossier.</p>
+<p class="reference">3. Projet leoni-planing : server.js, config, routes, contrôleurs, services, modèles, middlewares, validations, utilitaires et vues.</p>
+<p class="reference">4. Schéma SQL consolidé et migrations 001 à 007.</p>
+<p class="reference">5. Cinq fichiers de tests du projet et sorties réelles du 17 juillet 2026.</p>
+<p class="reference">6. Rapport de référence, audit du projet et matrice de traçabilité fournis.</p>
+<p class="reference">7. Quinze sources PlantUML et catalogue des treize captures uniques.</p>
+<h3 class="subheading">Documentations techniques citées dans le dossier de référence</h3>
+<p class="reference">8. Express.js, Express 5.x API Reference : https://expressjs.com/en/5x/api/</p>
+<p class="reference">9. Node.js, Test runner : https://nodejs.org/api/test.html</p>
+<p class="reference">10. MySQL, Documentation : https://dev.mysql.com/doc/</p>
+<p class="reference">11. MySQL2, Documentation : https://sidorares.github.io/node-mysql2/docs</p>
+<p class="reference">12. express-session, documentation : https://github.com/expressjs/session</p>
+<p class="reference">13. express-validator, documentation : https://express-validator.github.io/docs/</p>
+<p class="reference">14. Helmet, documentation : https://helmetjs.github.io/</p>
+<p class="reference">15. Bootstrap 5.3, introduction : https://getbootstrap.com/docs/5.3/getting-started/introduction/</p>
+<p class="reference">16. ExcelJS, dépôt officiel : https://github.com/exceljs/exceljs</p>
+<p class="reference">17. bcrypt pour Node.js : https://github.com/kelektiv/node.bcrypt.js</p>
+<p class="reference">18. csurf, dépôt officiel : https://github.com/expressjs/csurf</p>
+<p class="reference">19. PlantUML, documentation : https://plantuml.com/</p>
+<aside><strong>Règle de citation :</strong> Les documentations externes expliquent les technologies générales. Les règles, rôles, résultats et limites propres au projet sont fondés sur les sources internes.</aside>
+</section>
+<section class="page" id="annexes">
+<div class="running">EPI - Digital School | Rapport de stage | LEONI Data Management</div>
+<div class="folio">IHEB DABBOUNI | 64 / 64</div>
+<h1>Annexes</h1>
+<h3 class="subheading">Annexe A - Matrice de traçabilité synthétique</h3>
+<table style="font-size:7.4pt"><caption>Tableau 17 - Matrice de traçabilité synthétique</caption><thead><tr><th>Exigence</th><th>Réalisation observable</th><th>Preuve ou réserve</th></tr></thead><tbody><tr><td>Authentification et premier accès</td><td>E-mail, bcrypt, session et onboarding.</td><td>Code ; cycle complet manuel à exécuter.</td></tr><tr><td>Utilisateurs et rôles</td><td>CRUD avec suppression logique et permissions.</td><td>Code et capture anonymisée ; tests manuels à exécuter.</td></tr><tr><td>Groupes et génération</td><td>Sélection mensuelle, fenêtre, mois suivant et dates A/B.</td><td>Tests automatisés réussis et diagrammes.</td></tr><tr><td>Planning et calendrier</td><td>Jours remote en tableau et grille mensuelle.</td><td>Code et quatre captures ; pas de lignes onsite générées.</td></tr><tr><td>Congés</td><td>Création, annulation, approbation et rejet.</td><td>Code et deux captures ; pas de test automatisé.</td></tr><tr><td>Suivi distant</td><td>Heartbeat, pause, reprise, fin, expiration et plafond.</td><td>Code et capture ; intégration non exécutée.</td></tr><tr><td>Exports</td><td>CSV et XLSX filtrés.</td><td>Code et capture ; contenu non testé.</td></tr><tr><td>Audit</td><td>Événements récents et accès réservé.</td><td>Code et capture ; journalisation best effort.</td></tr><tr><td>Qualité</td><td>33/33 et 58/58.</td><td>Sorties du 17 juillet 2026.</td></tr></tbody></table>
+<h3 class="subheading">Annexe B - Inventaire des figures</h3>
+<p class="compact">Diagrammes rendus : 01 cas d&#x27;utilisation, 02 architecture, 03 composants, 04 données, 05 authentification, 06 mot de passe, 07 utilisateur, 08 sélection, 09 génération, 10 consultation, 11 demande de congé, 12 traitement de congé, 13 session, 14 export et 15 audit.</p>
+<p class="compact">Captures utilisées : connexion, changement de mot de passe, dashboard, utilisateurs, planning Team Leader, suivi actif Data Cleansing, deux calendriers, deux écrans de congé, export, audit et page 404. Le doublon de changement de mot de passe n&#x27;est pas inséré.</p>
+<h3 class="subheading">Annexe C - Limites de diffusion et de validation</h3>
+<p class="compact">Toutes les captures intégrées sont recadrées et anonymisées par masques opaques. Les données affichées sont traitées comme des données de démonstration. Aucun compte, secret ou valeur de configuration n&#x27;est reproduit. L&#x27;application est présentée comme un prototype avancé sans déploiement confirmé. Les scénarios manuels restent Non exécuté lorsqu&#x27;aucune preuve spécifique n&#x27;est disponible.</p>
+<aside><strong>Pagination contrôlée :</strong> Fin du rapport - 64 pages.</aside>
+</section>
+</body></html>

@@ -1,0 +1,41 @@
+@startuml
+title Cas d'utilisation global de l'application
+left to right direction
+skinparam shadowing false
+actor "Utilisateur" as U
+actor "Data Cleansing" as DC
+actor "Team Leader" as TL
+U <|-- DC
+U <|-- TL
+rectangle "Application de planning Home Office" {
+  usecase "S'authentifier et\nchanger son mot de passe" as Auth
+  usecase "Consulter tableau de bord,\nplanning et calendrier" as Read
+  usecase "Sélectionner son groupe\nmensuel" as Group
+  usecase "Générer son planning" as GenerateOwn
+  usecase "Gérer ses demandes\nde congé" as LeaveOwn
+  usecase "Suivre sa session\nde travail distante" as SessionOwn
+  usecase "Administrer les utilisateurs" as Users
+  usecase "Générer et consulter\nau périmètre global" as PlanningAll
+  usecase "Traiter les congés" as LeaveManage
+  usecase "Consulter la synthèse\ndes sessions" as Summary
+  usecase "Exporter CSV/XLSX" as Export
+  usecase "Consulter l'audit" as Audit
+}
+U -- Auth
+U -- Read
+U -- Group
+U -- GenerateOwn
+U -- LeaveOwn
+U -- SessionOwn
+TL -- Users
+TL -- PlanningAll
+TL -- LeaveManage
+TL -- Summary
+TL -- Export
+TL -- Audit
+note right of GenerateOwn
+  Du 25 au dernier jour du mois,
+  pour le mois suivant, après une
+  sélection mensuelle A ou B.
+end note
+@enduml

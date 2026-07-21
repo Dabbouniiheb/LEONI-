@@ -1,0 +1,52 @@
+@startuml
+title Architecture globale actuelle
+top to bottom direction
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+
+node "Poste utilisateur" as Poste {
+  artifact "Pages HTML" as HTML
+  artifact "CSS et JavaScript" as JS
+  component "Client HTTP LeoniAPI" as ClientAPI
+  HTML --> JS
+  JS --> ClientAPI
+}
+
+node "Serveur Node.js" as Serveur {
+  component "Application Express" as Express
+  component "Middlewares globaux\nHelmet, journal HTTP, limitation,\nparsing, session et CSRF" as Globaux
+  component "Routes de pages" as Pages
+  component "Routes /api" as RoutesAPI
+  component "Contrôleurs" as Controleurs
+  component "Services métier" as Services
+  component "Modèles" as Modeles
+  component "Pool MySQL" as Pool
+  component "Journalisation d'audit" as Audit
+
+  Express --> Globaux
+  Globaux --> Pages
+  Globaux --> RoutesAPI
+  RoutesAPI --> Controleurs
+  Controleurs --> Services : modules structurés
+  Services --> Modeles
+  Modeles --> Pool
+  Services --> Pool : transactions
+  Controleurs --> Pool : accès SQL direct\nauthentification, utilisateurs,\ntableau de bord, export, audit
+  Controleurs --> Audit
+  Services --> Audit
+  Audit --> Pool
+}
+
+database "MySQL\nDonnées métier et sessions HTTP" as MySQL
+
+ClientAPI --> Express : HTTP même origine\nJSON et téléchargements
+Pages --> HTML : fichiers statiques
+Pool --> MySQL : requêtes paramétrées
+Globaux --> MySQL : stockage des sessions
+
+note bottom of Services
+  Services présents : planning, fenêtre de génération,
+  sélection mensuelle, congés et sessions de travail.
+end note
+@enduml

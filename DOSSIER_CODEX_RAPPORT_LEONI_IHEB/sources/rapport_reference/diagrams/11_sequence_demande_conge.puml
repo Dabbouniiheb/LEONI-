@@ -1,0 +1,30 @@
+@startuml
+title Séquence de création d'une demande de congé
+autonumber
+skinparam shadowing false
+actor "Utilisateur" as U
+boundary "Page Congés" as Page
+control "Auth, permission et validation" as MW
+control "LeaveRequestController" as C
+control "LeaveRequestService" as S
+entity "LeaveRequest" as M
+database "MySQL" as DB
+U -> Page : saisir dates, type et motif
+Page -> MW : POST /api/leave-requests
+MW -> MW : vérifier read.own, dates, type, longueur
+MW -> C : createRequest(req, res)
+C -> S : createRequest(user.id, données)
+S -> DB : BEGIN
+S -> M : rechercher chevauchement pending/approved
+M -> DB : SELECT période recouvrante
+alt Chevauchement ou données invalides
+  S -> DB : ROLLBACK
+  S --> Page : 400 ou 409
+else Demande valide
+  S -> M : créer avec status pending
+  M -> DB : INSERT leave_requests
+  S -> DB : INSERT audit_logs LEAVE_REQUEST_CREATED
+  S -> DB : COMMIT
+  S --> Page : 201 et demande
+end
+@enduml

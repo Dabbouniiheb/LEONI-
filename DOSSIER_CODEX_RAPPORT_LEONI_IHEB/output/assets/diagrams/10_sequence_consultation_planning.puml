@@ -1,0 +1,34 @@
+@startuml
+title Séquence de consultation du planning
+autonumber
+skinparam shadowing false
+actor "Utilisateur" as U
+boundary "Page Planning ou Calendrier" as Page
+control "Auth, onboarding, validation" as MW
+control "PlanningController" as C
+control "PlanningService" as S
+entity "Planning" as M
+database "MySQL" as DB
+U -> Page : choisir vue et filtres
+Page -> MW : GET /api/planning ou\n/api/planning/calendar
+MW -> MW : vérifier session et filtres
+MW -> C : action de lecture
+C -> S : lire(filtres, utilisateur)
+alt Team Leader avec portée globale
+  S -> S : appliquer les filtres autorisés
+else Data Cleansing
+  S -> S : imposer user_id = session.user.id
+end
+S -> M : requête paramétrée
+M -> DB : SELECT planning JOIN users\nLEFT JOIN sélection mensuelle
+DB --> M : lignes autorisées
+alt Vue calendrier
+  S -> S : regrouper par utilisateur et mois
+end
+S --> C : résultat
+C --> Page : JSON à afficher
+note right of MW
+  Certaines routes n'annoncent pas une permission
+  fine ; le service impose le périmètre utilisateur.
+end note
+@enduml

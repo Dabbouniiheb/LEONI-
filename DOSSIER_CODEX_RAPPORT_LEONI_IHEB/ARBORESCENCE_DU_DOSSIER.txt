@@ -1,0 +1,174 @@
+00_CONSIGNES_ET_HIERARCHIE_DES_SOURCES.md
+01_INFORMATIONS_ETUDIANT_ET_STAGE.md
+02_CONTEXTE_METIER_ET_OBJECTIFS.md
+03_PERIMETRE_INITIAL_ET_VERSION_FINALE.md
+04_TRAVAIL_PERSONNEL_METHODE_COMPETENCES.md
+05_CHRONOLOGIE_STAGE.md
+06_DEDICACE_ET_REMERCIEMENTS.md
+07_PREUVES_DE_TESTS_REELS.md
+08_CATALOGUE_DES_CAPTURES.md
+09_EXIGENCES_DU_RAPPORT_FINAL.md
+10_DECISIONS_REDACTIONNELLES.md
+11_FICHE_STRUCTURÉE.json
+PROMPT_CODEX_GENERATION_RAPPORT_FINAL.md
+README_START_HERE.md
+output/
+  README_OUTPUT.md
+sources/
+  cahier_des_charges_LEONI_Data_Management.pdf
+  captures/
+    capture_01_login.png
+    capture_02_changement_mot_de_passe.png
+    capture_02b_changement_mot_de_passe_doublon.png
+    capture_03_dashboard_team_leader.png
+    capture_04_gestion_utilisateurs.png
+    capture_05_planning_team_leader.png
+    capture_06_planning_data_cleansing_suivi_actif.png
+    capture_07_calendrier_team_leader.png
+    capture_08_calendrier_data_cleansing.png
+    capture_09_conges_team_leader.png
+    capture_10_conges_data_cleansing.png
+    capture_11_export.png
+    capture_12_audit_logs.png
+    capture_13_page_404.png
+  projet/
+    leoni-planing/
+      .env.example
+      config/
+        constants.js
+        db.js
+        permissions.js
+      controllers/
+        authController.js
+        dashboardController.js
+        exportController.js
+        leaveRequestController.js
+        logController.js
+        monthlyGroupSelectionController.js
+        planningController.js
+        userController.js
+        workSessionController.js
+      middlewares/
+        auth.js
+        validate.js
+      models/
+        LeaveRequest.js
+        MonthlyGroupSelection.js
+        Planning.js
+        User.js
+        WorkSession.js
+      package-lock.json
+      package.json
+      routes/
+        authRoutes.js
+        dashboardRoutes.js
+        exportRoutes.js
+        leaveRequestRoutes.js
+        logRoutes.js
+        monthlyGroupSelectionRoutes.js
+        planningRoutes.js
+        userRoutes.js
+        viewRoutes.js
+        workSessionRoutes.js
+      scripts/
+        check-syntax.js
+      server.js
+      services/
+        LeaveRequestService.js
+        MonthlyGroupSelectionService.js
+        PlanningGenerationWindowService.js
+        PlanningService.js
+        WorkSessionService.js
+      sql/
+        migrations/
+          001_add_enterprise_columns.sql
+          002_create_leave_requests.sql
+          003_add_horaire_to_planning.sql
+          004_create_work_sessions.sql
+          005_harden_work_sessions_and_work_hours.sql
+          006_add_updated_at_to_planning.sql
+          007_create_monthly_group_selections.sql
+        schema.sql
+      tests/
+        dashboardTargetMonth.test.js
+        frontendPhase2.test.js
+        monthlyGroupSelectionWindowGuard.test.js
+        planningGenerationWindow.test.js
+        planningServiceGenerationGuard.test.js
+      utils/
+        appLogger.js
+        asyncHandler.js
+        errors.js
+        helpers.js
+        logger.js
+        planningGenerationWindow.js
+      validations/
+        authValidation.js
+        leaveRequestValidation.js
+        monthlyGroupSelectionValidation.js
+        planningValidation.js
+        userValidation.js
+        workSessionValidation.js
+      views/
+        403.html
+        404.html
+        assets/
+          css/
+            leoni.css
+          favicon.svg
+          js/
+            api.js
+            auth.js
+            calendar.js
+            change-password.js
+            dashboard.js
+            export.js
+            layout.js
+            leave-requests.js
+            login.js
+            logs.js
+            planning.js
+            users.js
+        calendar.html
+        change-password.html
+        dashboard.html
+        export.html
+        leave-requests.html
+        login.html
+        logs.html
+        planning.html
+        users.html
+  rapport_reference/
+    00_informations_a_completer.md
+    01_audit_projet_actuel.md
+    02_resultats_tests.md
+    03_plan_captures.md
+    04_matrice_tracabilite.md
+    05_resume_projet.md
+    06_fiche_soutenance.md
+    07_plan_presentation.md
+    08_glossaire.md
+    09_references.md
+    10_checklist_finale.md
+    diagrams/
+      01_cas_utilisation_global.puml
+      02_architecture_globale.puml
+      03_composants_application.puml
+      04_modele_donnees.puml
+      05_sequence_authentification.puml
+      06_sequence_changement_mot_de_passe.puml
+      07_sequence_gestion_utilisateur.puml
+      08_sequence_selection_groupe.puml
+      09_sequence_generation_planning.puml
+      10_sequence_consultation_planning.puml
+      11_sequence_demande_conge.puml
+      12_sequence_traitement_conge.puml
+      13_sequence_session_travail.puml
+      14_sequence_export.puml
+      15_sequence_audit.puml
+      README.md
+    rapport_stage_complet.md
+    rapport_stage_complet.pdf
+  tests_reels/
+    syntax_check_2026-07-17.txt
+    test_run_2026-07-17.txt

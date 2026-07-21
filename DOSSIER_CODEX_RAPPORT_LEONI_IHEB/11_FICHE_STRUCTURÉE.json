@@ -1,0 +1,50 @@
+{
+  "student": {
+    "full_name": "IHEB DABBOUNI",
+    "student_id": "290420",
+    "institution": "EPI",
+    "academic_department": "Digital School",
+    "program": "Cycle préparatoire",
+    "level": "Deuxième année du cycle préparatoire",
+    "academic_year": "2025-2026",
+    "academic_year_status": "inferred_from_stage_dates"
+  },
+  "internship": {
+    "type": "Stage d'été",
+    "start_date": "2026-06-15",
+    "end_date": "2026-07-15",
+    "official_duration": "30 jours",
+    "official_title": "Développement d'une application web de gestion du planning Home Office pour LEONI Data Management",
+    "host": "LEONI",
+    "business_scope": "Material Master Data Management",
+    "site": "Messadine",
+    "professional_supervisor": "MAHMOUDI IHEB",
+    "current_product_status": "Prototype fonctionnel / démonstration, non utilisé actuellement par les employés",
+    "estimated_target_users": "plus de 99"
+  },
+  "report": {
+    "target_pages": 64,
+    "language": "fr",
+    "omit_fields": [
+      "adresse",
+      "description détaillée du département",
+      "fonction de l'encadrant professionnel",
+      "encadrant académique",
+      "modalités de présence",
+      "rubriques de confidentialité",
+      "logos non fournis"
+    ]
+  },
+  "tests": {
+    "date": "2026-07-17",
+    "command": "node --test tests/*.test.js",
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "test_files": 5,
+    "tests_total": 33,
+    "tests_passed": 33,
+    "tests_failed": 0,
+    "syntax_files_checked": 58,
+    "syntax_files_passed": 58
+  }
+}

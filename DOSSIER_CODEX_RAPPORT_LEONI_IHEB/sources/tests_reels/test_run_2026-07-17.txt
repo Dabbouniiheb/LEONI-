@@ -1,0 +1,213 @@
+Execution date: 2026-07-17
+Command: node --test tests/*.test.js
+Node: v22.16.0
+npm: 10.9.2
+
+TAP version 13
+# Subtest: dashboard default month comes from the authoritative Africa/Tunis window
+ok 1 - dashboard default month comes from the authoritative Africa/Tunis window
+  ---
+  duration_ms: 1.60633
+  type: 'test'
+  ...
+# Subtest: dashboard preserves an explicitly requested month
+ok 2 - dashboard preserves an explicitly requested month
+  ---
+  duration_ms: 4.243993
+  type: 'test'
+  ...
+# Subtest: shared HTML escaping handles text and attribute metacharacters
+ok 3 - shared HTML escaping handles text and attribute metacharacters
+  ---
+  duration_ms: 39.057079
+  type: 'test'
+  ...
+# Subtest: layout escapes session-derived shell content and page headings
+ok 4 - layout escapes session-derived shell content and page headings
+  ---
+  duration_ms: 4.193853
+  type: 'test'
+  ...
+# Subtest: dashboard uses the server window and escapes employee table values
+ok 5 - dashboard uses the server window and escapes employee table values
+  ---
+  duration_ms: 3.920997
+  type: 'test'
+  ...
+# Subtest: browser pages use the shared escaper without duplicate implementations
+ok 6 - browser pages use the shared escaper without duplicate implementations
+  ---
+  duration_ms: 1.132055
+  type: 'test'
+  ...
+# Subtest: ensureAccess performs exactly one session request
+ok 7 - ensureAccess performs exactly one session request
+  ---
+  duration_ms: 1.511567
+  type: 'test'
+  ...
+# Subtest: protected page initialization does not repeat the session refresh
+ok 8 - protected page initialization does not repeat the session refresh
+  ---
+  duration_ms: 2.966419
+  type: 'test'
+  ...
+# Subtest: dashboard contains no browser-local target-month calculation
+ok 9 - dashboard contains no browser-local target-month calculation
+  ---
+  duration_ms: 0.809089
+  type: 'test'
+  ...
+# Subtest: monthly group selection cannot be saved while generation is closed
+ok 10 - monthly group selection cannot be saved while generation is closed
+  ---
+  duration_ms: 23.934142
+  type: 'test'
+  ...
+# Subtest: monthly group selection cannot be saved for a different month
+ok 11 - monthly group selection cannot be saved for a different month
+  ---
+  duration_ms: 0.780756
+  type: 'test'
+  ...
+# Subtest: monthly group selection is saved for the allowed next month
+ok 12 - monthly group selection is saved for the allowed next month
+  ---
+  duration_ms: 1.364856
+  type: 'test'
+  ...
+# Subtest: generation is closed from day 1 through day 24
+ok 13 - generation is closed from day 1 through day 24
+  ---
+  duration_ms: 16.348819
+  type: 'test'
+  ...
+# Subtest: July window is open from day 25 through day 31 for August only
+ok 14 - July window is open from day 25 through day 31 for August only
+  ---
+  duration_ms: 0.463298
+  type: 'test'
+  ...
+# Subtest: August window is open from day 25 through day 31 for September only
+ok 15 - August window is open from day 25 through day 31 for September only
+  ---
+  duration_ms: 2.243144
+  type: 'test'
+  ...
+# Subtest: non-leap February remains open through February 28 for March
+ok 16 - non-leap February remains open through February 28 for March
+  ---
+  duration_ms: 0.578701
+  type: 'test'
+  ...
+# Subtest: leap-year February remains open through February 29 for March
+ok 17 - leap-year February remains open through February 29 for March
+  ---
+  duration_ms: 0.477719
+  type: 'test'
+  ...
+# Subtest: 30-day month closes on its actual final day
+ok 18 - 30-day month closes on its actual final day
+  ---
+  duration_ms: 0.322085
+  type: 'test'
+  ...
+# Subtest: December window rolls over to January of the next year
+ok 19 - December window rolls over to January of the next year
+  ---
+  duration_ms: 0.489778
+  type: 'test'
+  ...
+# Subtest: Africa/Tunis business date controls opening and automatic closing
+ok 20 - Africa/Tunis business date controls opening and automatic closing
+  ---
+  duration_ms: 0.35182
+  type: 'test'
+  ...
+# Subtest: target month context is derived from the Africa/Tunis generation window
+ok 21 - target month context is derived from the Africa/Tunis generation window
+  ---
+  duration_ms: 1.277214
+  type: 'test'
+  ...
+# Subtest: validation allows only the backend-calculated next month
+ok 22 - validation allows only the backend-calculated next month
+  ---
+  duration_ms: 1.951149
+  type: 'test'
+  ...
+# Subtest: validation rejects every month while the window is closed
+ok 23 - validation rejects every month while the window is closed
+  ---
+  duration_ms: 0.393122
+  type: 'test'
+  ...
+# Subtest: closed window rejects before any planning insert
+ok 24 - closed window rejects before any planning insert
+  ---
+  duration_ms: 19.758516
+  type: 'test'
+  ...
+# Subtest: invalid generation month format uses a typed bad-request error
+ok 25 - invalid generation month format uses a typed bad-request error
+  ---
+  duration_ms: 0.462987
+  type: 'test'
+  ...
+# Subtest: missing planning user uses a typed not-found error
+ok 26 - missing planning user uses a typed not-found error
+  ---
+  duration_ms: 0.602968
+  type: 'test'
+  ...
+# Subtest: cross-user planning access uses a typed forbidden error with the existing client message
+ok 27 - cross-user planning access uses a typed forbidden error with the existing client message
+  ---
+  duration_ms: 0.306943
+  type: 'test'
+  ...
+# Subtest: planning controller does not classify operational errors by message text
+ok 28 - planning controller does not classify operational errors by message text
+  ---
+  duration_ms: 0.942029
+  type: 'test'
+  ...
+# Subtest: open window rejects every requested month except the backend allowed month
+ok 29 - open window rejects every requested month except the backend allowed month
+  ---
+  duration_ms: 0.870892
+  type: 'test'
+  ...
+# Subtest: selection from a previous month is not reused
+ok 30 - selection from a previous month is not reused
+  ---
+  duration_ms: 0.452162
+  type: 'test'
+  ...
+# Subtest: existing planning is rejected without duplicate inserts
+ok 31 - existing planning is rejected without duplicate inserts
+  ---
+  duration_ms: 0.444379
+  type: 'test'
+  ...
+# Subtest: Group A selection generates only the backend allowed month
+ok 32 - Group A selection generates only the backend allowed month
+  ---
+  duration_ms: 0.9891
+  type: 'test'
+  ...
+# Subtest: Group B selection generates only the backend allowed month
+ok 33 - Group B selection generates only the backend allowed month
+  ---
+  duration_ms: 2.06732
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 272.468626

@@ -1,0 +1,121 @@
+@startuml
+title Modèle relationnel vérifié
+hide methods
+hide stereotypes
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+entity "users" as USERS {
+  * id : INT <<PK>>
+  --
+  first_name : VARCHAR(50)
+  last_name : VARCHAR(50)
+  username : VARCHAR(50) <<UQ>>
+  email : VARCHAR(100) <<UQ>>
+  password : VARCHAR(255)
+  matricule : VARCHAR(50) <<UQ>>
+  role : ENUM
+  department : VARCHAR(100)
+  group_id : TINYINT, NULL
+  must_change_password : TINYINT
+  first_login : TINYINT
+  is_deleted : TINYINT
+  deleted_at : TIMESTAMP, NULL
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity "monthly_group_selections" as GROUPES {
+  * id : INT <<PK>>
+  --
+  user_id : INT <<FK>>
+  month_key : CHAR(7)
+  group_id : TINYINT
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  --
+  UQ(user_id, month_key)
+  CHECK group_id IN (1, 2)
+}
+
+entity "planning" as PLANNING {
+  * id : INT <<PK>>
+  --
+  user_id : INT <<FK>>
+  date : DATE
+  status : ENUM(onsite, remote)
+  month_key : VARCHAR(7)
+  work_hour : DECIMAL(5,2)
+  planned_work_hour : DECIMAL(5,2)
+  horaire : VARCHAR(50), NULL
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  --
+  UQ(user_id, date)
+}
+
+entity "work_sessions" as SESSIONS {
+  * id : INT <<PK>>
+  --
+  user_id : INT <<FK>>
+  planning_id : INT, NULL <<FK>>
+  work_date : DATE
+  started_at : DATETIME
+  last_heartbeat_at : DATETIME, NULL
+  ended_at : DATETIME, NULL
+  active_seconds : INT
+  status : ENUM
+  active_slot : TINYINT, NULL
+  created_at : DATETIME
+  updated_at : DATETIME
+  --
+  UQ(user_id, planning_id, work_date, active_slot)
+}
+
+entity "leave_requests" as CONGES {
+  * id : INT <<PK>>
+  --
+  user_id : INT <<FK>>
+  start_date : DATE
+  end_date : DATE
+  leave_type : VARCHAR(50)
+  reason : TEXT, NULL
+  status : ENUM
+  decision_comment : TEXT, NULL
+  reviewed_by : INT, NULL <<FK>>
+  reviewed_at : TIMESTAMP, NULL
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity "audit_logs" as AUDIT {
+  * id : INT <<PK>>
+  --
+  user_id : INT, NULL <<FK>>
+  action : VARCHAR(50)
+  details : TEXT, NULL
+  ip_address : VARCHAR(45), NULL
+  created_at : TIMESTAMP
+}
+
+USERS "1" -- "0..*" GROUPES : sélectionne
+USERS "1" -- "0..*" PLANNING : possède
+USERS "1" -- "0..*" SESSIONS : effectue
+PLANNING "0..1" -- "0..*" SESSIONS : cadre
+USERS "1" -- "0..*" CONGES : demande
+USERS "0..1" -- "0..*" CONGES : examine
+USERS "0..1" -- "0..*" AUDIT : déclenche
+
+note right of PLANNING
+  « horaire » est nullable et son usage métier
+  n'est pas établi dans la version actuelle.
+  « work_hour » contient les heures réellement suivies,
+  plafonnées à 8 h lors du recalcul applicatif.
+end note
+
+note right of SESSIONS
+  active_slot vaut 1 pour une session active dans
+  le flux applicatif. La clé unique protège le triplet
+  lorsque planning_id n'est pas NULL.
+end note
+@enduml
